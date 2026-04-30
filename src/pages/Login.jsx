@@ -79,7 +79,26 @@ const Login = () => {
                 </button>
               </div>
             </div>
+            {/* Botón de envío */}
+            <button
+              type="submit"
+              className="w-full py-4 bg-gradient-to-r from-brand-teal to-brand-green hover:shadow-lg hover:shadow-brand-teal/20 active:scale-[0.98] transition-all rounded-2xl text-white font-bold text-lg flex items-center justify-center space-x-2 group"
+            >
+              <span>Iniciar Sesión</span>
+              <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+            </button>
           </form>
+
+          {/* Pie de la tarjeta */}
+          <div className="mt-10 text-center">
+            <p className="text-slate-500 text-sm">
+              ¿Aún no tienes cuenta?{' '}
+              <button className="text-brand-teal font-bold hover:underline transition-all">
+                ¡Registrate!
+              </button>
+            </p>
+          </div>
+
         </div>
       </div>
     </div>
