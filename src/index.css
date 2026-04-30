@@ -1,1 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
+
+:root {
+  --primary-teal: #0097A7;
+  --primary-green: #4CAF50;
+  --accent-yellow: #FFEB3B;
+  --bg-gradient: linear-gradient(135deg, #f0f9ff 0%, #e1f5fe 100%);
+  --glass-bg: rgba(255, 255, 255, 0.8);
+  --glass-border: rgba(255, 255, 255, 0.3);
+}
