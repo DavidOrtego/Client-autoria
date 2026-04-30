@@ -9,3 +9,21 @@
   --glass-bg: rgba(255, 255, 255, 0.8);
   --glass-border: rgba(255, 255, 255, 0.3);
 }
+
+@theme {
+  --color-brand-teal: var(--primary-teal);
+  --color-brand-green: var(--primary-green);
+  --color-brand-yellow: var(--accent-yellow);
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 0;
+  background: var(--bg-gradient);
+  min-height: 100vh;
+}
+
+h1, h2, h3, .font-outfit {
+  font-family: 'Outfit', sans-serif;
+}
