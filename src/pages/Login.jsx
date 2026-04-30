@@ -17,7 +17,7 @@ const Login = () => {
       </div>
 
       {/* Tarjeta de Login */}
-      <div className="w-full max-w-md z-10">
+      <div className="w-full max-w-md z-10 animate-fade-in">
         <div className="glass-card rounded-3xl p-8 md:p-10">
           {/* Logo y Cabecera */}
           <div className="flex flex-col items-center mb-10">
