@@ -100,8 +100,15 @@ const Login = () => {
           </div>
 
         </div>
+        {/* Slogan */}
+        <p className="mt-8 text-center text-slate-400 text-xs tracking-widest uppercase flex items-center justify-center space-x-2">
+          <span>Vivir juntos, sin caos</span>
+          <span className="w-1 h-1 bg-slate-300 rounded-full"></span>
+          <span>Vives House</span>
+        </p>
       </div>
     </div>
+
   );
 };
 
