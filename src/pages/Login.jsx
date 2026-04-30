@@ -33,11 +33,56 @@ const Login = () => {
               Gestiona los gastos y tareas de tu piso de forma fácil.
             </p>
           </div>
+          <form className="space-y-6">
+            {/* Email */}
+            <div className="space-y-2">
+              <label className="text-sm font-semibold text-slate-700 ml-1">Email</label>
+              <div className="relative group">
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-brand-teal">
+                  <Mail size={18} />
+                </div>
+                <input
+                  type="email"
+                  required
+                  placeholder="ejemplo@correo.com"
+                  className="w-full pl-11 pr-4 py-3.5  border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-brand-teal/20 focus:border-brand-teal transition-all text-slate-700 placeholder:text-slate-400"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+            </div>
 
+            {/* Contraseña */}
+            <div className="space-y-2">
+              <div className="flex justify-between items-center ml-1">
+                <label className="text-sm font-semibold text-slate-700">Contraseña</label>
+              </div>
+              <div className="relative group">
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-brand-teal">
+                  <Lock size={18} />
+                </div>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  required
+                  placeholder="••••••••"
+                  className="w-full pl-11 pr-4 py-3.5  border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-brand-teal/20 focus:border-brand-teal transition-all text-slate-700 placeholder:text-slate-400"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                {/* Botón para mostrar/ocultar contraseña */}
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-slate-600 transition-colors"
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
+            </div>
+          </form>
         </div>
       </div>
     </div>
-
   );
 };
 
