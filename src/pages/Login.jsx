@@ -1,10 +1,16 @@
 import React, { useState } from 'react';
-import { Mail, Lock, Eye, EyeOff, Home, ArrowRight, CheckCircle } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Mail, Lock, Eye, EyeOff, Home, ArrowRight, CheckCircle, AlertCircle } from 'lucide-react';
+import { login } from '../lib/auth';
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [shake, setShake] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <div className="relative min-h-screen flex items-center justify-center p-4 overflow-hidden">
