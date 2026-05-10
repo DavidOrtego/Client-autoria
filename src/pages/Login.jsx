@@ -23,7 +23,7 @@ const Login = () => {
       navigate('/dashboard');
 
     } catch (err) {
-      setError(err.message || 'Error al iniciar sesión. Inténtalo de nuevo.');
+      setError(err.message || 'Failed to log in. Please try again.');
       setShake(true);
       setTimeout(() => setShake(false), 600);
     } finally {
@@ -53,9 +53,9 @@ const Login = () => {
                 className="w-full h-full object-contain relative z-10 drop-shadow-sm"
               />
             </div>
-            <h1 className="text-3xl font-bold text-slate-800 tracking-tight mb-2">¡Hola de nuevo!</h1>
+            <h1 className="text-3xl font-bold text-slate-800 tracking-tight mb-2">Welcome back!</h1>
             <p className="text-slate-500 text-center text-sm md:text-base">
-              Gestiona los gastos y tareas de tu piso de forma fácil.
+              Manage your apartment expenses and tasks easily.
             </p>
           </div>
           <form
@@ -73,7 +73,7 @@ const Login = () => {
                 <input
                   type="email"
                   required
-                  placeholder="ejemplo@correo.com"
+                  placeholder="example@email.com"
                   className={`w-full pl-11 pr-4 py-3.5 border rounded-2xl focus:outline-none focus:ring-2 transition-all text-slate-700 placeholder:text-slate-400 ${
                     error
                       ? 'border-red-400 focus:ring-red-200 focus:border-red-400 bg-red-50'
@@ -88,7 +88,7 @@ const Login = () => {
             {/* Contraseña */}
             <div className="space-y-2">
               <div className="flex justify-between items-center ml-1">
-                <label className="text-sm font-semibold text-slate-700">Contraseña</label>
+                <label className="text-sm font-semibold text-slate-700">Password</label>
               </div>
               <div className="relative group">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-brand-teal">
@@ -132,11 +132,11 @@ const Login = () => {
                 // Spinner animado que se muestra mientras espera la API
                 <>
                   <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                  <span>Iniciando sesión...</span>
+                  <span>Logging in...</span>
                 </>
               ) : (
                 <>
-                  <span>Iniciar Sesión</span>
+                  <span>Log in</span>
                   <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
                 </>
               )}
@@ -146,9 +146,9 @@ const Login = () => {
           {/* Pie de la tarjeta */}
           <div className="mt-10 text-center">
             <p className="text-slate-500 text-sm">
-              ¿Aún no tienes cuenta?{' '}
+              Don't have an account yet?{' '}
               <button className="text-brand-teal font-bold hover:underline transition-all">
-                ¡Registrate!
+                Sign up!
               </button>
             </p>
           </div>
@@ -156,15 +156,13 @@ const Login = () => {
         </div>
         {/* Slogan */}
         <p className="mt-8 text-center text-slate-400 text-xs tracking-widest uppercase flex items-center justify-center space-x-2">
-          <span>Vivir juntos, sin caos</span>
+          <span>Living together, no chaos</span>
           <span className="w-1 h-1 bg-slate-300 rounded-full"></span>
           <span>Vives House</span>
         </p>
       </div>
     </div>
-
   );
 };
-
 
 export default Login;
