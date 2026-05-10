@@ -12,6 +12,25 @@ const Login = () => {
   const [shake, setShake] = useState(false);
   const navigate = useNavigate();
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+
+    try {
+      await login(email, password);
+
+      navigate('/dashboard');
+
+    } catch (err) {
+      setError(err.message || 'Error al iniciar sesión. Inténtalo de nuevo.');
+      setShake(true);
+      setTimeout(() => setShake(false), 600);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="relative min-h-screen flex items-center justify-center p-4 overflow-hidden">
       {/* Iconos flotantes */}
@@ -39,7 +58,11 @@ const Login = () => {
               Gestiona los gastos y tareas de tu piso de forma fácil.
             </p>
           </div>
-          <form className="space-y-6">
+          <form
+            className={`space-y-6 ${shake ? 'animate-shake' : ''}`}
+            onSubmit={handleSubmit}
+          >
+
             {/* Email */}
             <div className="space-y-2">
               <label className="text-sm font-semibold text-slate-700 ml-1">Email</label>
