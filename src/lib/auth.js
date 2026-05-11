@@ -14,10 +14,23 @@ export async function login(email, password) {
     localStorage.setItem("token", response.data.token);
   }
 
-
   return response;
 }
 
+// Registra un nuevo usuario y, si el servidor devuelve token, lo guarda.
+export async function register(name, email, password) {
+
+  const response = await request("/auth/register", {
+    method: "POST",
+    body: { name, email, password },
+  });
+
+  if (response.data?.token) {
+    localStorage.setItem("token", response.data.token);
+  }
+
+  return response;
+}
 
 // Borra el token guardado en localStorage.
 export function logout() {

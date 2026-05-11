@@ -1,167 +1,109 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Mail, Lock, Eye, EyeOff, Home, ArrowRight, CheckCircle, AlertCircle } from 'lucide-react';
+import { Mail, Home, CheckCircle } from 'lucide-react';
 import { login } from '../lib/auth';
+import AuthCard      from '../components/auth/AuthCard';
+import FormField     from '../components/auth/FormField';
+import PasswordField from '../components/auth/PasswordField';
+import ErrorBanner   from '../components/auth/ErrorBanner';
+import SubmitButton  from '../components/auth/SubmitButton';
+
+const ICONOS_FLOTANTES = [
+  {
+    icono: Home,
+    tamaño: 64,
+    clase: 'absolute top-[15%] left-[15%] text-brand-teal/10 rotate-12 animate-bounce transition-all duration-1000',
+  },
+  {
+    icono: CheckCircle,
+    tamaño: 48,
+    clase: 'absolute bottom-[20%] right-[15%] text-brand-green/10 -rotate-12 animate-bounce transition-all duration-1000',
+    estilo: { animationDelay: '0.5s' },
+  },
+];
 
 const Login = () => {
-  const [showPassword, setShowPassword] = useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [shake, setShake] = useState(false);
+  const [email,             setEmail]             = useState('');
+  const [contrasena,        setContrasena]        = useState('');
+  const [mostrarContrasena, setMostrarContrasena] = useState(false);
+  const [cargando,          setCargando]          = useState(false);
+  const [error,             setError]             = useState('');
+  const [agitando,          setAgitando]          = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const manejarEnvio = async (e) => {
     e.preventDefault();
     setError('');
-    setLoading(true);
+    setCargando(true);
 
     try {
-      await login(email, password);
-
+      await login(email, contrasena);
       navigate('/dashboard');
-
     } catch (err) {
       setError(err.message || 'Failed to log in. Please try again.');
-      setShake(true);
-      setTimeout(() => setShake(false), 600);
+      setAgitando(true);
+      setTimeout(() => setAgitando(false), 600);
     } finally {
-      setLoading(false);
+      setCargando(false);
     }
   };
 
+  const pie = (
+    <p className="text-slate-500 text-sm">
+      Don't have an account yet?{' '}
+      <button
+        id="goto-signup"
+        onClick={() => navigate('/signup')}
+        className="text-brand-teal font-bold hover:underline transition-all"
+      >
+        Sign up!
+      </button>
+    </p>
+  );
+
   return (
-    <div className="relative min-h-screen flex items-center justify-center p-4 overflow-hidden">
-      {/* Iconos flotantes */}
-      <div className="absolute top-[15%] left-[15%] text-brand-teal/10 rotate-12 animate-bounce transition-all duration-1000">
-        <Home size={64} />
-      </div>
-      <div className="absolute bottom-[20%] right-[15%] text-brand-green/10 -rotate-12 animate-bounce transition-all duration-1000" style={{ animationDelay: '0.5s' }}>
-        <CheckCircle size={48} />
-      </div>
+    <AuthCard
+      titulo="Welcome back!"
+      subtitulo="Manage your apartment expenses and tasks easily."
+      iconosFlotantes={ICONOS_FLOTANTES}
+      pie={pie}
+    >
+      <form
+        className={`space-y-6 ${agitando ? 'animate-shake' : ''}`}
+        onSubmit={manejarEnvio}
+      >
+        {/* Campo de email */}
+        <FormField
+          id="login-email"
+          etiqueta="Email"
+          icono={Mail}
+          tipo="email"
+          placeholder="example@email.com"
+          valor={email}
+          alCambiar={(e) => { setEmail(e.target.value); setError(''); }}
+          hayError={!!error}
+        />
 
-      {/* Tarjeta de Login */}
-      <div className="w-full max-w-md z-10 animate-fade-in">
-        <div className="glass-card rounded-3xl p-8 md:p-10">
-          {/* Logo y Cabecera */}
-          <div className="flex flex-col items-center mb-10">
-            <div className="w-20 h-20 mb-6 relative">
-              <img
-                src="/Vives.png"
-                alt="Vives Logo"
-                className="w-full h-full object-contain relative z-10 drop-shadow-sm"
-              />
-            </div>
-            <h1 className="text-3xl font-bold text-slate-800 tracking-tight mb-2">Welcome back!</h1>
-            <p className="text-slate-500 text-center text-sm md:text-base">
-              Manage your apartment expenses and tasks easily.
-            </p>
-          </div>
-          <form
-            className={`space-y-6 ${shake ? 'animate-shake' : ''}`}
-            onSubmit={handleSubmit}
-          >
+        {/* Campo de contraseña */}
+        <PasswordField
+          id="login-password"
+          etiqueta="Password"
+          valor={contrasena}
+          alCambiar={(e) => { setContrasena(e.target.value); setError(''); }}
+          mostrar={mostrarContrasena}
+          alAlternar={() => setMostrarContrasena(!mostrarContrasena)}
+          hayError={!!error}
+        />
 
-            {/* Email */}
-            <div className="space-y-2">
-              <label className="text-sm font-semibold text-slate-700 ml-1">Email</label>
-              <div className="relative group">
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-brand-teal">
-                  <Mail size={18} />
-                </div>
-                <input
-                  type="email"
-                  required
-                  placeholder="example@email.com"
-                  className={`w-full pl-11 pr-4 py-3.5 border rounded-2xl focus:outline-none focus:ring-2 transition-all text-slate-700 placeholder:text-slate-400 ${
-                    error
-                      ? 'border-red-400 focus:ring-red-200 focus:border-red-400 bg-red-50'
-                      : 'border-slate-200 focus:ring-brand-teal/20 focus:border-brand-teal'
-                  }`}
-                  value={email}
-                  onChange={(e) => { setEmail(e.target.value); setError(''); }}
-                />
-              </div>
-            </div>
+        {/* Mensaje de error visible cuando las credenciales son incorrectas */}
+        <ErrorBanner mensaje={error} />
 
-            {/* Contraseña */}
-            <div className="space-y-2">
-              <div className="flex justify-between items-center ml-1">
-                <label className="text-sm font-semibold text-slate-700">Password</label>
-              </div>
-              <div className="relative group">
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-brand-teal">
-                  <Lock size={18} />
-                </div>
-                <input
-                  type={showPassword ? "text" : "password"}
-                  required
-                  placeholder="••••••••"
-                  className={`w-full pl-11 pr-12 py-3.5 border rounded-2xl focus:outline-none focus:ring-2 transition-all text-slate-700 placeholder:text-slate-400 ${
-                    error
-                      ? 'border-red-400 focus:ring-red-200 focus:border-red-400 bg-red-50'
-                      : 'border-slate-200 focus:ring-brand-teal/20 focus:border-brand-teal'
-                  }`}
-                  value={password}
-                  onChange={(e) => { setPassword(e.target.value); setError(''); }}
-                />
-                {/* Botón para mostrar/ocultar contraseña */}
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-slate-600 transition-colors"
-                >
-                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                </button>
-              </div>
-            </div>
-            {/* Mensaje de error visible cuando las credenciales son incorrectas */}
-            {error && (
-              <div className="flex items-start gap-3 bg-red-50 border border-red-200 text-red-700 text-sm rounded-2xl px-4 py-3">
-                <AlertCircle size={18} className="mt-0.5 shrink-0 text-red-500" />
-                <span>{error}</span>
-              </div>
-            )}
-            {/* Botón de envío */}
-            <button
-              type="submit"
-              className="w-full py-4 bg-gradient-to-r from-brand-teal to-brand-green hover:shadow-lg hover:shadow-brand-teal/20 active:scale-[0.98] transition-all rounded-2xl text-white font-bold text-lg flex items-center justify-center space-x-2 group"
-            >
-              {loading ? (
-                // Spinner animado que se muestra mientras espera la API
-                <>
-                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                  <span>Logging in...</span>
-                </>
-              ) : (
-                <>
-                  <span>Log in</span>
-                  <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
-                </>
-              )}
-            </button>
-          </form>
-
-          {/* Pie de la tarjeta */}
-          <div className="mt-10 text-center">
-            <p className="text-slate-500 text-sm">
-              Don't have an account yet?{' '}
-              <button className="text-brand-teal font-bold hover:underline transition-all">
-                Sign up!
-              </button>
-            </p>
-          </div>
-
-        </div>
-        {/* Slogan */}
-        <p className="mt-8 text-center text-slate-400 text-xs tracking-widest uppercase flex items-center justify-center space-x-2">
-          <span>Living together, no chaos</span>
-          <span className="w-1 h-1 bg-slate-300 rounded-full"></span>
-          <span>Vives House</span>
-        </p>
-      </div>
-    </div>
+        {/* Botón de envío */}
+        <SubmitButton id="login-submit" cargando={cargando} textoCarga="Logging in...">
+          Log in
+        </SubmitButton>
+      </form>
+    </AuthCard>
   );
 };
 
