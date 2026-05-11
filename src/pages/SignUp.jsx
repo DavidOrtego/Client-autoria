@@ -61,9 +61,88 @@ const SignUp = () => {
     }
   };
 
+  const pie = (
+    <p className="text-slate-500 text-sm">
+      Already have an account?{' '}
+      <button
+        id="goto-login"
+        onClick={() => navigate('/login')}
+        className="text-brand-teal font-bold hover:underline transition-all"
+      >
+        Log in
+      </button>
+    </p>
+  );
+
   return (
-    <div>
-    </div>
+    <AuthCard
+      titulo="Create account"
+      subtitulo="Join your house and manage everything together."
+      iconosFlotantes={ICONOS_FLOTANTES}
+      pie={pie}
+    >
+      <form
+        className={`space-y-5 ${agitando ? 'animate-shake' : ''}`}
+        onSubmit={manejarEnvio}
+      >
+        {/* Campo: Nombre completo */}
+        <FormField
+          id="signup-name"
+          etiqueta="Full name"
+          icono={User}
+          tipo="text"
+          placeholder="David Marcuello"
+          valor={nombre}
+          alCambiar={(e) => { setNombre(e.target.value); limpiarError(); }}
+        />
+
+        {/* Campo: Email */}
+        <FormField
+          id="signup-email"
+          etiqueta="Email"
+          icono={Mail}
+          tipo="email"
+          placeholder="example@email.com"
+          valor={email}
+          alCambiar={(e) => { setEmail(e.target.value); limpiarError(); }}
+          hayError={!!error}
+        />
+
+        {/* Campo: Contraseña con barra de fortaleza */}
+        <div className="space-y-0">
+          <PasswordField
+            id="signup-password"
+            etiqueta="Password"
+            valor={contrasena}
+            alCambiar={(e) => { setContrasena(e.target.value); limpiarError(); }}
+            mostrar={mostrarContrasena}
+            alAlternar={() => setMostrarContrasena(!mostrarContrasena)}
+            hayError={!!error}
+          />
+          {/* Barra de fortaleza de la contraseña */}
+          <PasswordStrength contrasena={contrasena} />
+        </div>
+
+        {/* Campo: Confirmar contraseña (activa indicador de coincidencia) */}
+        <PasswordField
+          id="signup-confirm"
+          etiqueta="Confirm password"
+          valor={confirmar}
+          alCambiar={(e) => { setConfirmar(e.target.value); limpiarError(); }}
+          mostrar={mostrarConfirmar}
+          alAlternar={() => setMostrarConfirmar(!mostrarConfirmar)}
+          valorReferencia={contrasena}
+        />
+
+        {/* Banner de error cuando algo falla */}
+        <ErrorBanner mensaje={error} />
+
+        {/* Botón de envío del formulario */}
+        <SubmitButton id="signup-submit" cargando={cargando} textoCarga="Creating account...">
+          Create account
+        </SubmitButton>
+      </form>
+    </AuthCard>
   );
 };
 
