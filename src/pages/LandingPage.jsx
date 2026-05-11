@@ -1,14 +1,12 @@
 import React from "react";
 import { useNavigate, Link } from "react-router-dom";
 import {
-  ArrowRight,
   CheckCircle,
-  BarChart3,
-  Users,
+  PiggyBank,
   UserRoundPlus,
   LogIn,
-  Zap,
-  ShieldCheck,
+  ClipboardList,
+  TreePalm,
   Home,
 } from "lucide-react";
 
@@ -61,7 +59,7 @@ const LandingPage = () => {
           </Link>
         </div>
       </nav>
-{/* Main Section */}
+      {/* Main Section */}
       <header className="relative z-10 pt-16 pb-32 px-6">
         <div className="max-w-7xl mx-auto text-center space-y-10 animate-fade-in">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-brand-teal/5 border border-brand-teal/10 rounded-full text-brand-teal font-bold text-sm">
@@ -72,26 +70,23 @@ const LandingPage = () => {
             The Definitive Solution for Shared Living
           </div>
 
-
           <h1 className="text-5xl md:text-8xl font-black font-outfit text-slate-900 leading-tight tracking-tight">
             Living together,
             <br />
-            <span className="bg-gradient-to-r from-brand-teal to-brand-green text-transparent bg-clip-text">
+            <span className="bg-linear-to-r from-brand-teal to-brand-green text-transparent bg-clip-text">
               no chaos, Vives House.
             </span>
           </h1>
-
 
           <p className="text-xl md:text-2xl text-slate-500 max-w-2xl mx-auto leading-relaxed">
             Organize expenses, divide chores and keep the peace at home. All in
             one transparent and easy to use application.
           </p>
 
-
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
             <Link
               to="/signup"
-              className="w-full sm:w-auto px-10 py-5 bg-gradient-to-r from-brand-teal to-brand-green text-white rounded-2xl font-bold text-xl shadow-2xl shadow-brand-teal/20 hover:scale-105 transition-all flex items-center justify-center gap-3"
+              className="w-full sm:w-auto px-10 py-5 bg-linear-to-r from-brand-teal to-brand-green text-white rounded-2xl font-bold text-xl shadow-2xl shadow-brand-teal/20 hover:scale-105 transition-all flex items-center justify-center gap-3"
             >
               Create an Account
               <UserRoundPlus />
@@ -106,15 +101,52 @@ const LandingPage = () => {
           </div>
         </div>
       </header>
+      {/* Features Section */}
+      <section className="relative z-10 py-32 bg-slate-100 backdrop-blur-3xl">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+            <div className="space-y-6 bg-white rounded-2xl p-3 shadow-sm hover:shadow-md transition-shadow">
+              <div className="w-16 h-16 bg-brand-teal/10 rounded-2xl flex items-center justify-center text-brand-teal">
+                <PiggyBank size={32} />
+              </div>
+              <h3 className="text-2xl font-bold text-slate-900">
+                Track Expenses
+              </h3>
+              <p className="text-slate-500 text-lg leading-relaxed">
+                Add bills, split costs proportionally, and keep a transparent history of who owes what. Zero debt, zero stress.
+              </p>
+            </div>
 
-     
-        
-      
+            <div className="space-y-6 bg-white rounded-2xl p-3 shadow-sm hover:shadow-md transition-shadow">
+              <div className="w-16 h-16 bg-brand-green/10 rounded-2xl flex items-center justify-center text-brand-green">
+                <ClipboardList size={32} />
+              </div>
+              <h3 className="text-2xl font-bold text-slate-900">
+                Manages Chores
+              </h3>
+              <p className="text-slate-500 text-lg leading-relaxed">
+                Assign tasks, set reminders, and maintain a clean home effortlessly. No more guessing whose turn it is to clean.
+              </p>
+            </div>
 
-      
+            <div className="space-y-6 bg-white rounded-2xl p-3 shadow-sm hover:shadow-md transition-shadow">
+              <div className="w-16 h-16 bg-brand-teal/10 rounded-2xl flex items-center justify-center text-brand-teal">
+                <TreePalm  size={32} />
+              </div>
+              <h3 className="text-2xl font-bold text-slate-900">
+                Peace of Mind
+              </h3>
+              <p className="text-slate-500 text-lg leading-relaxed">
+                Total transparency for all house members. Because living together should be about fun, not arguments.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
 
-
-      
+      <footer className="relative z-10 py-12 text-center text-slate-400 text-sm">
+        <p>© 2026 Vives House. All rights reserved.</p>
+      </footer>
     </div>
   );
 };
