@@ -79,6 +79,15 @@ const MainLayout = () => {
                   className="w-full h-full rounded-full object-cover"
                 />
               </Link>
+
+              <button
+                className="flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-semibold text-slate-600 border border-slate-200 hover:border-red-500 hover:text-red-500 hover:bg-red-50 transition-all"
+                title="Logout"
+                onClick={handleLogout}
+              >
+                <LogOut size={20} />
+                <span className="hidden sm:inline">Logout</span>
+              </button>
             </div>
           </div>
         </div>
