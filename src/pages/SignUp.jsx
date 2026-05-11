@@ -24,6 +24,43 @@ const ICONOS_FLOTANTES = [
 ];
 
 const SignUp = () => {
+  const [nombre,            setNombre]            = useState('');
+  const [email,             setEmail]             = useState('');
+  const [contrasena,        setContrasena]        = useState('');
+  const [confirmar,         setConfirmar]         = useState('');
+  const [mostrarContrasena, setMostrarContrasena] = useState(false);
+  const [mostrarConfirmar,  setMostrarConfirmar]  = useState(false);
+  const [cargando,          setCargando]          = useState(false);
+  const [error,             setError]             = useState('');
+  const [agitando,          setAgitando]          = useState(false);
+  const navigate = useNavigate();
+
+  const limpiarError = () => setError('');
+
+  const manejarEnvio = async (e) => {
+    e.preventDefault();
+    setError('');
+
+    if (contrasena !== confirmar) {
+      setError('Passwords do not match.');
+      setAgitando(true);
+      setTimeout(() => setAgitando(false), 600);
+      return;
+    }
+
+    setCargando(true);
+    try {
+      await register(nombre, email, contrasena);
+      navigate('/login');
+    } catch (err) {
+      setError(err.message || 'Could not create account. Please try again.');
+      setAgitando(true);
+      setTimeout(() => setAgitando(false), 600);
+    } finally {
+      setCargando(false);
+    }
+  };
+
   return (
     <div>
     </div>
