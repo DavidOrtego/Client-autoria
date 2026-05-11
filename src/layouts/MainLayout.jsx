@@ -61,6 +61,25 @@ const MainLayout = () => {
                 );
               })}
             </nav>
+
+            {/* User Profile & Actions */}
+            <div className="flex items-center gap-2">
+              <Link
+                to="/profile"
+                className={`flex items-center justify-center w-10 h-10 rounded-full border-2 transition-all p-0.5 overflow-hidden ${
+                  location.pathname === '/profile'
+                    ? 'border-brand-teal ring-2 ring-brand-teal/20'
+                    : 'border-slate-200 hover:border-brand-teal'
+                }`}
+                title="Profile"
+              >
+                <img 
+                  src={user?.image || defaultUserAvatar} 
+                  alt="Profile" 
+                  className="w-full h-full rounded-full object-cover"
+                />
+              </Link>
+            </div>
           </div>
         </div>
       </header>
