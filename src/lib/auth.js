@@ -31,8 +31,3 @@ export async function register(name, email, password) {
 
   return response;
 }
-
-// Borra el token guardado en localStorage.
-export function logout() {
-  localStorage.removeItem("token");
-}

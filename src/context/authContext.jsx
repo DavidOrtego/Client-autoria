@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import request from '../lib/api';
+import { login as loginService, register as registerService } from '../lib/auth';
 import { Outlet } from 'react-router-dom';
 
 const AuthContext = createContext();
@@ -17,8 +18,10 @@ export const AuthProvider = ({ children }) => {
         return;
       }
 
+      // 1. Obtener la ID del usuario validando el token
       const meRes = await request('/auth/me', { auth: true });
       if (meRes?.data?.id) {
+        // 2. Obtener toda la informacion
         const userRes = await request(`/users/${meRes.data.id}`, { auth: true });
         setUser(userRes?.data || null);
       } else {
@@ -34,13 +37,45 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // Cargar usuario al iniciar la aplicación
   useEffect(() => {
     fetchUser();
   }, []);
 
+  const login = async (email, password) => {
+    // 1. Hace el login y guarda el token en lib/auth.js
+    const response = await loginService(email, password);
+    
+    // 2. Devuelve los datos del usuario en response.data.user
+    // y los tokens en response.data.token y los asigna.
+    if (response.data && response.data.user) {
+      setUser(response.data.user);
+    }
+    return response;
+  };
+
+  const register = async (name, email, password) => {
+    // 1. Hace el registro y guarda el token 
+    const response = await registerService(name, email, password);
+    
+    // 2. Lo mismo para el registro, evitamos doble llamada
+    if (response.data && response.data.user) {
+      setUser(response.data.user);
+    }
+    return response;
+  };
+
+  const logout = () => {
+    localStorage.removeItem('token');
+    setUser(null);
+  };
+
   const value = {
     user,
     loading,
+    login,
+    register,
+    logout,
     fetchUser,
   };
 
@@ -51,6 +86,7 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
+// Hook personalizado para usar el contexto fácilmente
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
