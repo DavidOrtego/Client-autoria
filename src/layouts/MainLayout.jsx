@@ -181,7 +181,13 @@ const MainLayout = () => {
               </nav>
             </div>
 
+          </div>
 
+          {/* Línea inferior - Copyright */}
+          <div className="border-t border-slate-100 mt-12 pt-8 flex flex-col md:flex-row justify-center items-center gap-4">
+            <div className="text-sm text-slate-500 font-medium">
+              &copy; 2026 Vives House. All rights reserved.
+            </div>
           </div>
         </div>
       </footer>
