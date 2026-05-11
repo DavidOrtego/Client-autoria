@@ -130,7 +130,33 @@ const MainLayout = () => {
         <Outlet />
       </main>
       
-      <footer>
+      {/* FOOTER */}
+      <footer className="bg-white border-t border-slate-200 mt-auto">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-8">
+            
+            {/* Columna Principal - Logo y Marca */}
+            <div className="md:col-span-5 flex flex-col items-center md:items-start gap-4">
+              <div className="flex items-center gap-2">
+                <div className="w-10 h-10 relative drop-shadow-sm">
+                  <img 
+                    src="/Vives.png" 
+                    alt="Vives Logo" 
+                    className="w-full h-full object-contain rounded-xl shadow-sm"
+                  />
+                </div>
+                <span className="text-2xl font-bold font-outfit text-slate-900">
+                  Vives House
+                </span>
+              </div>
+              <p className="text-slate-500 text-sm leading-relaxed max-w-sm text-center md:text-left font-medium">
+                Manage your shared tasks and expenses transparently and friction-free. 
+                Living together has never been easier.
+              </p>
+            </div>
+
+          </div>
+        </div>
       </footer>
     </div>
   );
