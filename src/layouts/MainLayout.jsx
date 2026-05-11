@@ -23,7 +23,25 @@ const MainLayout = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 font-sans">
-      <header>
+      {/* HEADER */}
+      <header className="fixed top-0 w-full bg-white border-b border-slate-200 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            {/* Logo */}
+            <Link to="/" className="flex items-center gap-2 group cursor-pointer">
+              <div className="w-8 h-8 relative drop-shadow-sm">
+                <img 
+                  src="/Vives.png" 
+                  alt="Vives Logo" 
+                  className="w-full h-full object-contain group-hover:scale-110 transition-transform rounded-xl"
+                />
+              </div>
+              <span className="text-xl font-bold font-outfit text-slate-900 hidden sm:block">
+                Vives House
+              </span>
+            </Link>
+          </div>
+        </div>
       </header>
       
       <main className="flex-1 pt-20 pb-16 md:pb-20 px-4 md:px-6 lg:px-8 max-w-7xl mx-auto w-full">
