@@ -155,6 +155,33 @@ const MainLayout = () => {
               </p>
             </div>
 
+            {/* Columna Enlaces */}
+            <div className="md:col-span-4 flex flex-col items-center md:items-start gap-4">
+              <h4 className="text-slate-900 font-bold font-outfit">Platform</h4>
+              <nav className="flex flex-col gap-3 items-center md:items-start">
+                <Link to="/vives/home" className="text-sm font-semibold text-slate-600 hover:text-brand-teal transition-all hover:-translate-y-0.5 flex items-center gap-2">
+                  <Home size={16} className="opacity-50" /> My Houses
+                </Link>
+                <Link to="/vives/tasks" className="text-sm font-semibold text-slate-600 hover:text-brand-teal transition-all hover:-translate-y-0.5 flex items-center gap-2">
+                  <ClipboardList size={16} className="opacity-50" /> Tasks
+                </Link>
+                <Link to="/vives/expenses" className="text-sm font-semibold text-slate-600 hover:text-brand-teal transition-all hover:-translate-y-0.5 flex items-center gap-2">
+                  <PiggyBank size={16} className="opacity-50" /> Expenses
+                </Link>
+              </nav>
+            </div>
+
+            {/* Columna Enlaces - Legal y Soporte */}
+            <div className="md:col-span-3 flex flex-col items-center md:items-start gap-4">
+              <h4 className="text-slate-900 font-bold font-outfit">Community & Legal</h4>
+              <nav className="flex flex-col gap-3 items-center md:items-start">
+                <a href="" className="text-sm font-semibold text-slate-600 hover:text-brand-teal transition-all">Help Center</a>
+                <a href="" className="text-sm font-semibold text-slate-600 hover:text-brand-teal transition-all">Privacy Policy</a>
+                <a href="" className="text-sm font-semibold text-slate-600 hover:text-brand-teal transition-all">Terms of Service</a>
+              </nav>
+            </div>
+
+
           </div>
         </div>
       </footer>
