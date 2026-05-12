@@ -65,6 +65,20 @@ export const AuthProvider = ({ children }) => {
     return response;
   };
 
+  const updateProfile = async (userData) => {
+    if (!user?.id_user) throw new Error("No hay usuario autenticado");
+    
+    const response = await request(`/users/${user.id_user}`, {
+      method: 'PUT',
+      body: userData,
+      auth: true
+    });
+    
+    // Refrescar los datos del usuario localmente
+    await fetchUser();
+    return response;
+  };
+
   const logout = () => {
     localStorage.removeItem('token');
     setUser(null);
@@ -75,6 +89,7 @@ export const AuthProvider = ({ children }) => {
     loading,
     login,
     register,
+    updateProfile,
     logout,
     fetchUser,
   };

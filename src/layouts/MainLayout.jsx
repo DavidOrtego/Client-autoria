@@ -3,11 +3,13 @@ import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { Home, ClipboardList, PiggyBank, Menu, X, LogOut, Mail, Heart } from 'lucide-react';
 import { useAuth } from '../context/authContext';
 import defaultUserAvatar from '../assets/defaultUser.png';
+import ProfileModal from '../components/ProfileModal';
 
 const MainLayout = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const { user, logout } = useAuth();
 
   const handleLogout = () => {
@@ -64,13 +66,9 @@ const MainLayout = () => {
 
             {/* User Profile & Actions */}
             <div className="flex items-center gap-2">
-              <Link
-                to="/profile"
-                className={`flex items-center justify-center w-10 h-10 rounded-full border-2 transition-all p-0.5 overflow-hidden ${
-                  location.pathname === '/profile'
-                    ? 'border-brand-teal ring-2 ring-brand-teal/20'
-                    : 'border-slate-200 hover:border-brand-teal'
-                }`}
+              <button
+                onClick={() => setIsProfileModalOpen(true)}
+                className="flex items-center justify-center w-10 h-10 rounded-full border-2 transition-all p-0.5 overflow-hidden border-slate-200 hover:border-brand-teal"
                 title="Profile"
               >
                 <img 
@@ -78,7 +76,7 @@ const MainLayout = () => {
                   alt="Profile" 
                   className="w-full h-full rounded-full object-cover"
                 />
-              </Link>
+              </button>
 
               <button
                 className="flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-semibold text-slate-600 border border-slate-200 hover:border-red-500 hover:text-red-500 hover:bg-red-50 transition-all"
@@ -191,6 +189,12 @@ const MainLayout = () => {
           </div>
         </div>
       </footer>
+
+      {/* Profile Modal */}
+      <ProfileModal 
+        isOpen={isProfileModalOpen} 
+        onClose={() => setIsProfileModalOpen(false)} 
+      />
     </div>
   );
 };

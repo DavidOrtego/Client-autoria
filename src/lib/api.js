@@ -34,6 +34,10 @@ async function request(endpoint, { method = "GET", body = null, auth = false } =
   const data = await response.json();
 
   if (!response.ok) {
+    if (data.errors && Array.isArray(data.errors)) {
+      const errorMessages = data.errors.map(err => err.message).join(', ');
+      throw new Error(`${data.message}: ${errorMessages}`);
+    }
     throw new Error(data.message || "Error en la petición");
   }
 
