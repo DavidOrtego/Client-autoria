@@ -144,6 +144,22 @@ const CreateHouseModal = ({ isOpen, onClose, onSuccess }) => {
                   placeholder="e.g. 3"
                 />
               </div>
+
+              {error && (
+                <div className="bg-red-50 text-red-600 p-3 rounded-xl text-sm font-semibold border border-red-100 flex items-center justify-center">
+                  {error}
+                </div>
+              )}
+
+              <div className="pt-4">
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  className="w-full bg-brand-teal text-white font-bold py-3 px-4 rounded-xl hover:bg-brand-teal/90 hover:shadow-lg transition-all active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed"
+                >
+                  {isLoading ? "Creating..." : "Create House"}
+                </button>
+              </div>
             </div>
           </form>
         </div>
