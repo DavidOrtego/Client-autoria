@@ -103,6 +103,23 @@ const CreateHouseModal = ({ isOpen, onClose, onSuccess }) => {
                 />
               </div>
             </div>
+             <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-1">Address (Optional)</label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <MapPin size={18} className="text-slate-400" />
+                </div>
+                <input
+                  type="text"
+                  name="address"
+                  value={formData.address}
+                  onChange={handleChange}
+                  className="block w-full pl-10 pr-3 py-2.5 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-teal focus:border-brand-teal transition-colors"
+                  placeholder="e.g. 123 Main St"
+                />
+              </div>
+            </div>
+
             </form>
 
         </div>
