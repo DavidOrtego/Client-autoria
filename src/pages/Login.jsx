@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Mail, Home, CheckCircle } from 'lucide-react';
-import { login } from '../lib/auth';
+import { useAuth } from '../context/authContext';
 import AuthCard      from '../components/auth/AuthCard';
 import FormField     from '../components/auth/FormField';
 import PasswordField from '../components/auth/PasswordField';
@@ -30,6 +30,7 @@ const Login = () => {
   const [error,             setError]             = useState('');
   const [agitando,          setAgitando]          = useState(false);
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const manejarEnvio = async (e) => {
     e.preventDefault();
@@ -38,7 +39,7 @@ const Login = () => {
 
     try {
       await login(email, contrasena);
-      navigate('/dashboard');
+      navigate('/vives/home');
     } catch (err) {
       setError(err.message || 'Failed to log in. Please try again.');
       setAgitando(true);

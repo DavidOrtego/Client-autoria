@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Mail, User, HousePlus, UserRoundPlus } from 'lucide-react';
-import { register } from '../lib/auth';
+import { useAuth } from '../context/authContext';
 import AuthCard            from '../components/auth/AuthCard';
 import FormField           from '../components/auth/FormField';
 import PasswordField       from '../components/auth/PasswordField';
@@ -34,6 +34,7 @@ const SignUp = () => {
   const [error,             setError]             = useState('');
   const [agitando,          setAgitando]          = useState(false);
   const navigate = useNavigate();
+  const { register } = useAuth();
 
   const limpiarError = () => setError('');
 
@@ -51,7 +52,7 @@ const SignUp = () => {
     setCargando(true);
     try {
       await register(nombre, email, contrasena);
-      navigate('/login');
+      navigate('/vives/home');
     } catch (err) {
       setError(err.message || 'Could not create account. Please try again.');
       setAgitando(true);
