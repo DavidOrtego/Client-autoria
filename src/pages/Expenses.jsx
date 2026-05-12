@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { PiggyBank, Loader2, Plus, ArrowUpRight, BanknoteArrowDown, Search, Calendar, MoreVertical, Trash2, Edit2 } from 'lucide-react';
 import request from '../lib/api';
 import { useAuth } from '../context/authContext';
+import CreateExpenseModal from '../components/CreateExpenseModal';
 
 const Expenses = () => {
   const { user } = useAuth();
@@ -278,8 +279,16 @@ const Expenses = () => {
         )}
       </div>
 
-      {/* Contenido en los próximos commits */}
-      
+      {/* Modal */}
+      <CreateExpenseModal 
+        isOpen={isCreateModalOpen}
+        onClose={() => {
+          setIsCreateModalOpen(false);
+          setEditingExpense(null);
+        }}
+        onSuccess={fetchExpenses}
+        expense={editingExpense}
+      />
     </div>
   );
 };
