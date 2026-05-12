@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { PiggyBank, Loader2, Plus, ArrowUpRight, BanknoteArrowDown } from 'lucide-react';
+import { PiggyBank, Loader2, Plus, ArrowUpRight, BanknoteArrowDown, Search } from 'lucide-react';
 import request from '../lib/api';
 import { useAuth } from '../context/authContext';
 
@@ -8,6 +8,8 @@ const Expenses = () => {
   const [expenses, setExpenses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [viewMode, setViewMode] = useState('all');
 
   const fetchExpenses = async () => {
     try {
@@ -30,6 +32,18 @@ const Expenses = () => {
   const totalSpent = expenses.reduce((acc, curr) => acc + Number(curr.amount), 0);
   const myExpenses = expenses.filter(exp => exp.id_user === user?.id_user);
   const myTotalSpent = myExpenses.reduce((acc, curr) => acc + Number(curr.amount), 0);
+
+  const filteredExpenses = expenses.filter(exp => {
+    const matchesSearch = 
+      exp.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      exp.house_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      exp.user_name?.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    if (viewMode === 'mine') {
+      return matchesSearch && exp.id_user === user?.id_user;
+    }
+    return matchesSearch;
+  });
 
   return (
     <div className="animate-fade-in space-y-8 pb-10">
@@ -91,6 +105,47 @@ const Expenses = () => {
         </div>
       </div>
       
+      {/* Filters and Search */}
+      <div className="space-y-4">
+        <div className="flex flex-col md:flex-row gap-4">
+          <div className="relative flex-1">
+            <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+              <Search size={20} className="text-slate-400" />
+            </div>
+            <input
+              type="text"
+              placeholder="Search by description, house or person..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full rounded-2xl border-none bg-white py-4 pl-12 pr-4 text-slate-900 shadow-sm ring-1 ring-slate-200 transition-all focus:ring-2 focus:ring-brand-teal/50 outline-none"
+            />
+          </div>
+          
+          <div className="flex p-1 bg-white rounded-2xl shadow-sm ring-1 ring-slate-200 min-w-fit">
+            <button 
+              onClick={() => setViewMode('all')}
+              className={`px-6 py-3 rounded-xl text-sm font-bold transition-all ${
+                viewMode === 'all' 
+                  ? 'bg-brand-teal text-white shadow-lg shadow-brand-teal/20' 
+                  : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50'
+              }`}
+            >
+              All Expenses
+            </button>
+            <button 
+              onClick={() => setViewMode('mine')}
+              className={`px-6 py-3 rounded-xl text-sm font-bold transition-all ${
+                viewMode === 'mine' 
+                  ? 'bg-brand-teal text-white shadow-lg shadow-brand-teal/20' 
+                  : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50'
+              }`}
+            >
+              My Expenses
+            </button>
+          </div>
+        </div>
+      </div>
+
       {/* Loading state rendering */}
       {loading && (
         <div className="flex flex-col items-center justify-center py-20 gap-4">
