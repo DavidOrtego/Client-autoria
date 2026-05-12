@@ -75,6 +75,29 @@ const CreateExpenseModal = ({ isOpen, onClose, onSuccess, expense = null }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError(null);
+
+    try {
+      const method = expense ? 'PUT' : 'POST';
+      const endpoint = expense ? `/expenses/${expense.id_expense}` : '/expenses';
+      
+      await request(endpoint, {
+        method,
+        body: {
+          ...formData,
+          amount: parseFloat(formData.amount)
+        },
+        auth: true
+      });
+
+      onSuccess();
+      onClose();
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (!isOpen) return null;
