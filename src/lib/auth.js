@@ -10,8 +10,8 @@ export async function login(email, password) {
     body: { email, password },
   });
 
-  if (response.data?.token) {
-    localStorage.setItem("token", response.data.token);
+  if (response.data?.tokens?.token) {
+    localStorage.setItem("token", response.data.tokens.token);
   }
 
   return response;
@@ -25,8 +25,8 @@ export async function register(name, email, password) {
     body: { name, email, password },
   });
 
-  if (response.data?.token) {
-    localStorage.setItem("token", response.data.token);
+  if (response.data?.tokens?.token) {
+    localStorage.setItem("token", response.data.tokens.token);
   }
 
   return response;
