@@ -73,6 +73,10 @@ const CreateExpenseModal = ({ isOpen, onClose, onSuccess, expense = null }) => {
     }
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  };
+
   if (!isOpen) return null;
 
   return createPortal(
@@ -96,9 +100,142 @@ const CreateExpenseModal = ({ isOpen, onClose, onSuccess, expense = null }) => {
           </button>
         </div>
 
-        <div className="p-6">
-           <p className="text-slate-500"></p>
-        </div>
+        <form onSubmit={handleSubmit} className="p-6 space-y-5">
+          {error && (
+            <div className="rounded-xl bg-red-50 p-4 text-sm font-medium text-red-600 border border-red-100">
+              {error}
+            </div>
+          )}
+
+          {/* Amount */}
+          <div className="space-y-2">
+            <label className="text-sm font-bold text-slate-700 ml-1">Amount</label>
+            <div className="relative group">
+              <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-brand-teal transition-colors">
+                <Euro size={20} />
+              </div>
+              <input
+                required
+                type="number"
+                step="0.01"
+                placeholder="0.00"
+                value={formData.amount}
+                onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
+                className="w-full rounded-2xl border-slate-200 bg-slate-50 py-4 pl-12 pr-4 text-lg font-bold text-slate-900 transition-all focus:border-brand-teal focus:bg-white focus:ring-4 focus:ring-brand-teal/10 outline-none"
+              />
+            </div>
+          </div>
+
+          {/* Description */}
+          <div className="space-y-2">
+            <label className="text-sm font-bold text-slate-700 ml-1">Description</label>
+            <div className="relative group">
+              <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-brand-teal transition-colors">
+                <FileText size={20} />
+              </div>
+              <input
+                required
+                type="text"
+                placeholder="What was this for?"
+                value={formData.description}
+                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                className="w-full rounded-2xl border-slate-200 bg-slate-50 py-4 pl-12 pr-4 text-slate-900 transition-all focus:border-brand-teal focus:bg-white focus:ring-4 focus:ring-brand-teal/10 outline-none"
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {/* Date */}
+            <div className="space-y-2">
+              <label className="text-sm font-bold text-slate-700 ml-1">Date</label>
+              <div className="relative group">
+                <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-brand-teal transition-colors">
+                  <Calendar size={20} />
+                </div>
+                <input
+                  required
+                  type="date"
+                  value={formData.date}
+                  onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                  className="w-full rounded-2xl border-slate-200 bg-slate-50 py-4 pl-12 pr-4 text-slate-900 transition-all focus:border-brand-teal focus:bg-white focus:ring-4 focus:ring-brand-teal/10 outline-none"
+                />
+              </div>
+            </div>
+
+            {/* House */}
+            <div className="space-y-2">
+              <label className="text-sm font-bold text-slate-700 ml-1">House</label>
+              <div className="relative group">
+                <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-brand-teal transition-colors">
+                  <Home size={20} />
+                </div>
+                <select
+                  required
+                  value={formData.id_house}
+                  onChange={(e) => setFormData({ ...formData, id_house: e.target.value, id_user: '' })}
+                  className="w-full rounded-2xl border-slate-200 bg-slate-50 py-4 pl-12 pr-4 text-slate-900 transition-all focus:border-brand-teal focus:bg-white focus:ring-4 focus:ring-brand-teal/10 outline-none appearance-none"
+                >
+                  <option value="" disabled>Select House</option>
+                  {houses.map(house => (
+                    <option key={house.id_house} value={house.id_house}>{house.name}</option>
+                  ))}
+                </select>
+                {fetchingHouses && (
+                  <div className="absolute inset-y-0 right-4 flex items-center">
+                    <Loader2 size={16} className="animate-spin text-brand-teal" />
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* User (Member) */}
+          <div className="space-y-2">
+            <label className="text-sm font-bold text-slate-700 ml-1">Paid By</label>
+            <div className="relative group">
+              <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-brand-teal transition-colors">
+                <User size={20} />
+              </div>
+              <select
+                required
+                disabled={!formData.id_house}
+                value={formData.id_user}
+                onChange={(e) => setFormData({ ...formData, id_user: e.target.value })}
+                className="w-full rounded-2xl border-slate-200 bg-slate-50 py-4 pl-12 pr-4 text-slate-900 transition-all focus:border-brand-teal focus:bg-white focus:ring-4 focus:ring-brand-teal/10 outline-none appearance-none disabled:opacity-50"
+              >
+                <option value="" disabled>
+                  {!formData.id_house ? 'Select a house first' : 'Select Member'}
+                </option>
+                {members.map(member => (
+                  <option key={member.id_user} value={member.id_user}>{member.name}</option>
+                ))}
+              </select>
+              {fetchingMembers && (
+                <div className="absolute inset-y-0 right-4 flex items-center">
+                  <Loader2 size={16} className="animate-spin text-brand-teal" />
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Footer Actions */}
+          <div className="pt-4 flex gap-3">
+            <button
+              type="button"
+              onClick={onClose}
+              className="flex-1 rounded-2xl border border-slate-200 py-4 font-bold text-slate-600 transition-all hover:bg-slate-50 active:scale-95"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={loading}
+              className="flex-[2] flex items-center justify-center gap-2 rounded-2xl bg-brand-teal py-4 font-bold text-white shadow-lg shadow-brand-teal/20 transition-all hover:bg-brand-teal/90 disabled:opacity-50 active:scale-95"
+            >
+              {loading ? <Loader2 size={20} className="animate-spin" /> : (expense ? 'Update Expense' : 'Save Expense')}
+            </button>
+          </div>
+        </form>
       </div>
     </div>,
     document.body
