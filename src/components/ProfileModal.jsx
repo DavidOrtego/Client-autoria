@@ -162,7 +162,51 @@ const ProfileModal = ({ isOpen, onClose }) => {
               </div>
             </div>
 
-            
+            <div className="border-t border-slate-100 pt-4 mt-4">
+              <h3 className="text-sm font-bold text-slate-800 mb-4">Change Password</h3>
+              
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-semibold text-slate-700 mb-1">Old Password</label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <Lock size={18} className="text-slate-400" />
+                    </div>
+                    <input
+                      type="password"
+                      name="currentPassword"
+                      value={formData.currentPassword}
+                      onChange={handleChange}
+                      className="block w-full pl-10 pr-3 py-2.5 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-teal focus:border-brand-teal transition-colors"
+                      placeholder="••••••••"
+                    />
+                  </div>
+                  <p className="mt-1 text-xs text-slate-500">Required if you wish to set a new password.</p>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-slate-700 mb-1">New Password</label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <Lock size={18} className="text-slate-400" />
+                    </div>
+                    <input
+                      type="password"
+                      name="newPassword"
+                      value={formData.newPassword}
+                      onChange={handleChange}
+                      className="block w-full pl-10 pr-3 py-2.5 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-teal focus:border-brand-teal transition-colors"
+                      placeholder="••••••••"
+                    />
+                  </div>
+                  {formData.newPassword && (
+                    <div className="mt-2">
+                      <PasswordStrength contrasena={formData.newPassword} />
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
 
             {error && (
               <div className="bg-red-50 text-red-600 p-3 rounded-xl text-sm font-semibold border border-red-100 flex items-center justify-center">
