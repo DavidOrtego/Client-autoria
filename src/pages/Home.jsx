@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Plus, Home as HomeIcon, Search, Loader2 } from 'lucide-react';
 import request from '../lib/api';
 import HouseCard from '../components/HouseCard';
+import CreateHouseModal from '../components/CreateHouseModal';
 import { useAuth } from '../context/authContext';
 
 const Home = () => {
@@ -12,6 +13,7 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   const obtenerDatosDelDashboard = async () => {
     try {
@@ -65,7 +67,10 @@ const Home = () => {
           </p>
         </div>
         
-        <button className="flex items-center justify-center gap-2 rounded-2xl bg-brand-teal px-6 py-3 font-bold text-white shadow-lg shadow-brand-teal/20 transition-all hover:bg-brand-teal/90 hover:shadow-xl active:scale-95">
+        <button 
+          onClick={() => setIsCreateModalOpen(true)}
+          className="flex items-center justify-center gap-2 rounded-2xl bg-brand-teal px-6 py-3 font-bold text-white shadow-lg shadow-brand-teal/20 transition-all hover:bg-brand-teal/90 hover:shadow-xl active:scale-95"
+        >
           <Plus size={20} />
           <span>New House</span>
         </button>
@@ -142,13 +147,23 @@ const Home = () => {
               : 'Create your first house to start managing your shared tasks and expenses.'}
           </p>
           {!searchQuery && (
-            <button className="flex items-center gap-2 rounded-2xl bg-brand-teal px-8 py-3 font-bold text-white shadow-lg shadow-brand-teal/20 transition-all hover:bg-brand-teal/90">
+            <button 
+              onClick={() => setIsCreateModalOpen(true)}
+              className="flex items-center gap-2 rounded-2xl bg-brand-teal px-8 py-3 font-bold text-white shadow-lg shadow-brand-teal/20 transition-all hover:bg-brand-teal/90"
+            >
               <Plus size={20} />
               <span>Create my first house</span>
             </button>
           )}
         </div>
       )}
+
+      {/* Create House Modal */}
+      <CreateHouseModal 
+        isOpen={isCreateModalOpen} 
+        onClose={() => setIsCreateModalOpen(false)} 
+        onSuccess={obtenerDatosDelDashboard}
+      />
     </div>
   );
 };
