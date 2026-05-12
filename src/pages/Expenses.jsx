@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { PiggyBank, Loader2, Plus, ArrowUpRight, BanknoteArrowDown, Search } from 'lucide-react';
+import { PiggyBank, Loader2, Plus, ArrowUpRight, BanknoteArrowDown, Search, Calendar, MoreVertical, Trash2, Edit2 } from 'lucide-react';
 import request from '../lib/api';
 import { useAuth } from '../context/authContext';
 
@@ -10,6 +10,8 @@ const Expenses = () => {
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [viewMode, setViewMode] = useState('all');
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [editingExpense, setEditingExpense] = useState(null);
 
   const fetchExpenses = async () => {
     try {
@@ -22,6 +24,17 @@ const Expenses = () => {
       setError('Could not load expenses. Please try again.');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    if (!window.confirm('Are you sure you want to delete this expense?')) return;
+    
+    try {
+      await request(`/expenses/${id}`, { method: 'DELETE', auth: true });
+      fetchExpenses();
+    } catch (err) {
+      alert('Error deleting expense: ' + err.message);
     }
   };
 
@@ -60,6 +73,10 @@ const Expenses = () => {
         </div>
         
         <button 
+          onClick={() => {
+            setEditingExpense(null);
+            setIsCreateModalOpen(true);
+          }}
           className="flex items-center justify-center gap-2 rounded-2xl bg-brand-teal px-6 py-3 font-bold text-white shadow-lg shadow-brand-teal/20 transition-all hover:bg-brand-teal/90 hover:shadow-xl active:scale-95"
         >
           <Plus size={20} />
@@ -146,17 +163,121 @@ const Expenses = () => {
         </div>
       </div>
 
-      {/* Loading state rendering */}
-      {loading && (
-        <div className="flex flex-col items-center justify-center py-20 gap-4">
-          <Loader2 size={48} className="animate-spin text-brand-teal" />
-          <p className="text-slate-500 font-medium">Loading transactions...</p>
-        </div>
-      )}
-      {error && (
-        <div className="text-red-500 text-center py-4">{error}</div>
-      )}
-      
+      {/* Expenses Table/List */}
+      <div className="glass-card rounded-3xl overflow-hidden border-slate-200 shadow-xl shadow-slate-200/20 bg-white">
+        {loading ? (
+          <div className="flex flex-col items-center justify-center py-20 gap-4">
+            <Loader2 size={48} className="animate-spin text-brand-teal" />
+            <p className="text-slate-500 font-medium">Loading transactions...</p>
+          </div>
+        ) : error ? (
+          <div className="flex flex-col items-center justify-center py-12 px-6 text-center">
+            <p className="text-red-500 font-semibold mb-4">{error}</p>
+            <button 
+              onClick={fetchExpenses}
+              className="rounded-xl bg-slate-900 px-6 py-2 text-white font-bold transition-all hover:bg-slate-800"
+            >
+              Try Again
+            </button>
+          </div>
+        ) : filteredExpenses.length > 0 ? (
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="bg-slate-50/50 border-b border-slate-100">
+                  <th className="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest">Date</th>
+                  <th className="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest">Description</th>
+                  <th className="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest">House</th>
+                  <th className="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest">Paid By</th>
+                  <th className="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest">Amount</th>
+                  <th className="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-50">
+                {filteredExpenses.map((expense) => (
+                  <tr key={expense.id_expense} className="group hover:bg-slate-50/80 transition-colors">
+                    <td className="px-6 py-5 whitespace-nowrap">
+                      <div className="flex items-center gap-3">
+                        <div className="p-2 rounded-xl bg-brand-teal/5 text-brand-teal group-hover:bg-brand-teal group-hover:text-white transition-all">
+                          <Calendar size={18} />
+                        </div>
+                        <span className="text-slate-600 font-medium">
+                          {new Date(expense.date).toLocaleDateString('in-IN', { day: '2-digit', month: 'short', year: 'numeric' })}
+                        </span>
+                      </div>
+                    </td>
+                    <td className="px-6 py-5">
+                      <span className="text-slate-900 font-bold text-lg">{expense.description}</span>
+                    </td>
+                    <td className="px-6 py-5 whitespace-nowrap">
+                      <span className="px-3 py-1 rounded-full bg-slate-100 text-slate-600 text-xs font-bold uppercase tracking-wider border border-slate-200">
+                        {expense.house_name}
+                      </span>
+                    </td>
+                    <td className="px-6 py-5 whitespace-nowrap">
+                      <div className="flex items-center gap-2">
+                        <div className="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold text-xs">
+                          {expense.user_name?.charAt(0)}
+                        </div>
+                        <span className="text-slate-700 font-semibold">{expense.user_name}</span>
+                      </div>
+                    </td>
+                    <td className="px-6 py-5 whitespace-nowrap">
+                      <span className="text-slate-900 font-black text-xl">
+                        {Number(expense.amount).toLocaleString('es-ES', { style: 'currency', currency: 'EUR' })}
+                      </span>
+                    </td>
+                    <td className="px-6 py-5 whitespace-nowrap text-right">
+                      <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <button 
+                          onClick={() => {
+                            setEditingExpense(expense);
+                            setIsCreateModalOpen(true);
+                          }}
+                          className="p-2 text-slate-400 hover:text-brand-teal hover:bg-brand-teal/5 rounded-lg transition-all"
+                        >
+                          <Edit2 size={18} />
+                        </button>
+                        <button 
+                          onClick={() => handleDelete(expense.id_expense)}
+                          className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"
+                        >
+                          <Trash2 size={18} />
+                        </button>
+                      </div>
+                      <div className="group-hover:hidden">
+                        <MoreVertical size={18} className="text-slate-300 ml-auto" />
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <div className="flex flex-col items-center justify-center py-20 px-6 text-center">
+            <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center text-slate-200 mb-6 border-2 border-dashed border-slate-200">
+              <PiggyBank size={40} />
+            </div>
+            <h3 className="font-outfit text-2xl font-bold text-slate-800 mb-2">No expenses found</h3>
+            <p className="text-slate-500 max-w-sm mb-8">
+              {searchQuery 
+                ? `No results for "${searchQuery}". Try another search term.` 
+                : "You haven't recorded any expenses yet. Start tracking your shared costs!"}
+            </p>
+            {!searchQuery && (
+              <button 
+                onClick={() => setIsCreateModalOpen(true)}
+                className="flex items-center gap-2 rounded-2xl bg-brand-teal px-8 py-3 font-bold text-white shadow-lg shadow-brand-teal/20 transition-all hover:bg-brand-teal/90"
+              >
+                <Plus size={20} />
+                <span>Add first expense</span>
+              </button>
+            )}
+          </div>
+        )}
+      </div>
+
       {/* Contenido en los próximos commits */}
       
     </div>
