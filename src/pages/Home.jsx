@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Home as HomeIcon, Search, Loader2 } from 'lucide-react';
+import { Plus, Home as HomeIcon, Search, Loader2, ClipboardList, PiggyBank } from 'lucide-react';
 import request from '../lib/api';
 import HouseCard from '../components/HouseCard';
 import CreateHouseModal from '../components/CreateHouseModal';
@@ -18,7 +18,7 @@ const Home = () => {
   const obtenerDatosDelDashboard = async () => {
     try {
       setLoading(true);
-        const [housesRes, tasksRes, expensesRes] = await Promise.all([
+      const [housesRes, tasksRes, expensesRes] = await Promise.all([
         request('/houses', { auth: true }),
         request('/tasks', { auth: true }).catch(() => ({ data: [] })),
         request('/expenses', { auth: true }).catch(() => ({ data: [] }))
@@ -34,7 +34,7 @@ const Home = () => {
       // Calcular gastos totales
       const expenses = expensesRes.data || [];
       const totalExpenses = expenses.reduce((acc, exp) => acc + (Number(exp.amount) || 0), 0);
-      setTotalExpensesCount(`${totalExpenses.toFixed(2)}€`);
+      setTotalExpensesCount(`${totalExpenses.toLocaleString('es-ES', { style: 'currency', currency: 'EUR' })}`);
 
       setError(null);
     } catch (err) {
@@ -77,19 +77,38 @@ const Home = () => {
       </div>
 
       {/* Resumen de estadísticas */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <div className="glass-card flex flex-col gap-1 rounded-3xl p-6">
-          <span className="text-sm font-medium text-slate-500 uppercase tracking-wider">My Houses</span>
-          <span className="font-outfit text-3xl font-bold text-slate-900">{houses.length}</span>
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
+        <div className="glass-card relative overflow-hidden flex flex-col gap-1 rounded-3xl p-6 bg-gradient-to-br from-brand-teal/5 to-transparent border-brand-teal/10">
+          <div className="absolute top-0 right-0 p-4 opacity-10 text-brand-teal">
+            <HomeIcon size={80} />
+          </div>
+          <span className="text-sm font-semibold text-slate-500 uppercase tracking-wider">My Houses</span>
+          <span className="font-outfit text-4xl font-black text-slate-900 mt-2">{houses.length}</span>
+          <div className="mt-4 flex items-center gap-2 text-brand-teal text-sm font-bold bg-brand-teal/10 w-fit px-3 py-1 rounded-full">
+            <span>Managed houses</span>
+          </div>
         </div>
-        {/* Marcador de posición para futuras estadísticas como tareas pendientes o gastos totales en las casas */}
-        <div className="glass-card flex flex-col gap-1 rounded-3xl p-6">
-          <span className="text-sm font-medium text-slate-500 uppercase tracking-wider">Pending Tasks</span>
-          <span className="font-outfit text-3xl font-bold text-slate-900">{pendingTasksCount}</span>
+
+        <div className="glass-card relative overflow-hidden flex flex-col gap-1 rounded-3xl p-6 bg-gradient-to-br from-indigo-500/5 to-transparent border-indigo-500/10">
+          <div className="absolute top-0 right-0 p-4 opacity-10 text-indigo-500">
+            <ClipboardList size={80} />
+          </div>
+          <span className="text-sm font-semibold text-slate-500 uppercase tracking-wider">Pending Tasks</span>
+          <span className="font-outfit text-4xl font-black text-slate-900 mt-2">{pendingTasksCount}</span>
+          <div className="mt-4 flex items-center gap-2 text-indigo-600 text-sm font-bold bg-indigo-50 w-fit px-3 py-1 rounded-full">
+            <span>To be completed</span>
+          </div>
         </div>
-        <div className="glass-card flex flex-col gap-1 rounded-3xl p-6">
-          <span className="text-sm font-medium text-slate-500 uppercase tracking-wider">Total Expenses</span>
-          <span className="font-outfit text-3xl font-bold text-slate-900">{totalExpensesCount}</span>
+
+        <div className="glass-card relative overflow-hidden flex flex-col gap-1 rounded-3xl p-6 bg-gradient-to-br from-amber-500/5 to-transparent border-amber-500/10">
+          <div className="absolute top-0 right-0 p-4 opacity-10 text-amber-500">
+            <PiggyBank size={80} />
+          </div>
+          <span className="text-sm font-semibold text-slate-500 uppercase tracking-wider">Total Expenses</span>
+          <span className="font-outfit text-4xl font-black text-slate-900 mt-2">{totalExpensesCount}</span>
+          <div className="mt-4 flex items-center gap-2 text-amber-600 text-sm font-bold bg-amber-50 w-fit px-3 py-1 rounded-full">
+            <span>Overall spending</span>
+          </div>
         </div>
       </div>
 

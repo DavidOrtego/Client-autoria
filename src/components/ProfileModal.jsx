@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { X, User, Mail, Camera, Lock } from 'lucide-react';
+import { createPortal } from 'react-dom';
+import { X, User, Mail, Camera, Loader2, Lock } from 'lucide-react';
 import { useAuth } from '../context/authContext';
 import defaultUserAvatar from '../assets/defaultUser.png';
 import PasswordStrength from './auth/PasswordStrength';
@@ -65,22 +66,22 @@ const ProfileModal = ({ isOpen, onClose }) => {
     }
   };
 
-  return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+  return createPortal(
+    <div className="fixed inset-0 z-100 flex items-center justify-center p-4 sm:p-6">
       {/* Backdrop */}
       <div 
-        className="absolute inset-0 bg-slate-900/50 backdrop-blur-sm transition-opacity"
+        className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm animate-fade-in"
         onClick={onClose}
       />
 
       {/* Modal Container */}
-      <div className="relative bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+      <div className="relative w-full max-w-lg overflow-hidden rounded-3xl bg-white shadow-2xl animate-scale-in">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100">
-          <h2 className="text-xl font-bold font-outfit text-slate-800">My Profile</h2>
+        <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/50 px-6 py-4">
+          <h2 className="font-outfit text-xl font-bold text-slate-900">My Profile</h2>
           <button 
             onClick={onClose}
-            className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-full transition-colors"
+            className="rounded-full p-2 text-slate-400 transition-colors hover:bg-slate-200 hover:text-slate-600"
           >
             <X size={20} />
           </button>
@@ -94,7 +95,7 @@ const ProfileModal = ({ isOpen, onClose }) => {
               className="relative group cursor-pointer"
               onClick={() => setShowImageInput(!showImageInput)}
             >
-              <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-white shadow-lg bg-slate-100">
+              <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-white shadow-xl bg-slate-100 ring-4 ring-slate-50">
                 <img 
                   src={formData.image || defaultUserAvatar} 
                   alt="Profile Avatar" 
@@ -107,19 +108,19 @@ const ProfileModal = ({ isOpen, onClose }) => {
               </div>
             </div>
             <p 
-              className="mt-3 text-sm text-brand-teal font-semibold hover:text-brand-teal/80 cursor-pointer transition-colors"
+              className="mt-3 text-sm text-brand-teal font-bold hover:text-brand-teal/80 cursor-pointer transition-colors"
               onClick={() => setShowImageInput(!showImageInput)}
             >
               Change profile photo
             </p>
             {showImageInput && (
-              <div className="w-full mt-4 animate-in fade-in slide-in-from-top-2 duration-200">
+              <div className="w-full mt-4 animate-scale-in">
                 <input
                   type="url"
                   name="image"
                   value={formData.image}
                   onChange={handleChange}
-                  className="block w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-teal focus:border-brand-teal transition-colors"
+                  className="w-full rounded-2xl border-slate-200 bg-slate-50 py-3 px-4 text-sm text-slate-900 transition-all focus:border-brand-teal focus:bg-white focus:ring-4 focus:ring-brand-teal/10 outline-none"
                   placeholder="https://example.com/myphoto.jpg"
                 />
               </div>
@@ -127,80 +128,64 @@ const ProfileModal = ({ isOpen, onClose }) => {
           </div>
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-1">Name</label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <User size={18} className="text-slate-400" />
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <div className="space-y-2">
+              <label className="text-sm font-bold text-slate-700 ml-1">Name</label>
+              <div className="relative group">
+                <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-brand-teal transition-colors">
+                  <User size={20} />
                 </div>
                 <input
                   type="text"
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
-                  className="block w-full pl-10 pr-3 py-2.5 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-teal focus:border-brand-teal transition-colors"
+                  className="w-full rounded-2xl border-slate-200 bg-slate-50 py-4 pl-12 pr-4 text-slate-900 transition-all focus:border-brand-teal focus:bg-white focus:ring-4 focus:ring-brand-teal/10 outline-none"
                   placeholder={user?.name || "Your name"}
                 />
               </div>
             </div>
 
-            <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-1">Email</label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Mail size={18} className="text-slate-400" />
+            <div className="space-y-2">
+              <label className="text-sm font-bold text-slate-700 ml-1">Email</label>
+              <div className="relative group">
+                <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-brand-teal transition-colors">
+                  <Mail size={20} />
                 </div>
                 <input
                   type="email"
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className="block w-full pl-10 pr-3 py-2.5 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-teal focus:border-brand-teal transition-colors"
+                  className="w-full rounded-2xl border-slate-200 bg-slate-50 py-4 pl-12 pr-4 text-slate-900 transition-all focus:border-brand-teal focus:bg-white focus:ring-4 focus:ring-brand-teal/10 outline-none"
                   placeholder={user?.email || "your@email.com"}
                 />
               </div>
             </div>
 
-            <div className="border-t border-slate-100 pt-4 mt-4">
-              <h3 className="text-sm font-bold text-slate-800 mb-4">Change Password</h3>
+            <div className="border-t border-slate-100 pt-6 mt-6">
+              <h3 className="font-outfit text-md font-bold text-slate-800 mb-4">Change Password</h3>
               
               <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-semibold text-slate-700 mb-1">Old Password</label>
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <Lock size={18} className="text-slate-400" />
-                    </div>
-                    <input
-                      type="password"
-                      name="currentPassword"
-                      value={formData.currentPassword}
-                      onChange={handleChange}
-                      className="block w-full pl-10 pr-3 py-2.5 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-teal focus:border-brand-teal transition-colors"
-                      placeholder="••••••••"
-                    />
-                  </div>
-                  <p className="mt-1 text-xs text-slate-500">Required if you wish to set a new password.</p>
-                </div>
 
-                <div>
-                  <label className="block text-sm font-semibold text-slate-700 mb-1">New Password</label>
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <Lock size={18} className="text-slate-400" />
+
+                <div className="space-y-2">
+                  <label className="text-sm font-bold text-slate-700 ml-1">New Password</label>
+                  <div className="relative group">
+                    <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-brand-teal transition-colors">
+                      <Lock size={20} />
                     </div>
                     <input
                       type="password"
                       name="newPassword"
                       value={formData.newPassword}
                       onChange={handleChange}
-                      className="block w-full pl-10 pr-3 py-2.5 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-teal focus:border-brand-teal transition-colors"
+                      className="w-full rounded-2xl border-slate-200 bg-slate-50 py-4 pl-12 pr-4 text-slate-900 transition-all focus:border-brand-teal focus:bg-white focus:ring-4 focus:ring-brand-teal/10 outline-none"
                       placeholder="••••••••"
                     />
                   </div>
                   {formData.newPassword && (
-                    <div className="mt-2">
+                    <div className="mt-3">
                       <PasswordStrength contrasena={formData.newPassword} />
                     </div>
                   )}
@@ -209,24 +194,32 @@ const ProfileModal = ({ isOpen, onClose }) => {
             </div>
 
             {error && (
-              <div className="bg-red-50 text-red-600 p-3 rounded-xl text-sm font-semibold border border-red-100 flex items-center justify-center">
+              <div className="rounded-xl bg-red-50 p-4 text-sm font-medium text-red-600 border border-red-100">
                 {error}
               </div>
             )}
 
-            <div className="pt-4">
+            <div className="pt-4 flex gap-3">
+              <button
+                type="button"
+                onClick={onClose}
+                className="flex-1 rounded-2xl border border-slate-200 py-4 font-bold text-slate-600 transition-all hover:bg-slate-50 active:scale-95"
+              >
+                Cancel
+              </button>
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-brand-teal text-white font-bold py-3 px-4 rounded-xl hover:bg-brand-teal/90 hover:shadow-lg transition-all active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed"
+                className="flex-[2] flex items-center justify-center gap-2 rounded-2xl bg-brand-teal py-4 font-bold text-white shadow-lg shadow-brand-teal/20 transition-all hover:bg-brand-teal/90 disabled:opacity-50 active:scale-95"
               >
-                {isLoading ? "Saving..." : "Save changes"}
+                {isLoading ? <Loader2 size={20} className="animate-spin" /> : "Save changes"}
               </button>
             </div>
           </form>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
 
