@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Home as HomeIcon, Search, Loader2, ClipboardList, PiggyBank } from 'lucide-react';
+import { Plus, Home as HomeIcon, Search, ClipboardList, PiggyBank } from 'lucide-react';
 import request from '../lib/api';
 import HouseCard from '../components/HouseCard';
-import CreateHouseModal from '../components/CreateHouseModal';
+import CreateHouseModal from '../components/modals/CreateHouseModal';
 import { useAuth } from '../context/authContext';
+import StatsCard from '../components/ui/StatsCard';
+import LoadingState from '../components/ui/LoadingState';
+import EmptyState from '../components/ui/EmptyState';
 
 const Home = () => {
   const { user } = useAuth();
@@ -25,10 +28,10 @@ const Home = () => {
       ]);
 
       setHouses(housesRes.data || []);
-      
+
       // Contar tareas pendientes
       const tasks = tasksRes.data || [];
-      const pendingTasks = tasks.filter(task => task.status === 'pending');
+      const pendingTasks = tasks.filter(task => task.state !== 'completed');
       setPendingTasksCount(pendingTasks.length);
 
       // Calcular gastos totales
@@ -49,7 +52,7 @@ const Home = () => {
     obtenerDatosDelDashboard();
   }, []);
 
-  const filteredHouses = houses.filter(house => 
+  const filteredHouses = houses.filter(house =>
     house.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     (house.address && house.address.toLowerCase().includes(searchQuery.toLowerCase()))
   );
@@ -66,8 +69,8 @@ const Home = () => {
             Welcome back to Vives House.
           </p>
         </div>
-        
-        <button 
+
+        <button
           onClick={() => setIsCreateModalOpen(true)}
           className="flex items-center justify-center gap-2 rounded-2xl bg-brand-teal px-6 py-3 font-bold text-white shadow-lg shadow-brand-teal/20 transition-all hover:bg-brand-teal/90 hover:shadow-xl active:scale-95"
         >
@@ -78,38 +81,35 @@ const Home = () => {
 
       {/* Resumen de estadísticas */}
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
-        <div className="glass-card relative overflow-hidden flex flex-col gap-1 rounded-3xl p-6 bg-gradient-to-br from-brand-teal/5 to-transparent border-brand-teal/10">
-          <div className="absolute top-0 right-0 p-4 opacity-10 text-brand-teal">
-            <HomeIcon size={80} />
-          </div>
-          <span className="text-sm font-semibold text-slate-500 uppercase tracking-wider">My Houses</span>
-          <span className="font-outfit text-4xl font-black text-slate-900 mt-2">{houses.length}</span>
-          <div className="mt-4 flex items-center gap-2 text-brand-teal text-sm font-bold bg-brand-teal/10 w-fit px-3 py-1 rounded-full">
-            <span>Managed houses</span>
-          </div>
-        </div>
+        <StatsCard
+          title="My Houses"
+          value={houses.length}
+          subtitle="Managed houses"
+          icon={HomeIcon}
+          gradient="from-brand-teal/5 to-transparent"
+          iconColor="text-brand-teal"
+          tagBg="bg-brand-teal/10"
+        />
 
-        <div className="glass-card relative overflow-hidden flex flex-col gap-1 rounded-3xl p-6 bg-gradient-to-br from-indigo-500/5 to-transparent border-indigo-500/10">
-          <div className="absolute top-0 right-0 p-4 opacity-10 text-indigo-500">
-            <ClipboardList size={80} />
-          </div>
-          <span className="text-sm font-semibold text-slate-500 uppercase tracking-wider">Pending Tasks</span>
-          <span className="font-outfit text-4xl font-black text-slate-900 mt-2">{pendingTasksCount}</span>
-          <div className="mt-4 flex items-center gap-2 text-indigo-600 text-sm font-bold bg-indigo-50 w-fit px-3 py-1 rounded-full">
-            <span>To be completed</span>
-          </div>
-        </div>
+        <StatsCard
+          title="Pending Tasks"
+          value={pendingTasksCount}
+          subtitle="To be completed"
+          icon={ClipboardList}
+          gradient="from-indigo-500/5 to-transparent"
+          iconColor="text-indigo-500"
+          tagBg="bg-indigo-50"
+        />
 
-        <div className="glass-card relative overflow-hidden flex flex-col gap-1 rounded-3xl p-6 bg-gradient-to-br from-amber-500/5 to-transparent border-amber-500/10">
-          <div className="absolute top-0 right-0 p-4 opacity-10 text-amber-500">
-            <PiggyBank size={80} />
-          </div>
-          <span className="text-sm font-semibold text-slate-500 uppercase tracking-wider">Total Expenses</span>
-          <span className="font-outfit text-4xl font-black text-slate-900 mt-2">{totalExpensesCount}</span>
-          <div className="mt-4 flex items-center gap-2 text-amber-600 text-sm font-bold bg-amber-50 w-fit px-3 py-1 rounded-full">
-            <span>Overall spending</span>
-          </div>
-        </div>
+        <StatsCard
+          title="Total Expenses"
+          value={totalExpensesCount}
+          subtitle="Overall spending"
+          icon={PiggyBank}
+          gradient="from-amber-500/5 to-transparent"
+          iconColor="text-amber-500"
+          tagBg="bg-amber-50"
+        />
       </div>
 
       {/* Barra de búsqueda y filtrado */}
@@ -128,14 +128,11 @@ const Home = () => {
 
       {/* Cuadrícula de casas */}
       {loading ? (
-        <div className="flex flex-col items-center justify-center py-20 gap-4">
-          <Loader2 size={48} className="animate-spin text-brand-teal" />
-          <p className="text-slate-500 font-medium">Loading your houses...</p>
-        </div>
+        <LoadingState message="Loading your houses..." />
       ) : error ? (
-        <div className="glass-card flex flex-col items-center justify-center py-12 rounded-3xl border-red-100 bg-red-50/30">
+        <div className="glass-card flex flex-col items-center justify-center py-12 rounded-3xl border-red-100 bg-red-50/30 px-6 text-center">
           <p className="text-red-500 font-semibold mb-4">{error}</p>
-          <button 
+          <button
             onClick={obtenerDatosDelDashboard}
             className="rounded-xl bg-slate-900 px-6 py-2 text-white font-bold transition-all hover:bg-slate-800"
           >
@@ -145,42 +142,28 @@ const Home = () => {
       ) : filteredHouses.length > 0 ? (
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {filteredHouses.map((house) => (
-            <HouseCard 
-              key={house.id_house || house.id} 
-              house={house} 
+            <HouseCard
+              key={house.id_house || house.id}
+              house={house}
               onClick={() => console.log('Navigate to house:', house.id_house || house.id)}
             />
           ))}
         </div>
       ) : (
-        <div className="glass-card flex flex-col items-center justify-center py-20 rounded-3xl border-dashed border-2 border-slate-200 bg-transparent text-center">
-          <div className="mb-6 rounded-full bg-slate-100 p-6 text-slate-300">
-            <HomeIcon size={48} />
-          </div>
-          <h3 className="font-outfit text-2xl font-bold text-slate-800 mb-2">
-            {searchQuery ? 'No results found' : "You don't have any houses yet"}
-          </h3>
-          <p className="text-slate-500 max-w-sm mb-8 px-4">
-            {searchQuery 
-              ? `We couldn't find any house matching "${searchQuery}".`
-              : 'Create your first house to start managing your shared tasks and expenses.'}
-          </p>
-          {!searchQuery && (
-            <button 
-              onClick={() => setIsCreateModalOpen(true)}
-              className="flex items-center gap-2 rounded-2xl bg-brand-teal px-8 py-3 font-bold text-white shadow-lg shadow-brand-teal/20 transition-all hover:bg-brand-teal/90"
-            >
-              <Plus size={20} />
-              <span>Create my first house</span>
-            </button>
-          )}
-        </div>
+        <EmptyState
+          icon={HomeIcon}
+          title={searchQuery ? 'No houses found' : "You don't have any houses yet"}
+          description={searchQuery ? `We couldn't find any house matching "${searchQuery}".` : "Create your first house to start managing your shared tasks and expenses."}
+          buttonText="Create my first house"
+          onButtonClick={() => setIsCreateModalOpen(true)}
+          isSearch={!!searchQuery}
+        />
       )}
 
       {/* Create House Modal */}
-      <CreateHouseModal 
-        isOpen={isCreateModalOpen} 
-        onClose={() => setIsCreateModalOpen(false)} 
+      <CreateHouseModal
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
         onSuccess={obtenerDatosDelDashboard}
       />
     </div>

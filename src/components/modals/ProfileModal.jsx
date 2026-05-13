@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { X, User, Mail, Camera, Loader2, Lock } from 'lucide-react';
-import { useAuth } from '../context/authContext';
-import defaultUserAvatar from '../assets/defaultUser.png';
-import PasswordStrength from './auth/PasswordStrength';
+import { useAuth } from '../../context/authContext';
+import defaultUserAvatar from '../../assets/defaultUser.png';
+import PasswordStrength from '../auth/PasswordStrength';
 
 const ProfileModal = ({ isOpen, onClose }) => {
   const { user, updateProfile } = useAuth();
@@ -69,7 +69,7 @@ const ProfileModal = ({ isOpen, onClose }) => {
   return createPortal(
     <div className="fixed inset-0 z-100 flex items-center justify-center p-4 sm:p-6">
       {/* Backdrop */}
-      <div 
+      <div
         className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm animate-fade-in"
         onClick={onClose}
       />
@@ -79,7 +79,7 @@ const ProfileModal = ({ isOpen, onClose }) => {
         {/* Header */}
         <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/50 px-6 py-4">
           <h2 className="font-outfit text-xl font-bold text-slate-900">My Profile</h2>
-          <button 
+          <button
             onClick={onClose}
             className="rounded-full p-2 text-slate-400 transition-colors hover:bg-slate-200 hover:text-slate-600"
           >
@@ -91,14 +91,14 @@ const ProfileModal = ({ isOpen, onClose }) => {
         <div className="p-6">
           {/* Avatar Section */}
           <div className="flex flex-col items-center justify-center mb-8">
-            <div 
+            <div
               className="relative group cursor-pointer"
               onClick={() => setShowImageInput(!showImageInput)}
             >
               <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-white shadow-xl bg-slate-100 ring-4 ring-slate-50">
-                <img 
-                  src={formData.image || defaultUserAvatar} 
-                  alt="Profile Avatar" 
+                <img
+                  src={formData.image || defaultUserAvatar}
+                  alt="Profile Avatar"
                   className="w-full h-full object-cover"
                   onError={(e) => { e.target.src = defaultUserAvatar; }}
                 />
@@ -107,7 +107,7 @@ const ProfileModal = ({ isOpen, onClose }) => {
                 <Camera className="text-white" size={24} />
               </div>
             </div>
-            <p 
+            <p
               className="mt-3 text-sm text-brand-teal font-bold hover:text-brand-teal/80 cursor-pointer transition-colors"
               onClick={() => setShowImageInput(!showImageInput)}
             >
@@ -165,7 +165,7 @@ const ProfileModal = ({ isOpen, onClose }) => {
 
             <div className="border-t border-slate-100 pt-6 mt-6">
               <h3 className="font-outfit text-md font-bold text-slate-800 mb-4">Change Password</h3>
-              
+
               <div className="space-y-4">
 
 
@@ -210,7 +210,7 @@ const ProfileModal = ({ isOpen, onClose }) => {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="flex-[2] flex items-center justify-center gap-2 rounded-2xl bg-brand-teal py-4 font-bold text-white shadow-lg shadow-brand-teal/20 transition-all hover:bg-brand-teal/90 disabled:opacity-50 active:scale-95"
+                className="flex-2 flex items-center justify-center gap-2 rounded-2xl bg-brand-teal py-4 font-bold text-white shadow-lg shadow-brand-teal/20 transition-all hover:bg-brand-teal/90 disabled:opacity-50 active:scale-95"
               >
                 {isLoading ? <Loader2 size={20} className="animate-spin" /> : "Save changes"}
               </button>

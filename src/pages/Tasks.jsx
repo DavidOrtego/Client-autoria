@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from "react";
 import {
   ClipboardList,
-  Loader2,
   Plus,
-  CheckCircle2,
   Search,
 } from "lucide-react";
 import request from "../lib/api";
 import { useAuth } from "../context/authContext";
-import CreateTaskModal from "../components/CreateTaskModal";
+import CreateTaskModal from "../components/modals/CreateTaskModal";
 import TaskSummaryCards from "../components/TaskSummaryCards";
 import TasksTable from "../components/TasksTable";
+import PageHeader from "../components/ui/PageHeader";
+import LoadingState from "../components/ui/LoadingState";
+import EmptyState from "../components/ui/EmptyState";
 
 const Tasks = () => {
   const { user } = useAuth();
@@ -49,16 +50,9 @@ const Tasks = () => {
 
   const handleStatusChange = async (task, newState) => {
     try {
-      const payload = { ...task, state: newState };
-      
-      // Fix for MySQL date format issue: Ensure it's YYYY-MM-DD
-      if (payload.expiration_date) {
-        payload.expiration_date = new Date(payload.expiration_date).toISOString().split('T')[0];
-      }
-
       await request(`/tasks/${task.id_task}`, {
         method: "PUT",
-        body: payload,
+        body: { state: newState },
         auth: true,
       });
       fetchTasks();
@@ -71,13 +65,9 @@ const Tasks = () => {
     fetchTasks();
   }, []);
 
-  const pendingTasks = tasks.filter(
-    (t) => t.state === "pending" || t.state === "in_progress",
-  );
+  const pendingTasks = tasks.filter((t) => t.state !== "completed");
   const myTasks = tasks.filter((t) => t.id_user === user?.id_user);
-  const myPendingTasks = myTasks.filter(
-    (t) => t.state === "pending" || t.state === "in_progress",
-  );
+  const myPendingTasks = myTasks.filter((t) => t.state !== "completed");
 
   const filteredTasks = tasks.filter((task) => {
     const matchesSearch =
@@ -96,8 +86,6 @@ const Tasks = () => {
     switch (state) {
       case "completed":
         return "bg-emerald-100 text-emerald-700 border-emerald-200";
-      case "in_progress":
-        return "bg-amber-100 text-amber-700 border-amber-200";
       default:
         return "bg-slate-100 text-slate-600 border-slate-200";
     }
@@ -109,28 +97,16 @@ const Tasks = () => {
   return (
     <div className="animate-fade-in space-y-8 pb-10">
       {/* Header */}
-      <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-        <div>
-          <h1 className="font-outfit text-4xl font-bold text-slate-900 flex items-center gap-3">
-            <ClipboardList className="text-brand-teal" size={36} />
-            Tasks
-          </h1>
-          <p className="text-slate-500 mt-1">
-            Manage and organize your shared house chores.
-          </p>
-        </div>
-
-        <button
-          onClick={() => {
-            setEditingTask(null);
-            setIsCreateModalOpen(true);
-          }}
-          className="flex items-center justify-center gap-2 rounded-2xl bg-brand-teal px-6 py-3 font-bold text-white shadow-lg shadow-brand-teal/20 transition-all hover:bg-brand-teal/90 hover:shadow-xl active:scale-95"
-        >
-          <Plus size={20} />
-          <span>Add Task</span>
-        </button>
-      </div>
+      <PageHeader
+        title="Tasks"
+        description="Manage and organize your shared house chores."
+        icon={ClipboardList}
+        buttonText="Add Task"
+        onButtonClick={() => {
+          setEditingTask(null);
+          setIsCreateModalOpen(true);
+        }}
+      />
 
       {/* Summary Cards */}
       <TaskSummaryCards
@@ -159,21 +135,19 @@ const Tasks = () => {
           <div className="flex p-1 bg-white rounded-2xl shadow-sm ring-1 ring-slate-200 min-w-fit">
             <button
               onClick={() => setViewMode("all")}
-              className={`px-6 py-3 rounded-xl text-sm font-bold transition-all ${
-                viewMode === "all"
-                  ? "bg-brand-teal text-white shadow-lg shadow-brand-teal/20"
-                  : "text-slate-500 hover:text-slate-700 hover:bg-slate-50"
-              }`}
+              className={`px-6 py-3 rounded-xl text-sm font-bold transition-all ${viewMode === "all"
+                ? "bg-brand-teal text-white shadow-lg shadow-brand-teal/20"
+                : "text-slate-500 hover:text-slate-700 hover:bg-slate-50"
+                }`}
             >
               All Tasks
             </button>
             <button
               onClick={() => setViewMode("mine")}
-              className={`px-6 py-3 rounded-xl text-sm font-bold transition-all ${
-                viewMode === "mine"
-                  ? "bg-brand-teal text-white shadow-lg shadow-brand-teal/20"
-                  : "text-slate-500 hover:text-slate-700 hover:bg-slate-50"
-              }`}
+              className={`px-6 py-3 rounded-xl text-sm font-bold transition-all ${viewMode === "mine"
+                ? "bg-brand-teal text-white shadow-lg shadow-brand-teal/20"
+                : "text-slate-500 hover:text-slate-700 hover:bg-slate-50"
+                }`}
             >
               My Tasks
             </button>
@@ -184,9 +158,8 @@ const Tasks = () => {
       {/* Tasks Table/List */}
       <div className="space-y-8">
         {loading ? (
-          <div className="glass-card rounded-3xl overflow-hidden border-slate-200 shadow-xl shadow-slate-200/20 bg-white flex flex-col items-center justify-center py-20 gap-4">
-            <Loader2 size={48} className="animate-spin text-brand-teal" />
-            <p className="text-slate-500 font-medium">Loading tasks...</p>
+          <div className="glass-card rounded-3xl overflow-hidden border-slate-200 shadow-xl shadow-slate-200/20 bg-white">
+            <LoadingState message="Loading tasks..." />
           </div>
         ) : error ? (
           <div className="glass-card rounded-3xl overflow-hidden border-slate-200 shadow-xl shadow-slate-200/20 bg-white flex flex-col items-center justify-center py-12 px-6 text-center">
@@ -211,11 +184,7 @@ const Tasks = () => {
                   handleDelete={handleDelete}
                 />
               ) : (
-                <div className="py-12 text-center text-slate-500 font-medium border-b border-slate-100">
-                  <CheckCircle2
-                    size={40}
-                    className="mx-auto mb-3 text-emerald-400 opacity-50"
-                  />
+                <div className="py-12 text-center text-slate-500 font-medium border-b border-slate-100 px-6">
                   <p>No active tasks found. You're all caught up!</p>
                 </div>
               )}
@@ -224,7 +193,6 @@ const Tasks = () => {
             {completedTasks.length > 0 && (
               <div className="glass-card rounded-3xl overflow-hidden border-slate-200 shadow-xl shadow-slate-200/20 bg-white">
                 <div className="bg-slate-50/80 px-6 py-4 flex items-center gap-2 border-b border-slate-100">
-                  <CheckCircle2 size={18} className="text-emerald-500" />
                   <h3 className="font-outfit font-bold text-slate-700 text-sm uppercase tracking-wider">
                     Completed History
                   </h3>
@@ -244,28 +212,14 @@ const Tasks = () => {
             )}
           </>
         ) : (
-          <div className="glass-card rounded-3xl overflow-hidden border-slate-200 shadow-xl shadow-slate-200/20 bg-white flex flex-col items-center justify-center py-20 px-6 text-center">
-            <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center text-slate-200 mb-6 border-2 border-dashed border-slate-200">
-              <ClipboardList size={40} />
-            </div>
-            <h3 className="font-outfit text-2xl font-bold text-slate-800 mb-2">
-              No tasks found
-            </h3>
-            <p className="text-slate-500 max-w-sm mb-8">
-              {searchQuery
-                ? `No results for "${searchQuery}". Try another search term.`
-                : "You don't have any tasks right now. Start organizing your shared chores!"}
-            </p>
-            {!searchQuery && (
-              <button
-                onClick={() => setIsCreateModalOpen(true)}
-                className="flex items-center gap-2 rounded-2xl bg-brand-teal px-8 py-3 font-bold text-white shadow-lg shadow-brand-teal/20 transition-all hover:bg-brand-teal/90"
-              >
-                <Plus size={20} />
-                <span>Add first task</span>
-              </button>
-            )}
-          </div>
+          <EmptyState
+            icon={ClipboardList}
+            title="No tasks found"
+            description={searchQuery ? `No results for "${searchQuery}". Try another search term.` : "You don't have any tasks right now. Start organizing your shared chores!"}
+            buttonText="Add first task"
+            onButtonClick={() => setIsCreateModalOpen(true)}
+            isSearch={!!searchQuery}
+          />
         )}
       </div>
 

@@ -41,7 +41,7 @@ const HouseCard = ({ house, onClick }) => {
               className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
             />
           ) : (
-            <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-brand-teal/20 to-brand-green/20">
+            <div className="flex h-full w-full items-center justify-center bg-linear-to-br from-brand-teal/20 to-brand-green/20">
               <Home size={48} className="text-brand-teal/40" />
             </div>
           )}

@@ -8,9 +8,9 @@ import {
   User,
   Loader2,
   ClipboardList,
-  CheckCircle2,
+  CircleCheckBig,
 } from "lucide-react";
-import request from "../lib/api";
+import request from "../../lib/api";
 
 const CreateTaskModal = ({ isOpen, onClose, onSuccess, task = null }) => {
   const [formData, setFormData] = useState({
@@ -120,7 +120,7 @@ const CreateTaskModal = ({ isOpen, onClose, onSuccess, task = null }) => {
   if (!isOpen) return null;
 
   return createPortal(
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6">
+    <div className="fixed inset-0 z-9999 flex items-center justify-center p-4 sm:p-6">
       <div
         className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm animate-fade-in"
         onClick={onClose}
@@ -162,7 +162,7 @@ const CreateTaskModal = ({ isOpen, onClose, onSuccess, task = null }) => {
               <input
                 required
                 type="text"
-                placeholder="e.g., Clean the kitchen"
+                placeholder="Clean the kitchen"
                 value={formData.name}
                 onChange={(e) =>
                   setFormData({ ...formData, name: e.target.value })
@@ -224,7 +224,7 @@ const CreateTaskModal = ({ isOpen, onClose, onSuccess, task = null }) => {
               </label>
               <div className="relative group">
                 <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-brand-teal transition-colors">
-                  <CheckCircle2 size={20} />
+                  <CircleCheckBig size={20} />
                 </div>
                 <select
                   required
@@ -235,7 +235,6 @@ const CreateTaskModal = ({ isOpen, onClose, onSuccess, task = null }) => {
                   className="w-full rounded-2xl border-slate-200 bg-slate-50 py-4 pl-12 pr-4 text-slate-900 transition-all focus:border-brand-teal focus:bg-white focus:ring-4 focus:ring-brand-teal/10 outline-none appearance-none"
                 >
                   <option value="pending">Pending</option>
-                  <option value="in_progress">In Progress</option>
                   <option value="completed">Completed</option>
                 </select>
               </div>
@@ -334,7 +333,7 @@ const CreateTaskModal = ({ isOpen, onClose, onSuccess, task = null }) => {
             <button
               type="submit"
               disabled={loading}
-              className="flex-[2] flex items-center justify-center gap-2 rounded-2xl bg-brand-teal py-4 font-bold text-white shadow-lg shadow-brand-teal/20 transition-all hover:bg-brand-teal/90 disabled:opacity-50 active:scale-95"
+              className="flex-2 flex items-center justify-center gap-2 rounded-2xl bg-brand-teal py-4 font-bold text-white shadow-lg shadow-brand-teal/20 transition-all hover:bg-brand-teal/90 disabled:opacity-50 active:scale-95"
             >
               {loading ? (
                 <Loader2 size={20} className="animate-spin" />

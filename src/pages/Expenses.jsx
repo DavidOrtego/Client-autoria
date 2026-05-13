@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { PiggyBank, Loader2, Plus, Home, ArrowUpRight, BanknoteArrowDown, Search, Calendar, MoreVertical, Trash2, Edit2 } from 'lucide-react';
+import { PiggyBank, Home, ArrowUpRight, BanknoteArrowDown, Search, Calendar, MoreVertical, Trash2, Edit2 } from 'lucide-react';
 import request from '../lib/api';
 import { useAuth } from '../context/authContext';
-import CreateExpenseModal from '../components/CreateExpenseModal';
+import CreateExpenseModal from '../components/modals/CreateExpenseModal';
 import defaultUserAvatar from '../assets/defaultUser.png';
+import PageHeader from '../components/ui/PageHeader';
+import StatsCard from '../components/ui/StatsCard';
+import LoadingState from '../components/ui/LoadingState';
+import EmptyState from '../components/ui/EmptyState';
 
 const Expenses = () => {
   const { user } = useAuth();
@@ -31,7 +35,7 @@ const Expenses = () => {
 
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this expense?')) return;
-    
+
     try {
       await request(`/expenses/${id}`, { method: 'DELETE', auth: true });
       fetchExpenses();
@@ -49,11 +53,11 @@ const Expenses = () => {
   const myTotalSpent = myExpenses.reduce((acc, curr) => acc + Number(curr.amount), 0);
 
   const filteredExpenses = expenses.filter(exp => {
-    const matchesSearch = 
+    const matchesSearch =
       exp.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       exp.house_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       exp.user_name?.toLowerCase().includes(searchQuery.toLowerCase());
-    
+
     if (viewMode === 'mine') {
       return matchesSearch && exp.id_user === user?.id_user;
     }
@@ -63,70 +67,51 @@ const Expenses = () => {
   return (
     <div className="animate-fade-in space-y-8 pb-10">
       {/* Header */}
-      <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-        <div>
-          <h1 className="font-outfit text-4xl font-bold text-slate-900 flex items-center gap-3">
-            <PiggyBank className="text-brand-teal" size={36} />
-            Expenses
-          </h1>
-          <p className="text-slate-500 mt-1">
-            Manage and track shared house expenses.
-          </p>
-        </div>
-        
-        <button 
-          onClick={() => {
-            setEditingExpense(null);
-            setIsCreateModalOpen(true);
-          }}
-          className="flex items-center justify-center gap-2 rounded-2xl bg-brand-teal px-6 py-3 font-bold text-white shadow-lg shadow-brand-teal/20 transition-all hover:bg-brand-teal/90 hover:shadow-xl active:scale-95"
-        >
-          <Plus size={20} />
-          <span>Add Expense</span>
-        </button>
-      </div>
+      <PageHeader
+        title="Expenses"
+        description="Manage and track shared house expenses."
+        icon={PiggyBank}
+        buttonText="Add Expense"
+        onButtonClick={() => {
+          setEditingExpense(null);
+          setIsCreateModalOpen(true);
+        }}
+      />
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        <div className="glass-card relative overflow-hidden flex flex-col gap-1 rounded-3xl p-6 bg-gradient-to-br from-brand-teal/5 to-transparent border-brand-teal/10">
-          <div className="absolute top-0 right-0 p-4 opacity-10">
-            <PiggyBank size={80} />
-          </div>
-          <span className="text-sm font-semibold text-slate-500 uppercase tracking-wider">Total House Spending</span>
-          <span className="font-outfit text-4xl font-black text-slate-900 mt-2">
-            {totalSpent.toLocaleString('es-ES', { style: 'currency', currency: 'EUR' })}
-          </span>
-          <div className="mt-4 flex items-center gap-2 text-brand-teal text-sm font-bold bg-brand-teal/10 w-fit px-3 py-1 rounded-full">
-            <ArrowUpRight size={16} />
-            <span>All time</span>
-          </div>
-        </div>
+        <StatsCard
+          title="Total House Spending"
+          value={totalSpent.toLocaleString('es-ES', { style: 'currency', currency: 'EUR' })}
+          subtitle="All time"
+          icon={PiggyBank}
+          gradient="from-brand-teal/5 to-transparent"
+          iconColor="text-brand-teal"
+          tagBg="bg-brand-teal/10"
+        />
 
-        <div className="glass-card relative overflow-hidden flex flex-col gap-1 rounded-3xl p-6 bg-gradient-to-br from-indigo-500/5 to-transparent border-indigo-500/10">
-          <div className="absolute top-0 right-0 p-4 opacity-10 text-indigo-500">
-            <BanknoteArrowDown size={80} />
-          </div>
-          <span className="text-sm font-semibold text-slate-500 uppercase tracking-wider">My Contributions</span>
-          <span className="font-outfit text-4xl font-black text-slate-900 mt-2">
-            {myTotalSpent.toLocaleString('es-ES', { style: 'currency', currency: 'EUR' })}
-          </span>
-          <div className="mt-4 flex items-center gap-2 text-indigo-600 text-sm font-bold bg-indigo-50 w-fit px-3 py-1 rounded-full">
-            <span>{myExpenses.length} expenses recorded</span>
-          </div>
-        </div>
+        <StatsCard
+          title="My Contributions"
+          value={myTotalSpent.toLocaleString('es-ES', { style: 'currency', currency: 'EUR' })}
+          subtitle={`${myExpenses.length} expenses recorded`}
+          icon={BanknoteArrowDown}
+          gradient="from-indigo-500/5 to-transparent"
+          iconColor="text-indigo-500"
+          tagBg="bg-indigo-50"
+        />
 
-        <div className="glass-card hidden lg:flex relative overflow-hidden flex-col gap-1 rounded-3xl p-6 bg-gradient-to-br from-amber-500/5 to-transparent border-amber-500/10">
-          <div className="absolute top-0 right-0 p-4 opacity-10 text-indigo-500">
-            <Home size={80} />
-          </div>
-          <span className="text-sm font-semibold text-slate-500 uppercase tracking-wider">Active Houses</span>
-          <span className="font-outfit text-4xl font-black text-slate-900 mt-2">
-            {[...new Set(expenses.map(e => e.id_house))].length}
-          </span>
-          <p className="text-slate-400 text-sm mt-4">Houses with shared activity</p>
-        </div>
+        <StatsCard
+          title="Active Houses"
+          value={[...new Set(expenses.map(e => e.id_house))].length}
+          subtitle="Houses with shared activity"
+          icon={Home}
+          gradient="from-amber-500/5 to-transparent"
+          iconColor="text-amber-500"
+          hiddenOnMobile={true}
+          tagBg="bg-amber-50"
+        />
       </div>
-      
+
       {/* Filters and Search */}
       <div className="space-y-4">
         <div className="flex flex-col md:flex-row gap-4">
@@ -142,25 +127,23 @@ const Expenses = () => {
               className="w-full rounded-2xl border-none bg-white py-4 pl-12 pr-4 text-slate-900 shadow-sm ring-1 ring-slate-200 transition-all focus:ring-2 focus:ring-brand-teal/50 outline-none"
             />
           </div>
-          
+
           <div className="flex p-1 bg-white rounded-2xl shadow-sm ring-1 ring-slate-200 min-w-fit">
-            <button 
+            <button
               onClick={() => setViewMode('all')}
-              className={`px-6 py-3 rounded-xl text-sm font-bold transition-all ${
-                viewMode === 'all' 
-                  ? 'bg-brand-teal text-white shadow-lg shadow-brand-teal/20' 
-                  : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50'
-              }`}
+              className={`px-6 py-3 rounded-xl text-sm font-bold transition-all ${viewMode === 'all'
+                ? 'bg-brand-teal text-white shadow-lg shadow-brand-teal/20'
+                : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50'
+                }`}
             >
               All Expenses
             </button>
-            <button 
+            <button
               onClick={() => setViewMode('mine')}
-              className={`px-6 py-3 rounded-xl text-sm font-bold transition-all ${
-                viewMode === 'mine' 
-                  ? 'bg-brand-teal text-white shadow-lg shadow-brand-teal/20' 
-                  : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50'
-              }`}
+              className={`px-6 py-3 rounded-xl text-sm font-bold transition-all ${viewMode === 'mine'
+                ? 'bg-brand-teal text-white shadow-lg shadow-brand-teal/20'
+                : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50'
+                }`}
             >
               My Expenses
             </button>
@@ -171,14 +154,11 @@ const Expenses = () => {
       {/* Expenses Table/List */}
       <div className="glass-card rounded-3xl overflow-hidden border-slate-200 shadow-xl shadow-slate-200/20 bg-white">
         {loading ? (
-          <div className="flex flex-col items-center justify-center py-20 gap-4">
-            <Loader2 size={48} className="animate-spin text-brand-teal" />
-            <p className="text-slate-500 font-medium">Loading transactions...</p>
-          </div>
+          <LoadingState message="Loading transactions..." />
         ) : error ? (
           <div className="flex flex-col items-center justify-center py-12 px-6 text-center">
             <p className="text-red-500 font-semibold mb-4">{error}</p>
-            <button 
+            <button
               onClick={fetchExpenses}
               className="rounded-xl bg-slate-900 px-6 py-2 text-white font-bold transition-all hover:bg-slate-800"
             >
@@ -223,11 +203,11 @@ const Expenses = () => {
                       <div className="flex items-center gap-2">
                         <div className="w-8 h-8 rounded-full overflow-hidden bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold text-xs ring-2 ring-white">
                           {expense.user_image ? (
-                            <img 
-                              src={expense.user_image} 
-                              alt={expense.user_name} 
-                              className="w-full h-full object-cover" 
-                              onError={(e) => { e.target.src = defaultUserAvatar; }} 
+                            <img
+                              src={expense.user_image}
+                              alt={expense.user_name}
+                              className="w-full h-full object-cover"
+                              onError={(e) => { e.target.src = defaultUserAvatar; }}
                             />
                           ) : (
                             <span>{expense.user_name?.charAt(0)}</span>
@@ -243,7 +223,7 @@ const Expenses = () => {
                     </td>
                     <td className="px-6 py-5 whitespace-nowrap text-right">
                       <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button 
+                        <button
                           onClick={() => {
                             setEditingExpense(expense);
                             setIsCreateModalOpen(true);
@@ -252,7 +232,7 @@ const Expenses = () => {
                         >
                           <Edit2 size={18} />
                         </button>
-                        <button 
+                        <button
                           onClick={() => handleDelete(expense.id_expense)}
                           className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"
                         >
@@ -269,31 +249,19 @@ const Expenses = () => {
             </table>
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center py-20 px-6 text-center">
-            <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center text-slate-200 mb-6 border-2 border-dashed border-slate-200">
-              <PiggyBank size={40} />
-            </div>
-            <h3 className="font-outfit text-2xl font-bold text-slate-800 mb-2">No expenses found</h3>
-            <p className="text-slate-500 max-w-sm mb-8">
-              {searchQuery 
-                ? `No results for "${searchQuery}". Try another search term.` 
-                : "You haven't recorded any expenses yet. Start tracking your shared costs!"}
-            </p>
-            {!searchQuery && (
-              <button 
-                onClick={() => setIsCreateModalOpen(true)}
-                className="flex items-center gap-2 rounded-2xl bg-brand-teal px-8 py-3 font-bold text-white shadow-lg shadow-brand-teal/20 transition-all hover:bg-brand-teal/90"
-              >
-                <Plus size={20} />
-                <span>Add first expense</span>
-              </button>
-            )}
-          </div>
+          <EmptyState
+            icon={PiggyBank}
+            title="No expenses found"
+            description={searchQuery ? `No results for "${searchQuery}". Try another search term.` : "You haven't recorded any expenses yet. Start tracking your shared costs!"}
+            buttonText="Add first expense"
+            onButtonClick={() => setIsCreateModalOpen(true)}
+            isSearch={!!searchQuery}
+          />
         )}
       </div>
 
       {/* Modal */}
-      <CreateExpenseModal 
+      <CreateExpenseModal
         isOpen={isCreateModalOpen}
         onClose={() => {
           setIsCreateModalOpen(false);

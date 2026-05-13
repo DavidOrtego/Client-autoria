@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { X, Home, MapPin, DoorClosed, Loader2 } from "lucide-react";
-import request from "../lib/api";
+import request from "../../lib/api";
 
 const CreateHouseModal = ({ isOpen, onClose, onSuccess }) => {
   const [formData, setFormData] = useState({
@@ -63,7 +63,7 @@ const CreateHouseModal = ({ isOpen, onClose, onSuccess }) => {
   };
 
   return createPortal(
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6">
+    <div className="fixed inset-0 z-9999 flex items-center justify-center p-4 sm:p-6">
       {/* Backdrop */}
       <div
         className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm animate-fade-in"
@@ -167,7 +167,7 @@ const CreateHouseModal = ({ isOpen, onClose, onSuccess }) => {
             <button
               type="submit"
               disabled={isLoading}
-              className="flex-[2] flex items-center justify-center gap-2 rounded-2xl bg-brand-teal py-4 font-bold text-white shadow-lg shadow-brand-teal/20 transition-all hover:bg-brand-teal/90 disabled:opacity-50 active:scale-95"
+              className="flex-2 flex items-center justify-center gap-2 rounded-2xl bg-brand-teal py-4 font-bold text-white shadow-lg shadow-brand-teal/20 transition-all hover:bg-brand-teal/90 disabled:opacity-50 active:scale-95"
             >
               {isLoading ? (
                 <Loader2 size={20} className="animate-spin" />
