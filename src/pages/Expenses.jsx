@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { PiggyBank, Loader2, Plus, ArrowUpRight, BanknoteArrowDown, Search, Calendar, MoreVertical, Trash2, Edit2 } from 'lucide-react';
+import { PiggyBank, Loader2, Plus, Home, ArrowUpRight, BanknoteArrowDown, Search, Calendar, MoreVertical, Trash2, Edit2 } from 'lucide-react';
 import request from '../lib/api';
 import { useAuth } from '../context/authContext';
 import CreateExpenseModal from '../components/CreateExpenseModal';
+import defaultUserAvatar from '../assets/defaultUser.png';
 
 const Expenses = () => {
   const { user } = useAuth();
@@ -115,6 +116,9 @@ const Expenses = () => {
         </div>
 
         <div className="glass-card hidden lg:flex relative overflow-hidden flex-col gap-1 rounded-3xl p-6 bg-gradient-to-br from-amber-500/5 to-transparent border-amber-500/10">
+          <div className="absolute top-0 right-0 p-4 opacity-10 text-indigo-500">
+            <Home size={80} />
+          </div>
           <span className="text-sm font-semibold text-slate-500 uppercase tracking-wider">Active Houses</span>
           <span className="font-outfit text-4xl font-black text-slate-900 mt-2">
             {[...new Set(expenses.map(e => e.id_house))].length}
@@ -217,8 +221,17 @@ const Expenses = () => {
                     </td>
                     <td className="px-6 py-5 whitespace-nowrap">
                       <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold text-xs">
-                          {expense.user_name?.charAt(0)}
+                        <div className="w-8 h-8 rounded-full overflow-hidden bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold text-xs ring-2 ring-white">
+                          {expense.user_image ? (
+                            <img 
+                              src={expense.user_image} 
+                              alt={expense.user_name} 
+                              className="w-full h-full object-cover" 
+                              onError={(e) => { e.target.src = defaultUserAvatar; }} 
+                            />
+                          ) : (
+                            <span>{expense.user_name?.charAt(0)}</span>
+                          )}
                         </div>
                         <span className="text-slate-700 font-semibold">{expense.user_name}</span>
                       </div>

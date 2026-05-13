@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
-import { X, Home, MapPin, Hash, Image as ImageIcon } from "lucide-react";
+import { X, Home, MapPin, DoorClosed, Loader2 } from "lucide-react";
 import request from "../lib/api";
 
 const CreateHouseModal = ({ isOpen, onClose, onSuccess }) => {
@@ -63,109 +63,123 @@ const CreateHouseModal = ({ isOpen, onClose, onSuccess }) => {
   };
 
   return createPortal(
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-slate-900/60 backdrop-blur-md animate-fade-in"
+        className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm animate-fade-in"
         onClick={onClose}
       />
 
       {/* Modal Container */}
-      <div className="relative bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+      <div className="relative w-full max-w-lg overflow-hidden rounded-3xl bg-white shadow-2xl animate-scale-in">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100">
-          <h2 className="text-xl font-bold font-outfit text-slate-800">
+        <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/50 px-6 py-4">
+          <h2 className="font-outfit text-xl font-bold text-slate-900">
             Create New House
           </h2>
           <button
             onClick={onClose}
-            className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-full transition-colors"
+            className="rounded-full p-2 text-slate-400 transition-colors hover:bg-slate-200 hover:text-slate-600"
           >
             <X size={20} />
           </button>
         </div>
 
         {/* Content */}
-        <div className="p-6">
-          {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-1">
-                House Name <span className="text-red-500">*</span>
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Home size={18} className="text-slate-400" />
-                </div>
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                  className="block w-full pl-10 pr-3 py-2.5 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-teal focus:border-brand-teal transition-colors"
-                  placeholder="e.g. My Awesome House"
-                />
-              </div>
+        <form onSubmit={handleSubmit} className="p-6 space-y-5">
+          {error && (
+            <div className="rounded-xl bg-red-50 p-4 text-sm font-medium text-red-600 border border-red-100">
+              {error}
             </div>
-            <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-1">
-                Address (Optional)
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <MapPin size={18} className="text-slate-400" />
-                </div>
-                <input
-                  type="text"
-                  name="address"
-                  value={formData.address}
-                  onChange={handleChange}
-                  className="block w-full pl-10 pr-3 py-2.5 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-teal focus:border-brand-teal transition-colors"
-                  placeholder="e.g. 123 Main St"
-                />
-              </div>
-            </div>
-            <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-1">
-                Number of Rooms (Optional)
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Hash size={18} className="text-slate-400" />
-                </div>
-                <input
-                  type="number"
-                  min="1"
-                  name="number_of_rooms"
-                  value={formData.number_of_rooms}
-                  onChange={handleChange}
-                  className="block w-full pl-10 pr-3 py-2.5 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-teal focus:border-brand-teal transition-colors"
-                  placeholder="e.g. 3"
-                />
-              </div>
+          )}
 
-              {error && (
-                <div className="bg-red-50 text-red-600 p-3 rounded-xl text-sm font-semibold border border-red-100 flex items-center justify-center">
-                  {error}
-                </div>
+          {/* House Name */}
+          <div className="space-y-2">
+            <label className="text-sm font-bold text-slate-700 ml-1">
+              House Name <span className="text-red-500">*</span>
+            </label>
+            <div className="relative group">
+              <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-brand-teal transition-colors">
+                <Home size={20} />
+              </div>
+              <input
+                required
+                type="text"
+                name="name"
+                placeholder="My Awesome House"
+                value={formData.name}
+                onChange={handleChange}
+                className="w-full rounded-2xl border-slate-200 bg-slate-50 py-4 pl-12 pr-4 text-slate-900 transition-all focus:border-brand-teal focus:bg-white focus:ring-4 focus:ring-brand-teal/10 outline-none"
+              />
+            </div>
+          </div>
+
+          {/* Address */}
+          <div className="space-y-2">
+            <label className="text-sm font-bold text-slate-700 ml-1">
+              Address (Optional)
+            </label>
+            <div className="relative group">
+              <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-brand-teal transition-colors">
+                <MapPin size={20} />
+              </div>
+              <input
+                type="text"
+                name="address"
+                placeholder="123 Main St"
+                value={formData.address}
+                onChange={handleChange}
+                className="w-full rounded-2xl border-slate-200 bg-slate-50 py-4 pl-12 pr-4 text-slate-900 transition-all focus:border-brand-teal focus:bg-white focus:ring-4 focus:ring-brand-teal/10 outline-none"
+              />
+            </div>
+          </div>
+
+          {/* Number of Rooms */}
+          <div className="space-y-2">
+            <label className="text-sm font-bold text-slate-700 ml-1">
+              Number of Rooms (Optional)
+            </label>
+            <div className="relative group">
+              <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-brand-teal transition-colors">
+                <DoorClosed size={20} />
+              </div>
+              <input
+                type="number"
+                min="1"
+                name="number_of_rooms"
+                placeholder="3"
+                value={formData.number_of_rooms}
+                onChange={handleChange}
+                className="w-full rounded-2xl border-slate-200 bg-slate-50 py-4 pl-12 pr-4 text-slate-900 transition-all focus:border-brand-teal focus:bg-white focus:ring-4 focus:ring-brand-teal/10 outline-none"
+              />
+            </div>
+          </div>
+
+          {/* Footer Actions */}
+          <div className="pt-4 flex gap-3">
+            <button
+              type="button"
+              onClick={onClose}
+              className="flex-1 rounded-2xl border border-slate-200 py-4 font-bold text-slate-600 transition-all hover:bg-slate-50 active:scale-95"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="flex-[2] flex items-center justify-center gap-2 rounded-2xl bg-brand-teal py-4 font-bold text-white shadow-lg shadow-brand-teal/20 transition-all hover:bg-brand-teal/90 disabled:opacity-50 active:scale-95"
+            >
+              {isLoading ? (
+                <Loader2 size={20} className="animate-spin" />
+              ) : (
+                "Create House"
               )}
-
-              <div className="pt-4">
-                <button
-                  type="submit"
-                  disabled={isLoading}
-                  className="w-full bg-brand-teal text-white font-bold py-3 px-4 rounded-xl hover:bg-brand-teal/90 hover:shadow-lg transition-all active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed"
-                >
-                  {isLoading ? "Creating..." : "Create House"}
-                </button>
-              </div>
-            </div>
-          </form>
-        </div>
+            </button>
+          </div>
+        </form>
       </div>
     </div>,
-    document.body,
+    document.body
   );
 };
 
