@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
-  Users, ClipboardList, PiggyBank, Settings, MapPin, DoorClosed, UserPlus, Trash2, Calendar, Plus, Edit2
+  Users, ClipboardList, PiggyBank, Settings, MapPin, DoorClosed, UserPlus, Trash2, Calendar, Plus, Edit2, TrendingUp
 } from 'lucide-react';
 import request from '../lib/api';
 import { useAuth } from '../context/authContext';
@@ -9,6 +9,7 @@ import LoadingState from '../components/ui/LoadingState';
 import EmptyState from '../components/ui/EmptyState';
 import AddMemberModal from '../components/modals/AddMemberModal';
 import CreateTaskModal from '../components/modals/CreateTaskModal';
+import CreateExpenseModal from '../components/modals/CreateExpenseModal';
 import defaultUserAvatar from '../assets/defaultUser.png';
 import casa1 from '../assets/casa1.png';
 import casa2 from '../assets/casa2.png';
@@ -43,6 +44,9 @@ const HouseDetail = () => {
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
   const [taskFilter, setTaskFilter] = useState('pending');
+  const [isExpenseModalOpen, setIsExpenseModalOpen] = useState(false);
+  const [editingExpense, setEditingExpense] = useState(null);
+  const [showExpenseBreakdown, setShowExpenseBreakdown] = useState(false);
 
   const fetchHouseData = useCallback(async (showLoading = true) => {
     try {
@@ -121,6 +125,22 @@ const HouseDetail = () => {
     }
   };
 
+  const handleDeleteExpense = async (expenseId) => {
+    if (!window.confirm("Are you sure you want to delete this expense?")) return;
+
+    // Actualización rápida
+    const prevExpenses = [...expenses];
+    setExpenses(expenses.filter(e => e.id_expense !== expenseId));
+
+    try {
+      await request(`/expenses/${expenseId}`, { method: "DELETE", auth: true });
+      fetchHouseData(false);
+    } catch (err) {
+      setExpenses(prevExpenses);
+      alert("Error deleting expense: " + err.message);
+    }
+  };
+
   const tabs = [
     { id: 'members', label: 'Members', icon: Users },
     { id: 'tasks', label: 'Tasks', icon: ClipboardList },
@@ -133,6 +153,23 @@ const HouseDetail = () => {
   const imagenAMostrar = obtenerImagenNivel(calculatedLevel);
 
   const filteredTasks = useMemo(() => tasks.filter(t => t.state === taskFilter), [tasks, taskFilter]);
+
+  const totalHouseSpending = useMemo(
+    () => expenses.reduce((acc, curr) => acc + Number(curr.amount), 0),
+    [expenses]
+  );
+
+  const expensesBreakdown = useMemo(() => {
+    const breakdown = expenses.reduce((acc, expense) => {
+      const userId = expense.id_user;
+      if (!acc[userId]) {
+        acc[userId] = { name: expense.user_name, image: expense.user_image, total: 0 };
+      }
+      acc[userId].total += Number(expense.amount);
+      return acc;
+    }, {});
+    return Object.values(breakdown).sort((a, b) => b.total - a.total);
+  }, [expenses]);
 
   if (loading) return <LoadingState message="Loading house details..." />;
 
@@ -242,6 +279,7 @@ const HouseDetail = () => {
                 <p className="text-slate-500 font-medium">
                   {activeTab === 'members' && 'Manage who has access to this house.'}
                   {activeTab === 'tasks' && 'Chores and responsibilities for this home.'}
+                  {activeTab === 'expenses' && 'Track shared spending and contributions.'}
                 </p>
               </div>
 
@@ -263,6 +301,18 @@ const HouseDetail = () => {
                 >
                   <Plus size={20} />
                   <span>Add Task</span>
+                </button>
+              )}
+              {activeTab === 'expenses' && (
+                <button
+                  onClick={() => {
+                    setEditingExpense(null);
+                    setIsExpenseModalOpen(true);
+                  }}
+                  className="bg-brand-teal text-white flex items-center gap-2 px-5 py-3 rounded-2xl shadow-lg shadow-brand-teal/20 hover:scale-105 transition-all font-bold"
+                >
+                  <Plus size={20} />
+                  <span>Add Expense</span>
                 </button>
               )}
             </div>
@@ -415,6 +465,120 @@ const HouseDetail = () => {
                   </div>
                 </div>
               )}
+
+              {activeTab === 'expenses' && (
+                <div className="space-y-4">
+                  {expenses.length > 0 ? (
+                    <div className="space-y-4">
+                      {/* Resumen de gastos */}
+                      <div
+                        onClick={() => setShowExpenseBreakdown(!showExpenseBreakdown)}
+                        className="cursor-pointer transition-all duration-500 transform hover:scale-[1.01] active:scale-[0.99] mb-8"
+                      >
+                        {!showExpenseBreakdown ? (
+                          <div className="bg-gradient-to-br from-slate-900 to-slate-800 p-10 rounded-[3rem] text-white flex items-center justify-between shadow-2xl shadow-slate-900/20 relative overflow-hidden group">
+                            <div className="absolute top-0 right-0 w-64 h-64 bg-brand-teal/10 rounded-full blur-3xl -mr-20 -mt-20 group-hover:bg-brand-teal/20 transition-all duration-700" />
+                            <div className="relative z-10">
+                              <p className="text-slate-400 font-bold uppercase tracking-[0.2em] text-[10px] mb-2 flex items-center gap-3">
+                                Total House Spending
+                                <span className="bg-white/10 text-white px-2.5 py-1 rounded-full text-[9px] font-black tracking-widest border border-white/10 group-hover:bg-brand-teal/20 transition-colors">CLICK FOR BREAKDOWN</span>
+                              </p>
+                              <h4 className="text-5xl font-black">
+                                {totalHouseSpending.toLocaleString('es-ES', { style: 'currency', currency: 'EUR' })}
+                              </h4>
+                            </div>
+                            <div className="relative z-10 bg-white/10 p-5 rounded-4xl backdrop-blur-md border border-white/10 group-hover:rotate-12 transition-transform duration-500">
+                              <TrendingUp size={40} className="text-brand-teal" />
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="bg-white p-10 rounded-[3rem] border border-slate-100 shadow-2xl shadow-slate-200/40 flex flex-col justify-center relative overflow-hidden group">
+                            <div className="flex items-center justify-between mb-8">
+                              <h4 className="text-xs font-black text-slate-400 uppercase tracking-widest flex items-center gap-3">
+                                Spending Breakdown
+                                <span className="bg-slate-100 text-slate-500 px-2.5 py-1 rounded-full text-[9px] font-black tracking-widest group-hover:bg-slate-200 transition-colors">CLICK FOR TOTAL</span>
+                              </h4>
+                            </div>
+                            <div className="flex overflow-x-auto gap-6 pb-2 no-scrollbar">
+                              {expensesBreakdown.map((member, idx) => (
+                                <div key={idx} className="min-w-[140px] p-5 rounded-4xl bg-slate-50 border border-slate-100 flex flex-col items-center text-center hover:bg-white hover:shadow-xl transition-all group/member">
+                                  <div className="w-14 h-14 rounded-[1.2rem] overflow-hidden bg-white mb-4 shadow-sm border border-slate-100 group-hover/member:scale-110 transition-transform">
+                                    <img
+                                      src={member.image || defaultUserAvatar}
+                                      alt={member.name}
+                                      className="w-full h-full object-cover"
+                                      onError={(e) => { e.target.src = defaultUserAvatar; }}
+                                    />
+                                  </div>
+                                  <p className="font-bold text-slate-900 text-sm truncate w-full mb-1">{member.name}</p>
+                                  <p className="font-black text-brand-teal text-lg">{member.total.toLocaleString('es-ES', { style: 'currency', currency: 'EUR' })}</p>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Historial de transacciones */}
+                      <div className="space-y-4">
+                        {expenses.sort((a, b) => new Date(b.date) - new Date(a.date)).map((expense) => (
+                          <div key={expense.id_expense} className="group flex items-center justify-between p-6 rounded-[2.5rem] bg-white border border-slate-100 hover:border-brand-teal/30 hover:shadow-2xl hover:shadow-slate-200/50 transition-all">
+                            <div className="flex items-center gap-5">
+                              <div className="w-16 h-16 rounded-3xl bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-brand-teal group-hover:text-white transition-all duration-500 rotate-3 group-hover:rotate-0">
+                                <PiggyBank size={28} />
+                              </div>
+                              <div>
+                                <h5 className="font-black text-slate-900 text-xl leading-tight mb-1">{expense.description}</h5>
+                                <div className="flex items-center gap-3">
+                                  <div className="flex items-center gap-1.5 text-slate-400 text-[11px] font-bold">
+                                    <Calendar size={14} className="text-brand-teal" />
+                                    <span>{new Date(expense.date).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
+                                  </div>
+                                  <div className="w-1.5 h-1.5 rounded-full bg-slate-200" />
+                                  <div className="flex items-center gap-2">
+                                    <div className="w-5 h-5 rounded-md overflow-hidden border border-slate-100">
+                                      <img src={expense.user_image || defaultUserAvatar} alt={expense.user_name} className="w-full h-full object-cover" />
+                                    </div>
+                                    <span className="font-bold text-slate-500 text-[11px] uppercase tracking-tight">Paid by {expense.user_name}</span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-4">
+                              <span className="text-3xl font-black text-slate-900 tabular-nums mr-4">
+                                {Number(expense.amount).toLocaleString('es-ES', { style: 'currency', currency: 'EUR' })}
+                              </span>
+                              <div className="flex items-center opacity-0 group-hover:opacity-100 transition-opacity gap-1">
+                                <button
+                                  onClick={() => {
+                                    setEditingExpense(expense);
+                                    setIsExpenseModalOpen(true);
+                                  }}
+                                  className="p-3 text-slate-400 hover:text-brand-teal hover:bg-brand-teal/5 rounded-2xl transition-all"
+                                >
+                                  <Edit2 size={20} />
+                                </button>
+                                <button
+                                  onClick={() => handleDeleteExpense(expense.id_expense)}
+                                  className="p-3 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-2xl transition-all"
+                                >
+                                  <Trash2 size={20} />
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ) : (
+                    <EmptyState
+                      icon={PiggyBank}
+                      title="No expenses found"
+                      description="Start tracking house costs together."
+                    />
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -428,6 +592,17 @@ const HouseDetail = () => {
         }}
         onSuccess={() => fetchHouseData(false)}
         task={editingTask}
+        initialHouseId={id}
+      />
+
+      <CreateExpenseModal
+        isOpen={isExpenseModalOpen}
+        onClose={() => {
+          setIsExpenseModalOpen(false);
+          setEditingExpense(null);
+        }}
+        onSuccess={() => fetchHouseData(false)}
+        expense={editingExpense}
         initialHouseId={id}
       />
 
