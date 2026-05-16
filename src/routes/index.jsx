@@ -6,6 +6,7 @@ import Tasks from '../pages/Tasks';
 import Login from '../pages/Login';
 import SignUp from '../pages/SignUp';
 import LandingPage from '../pages/LandingPage';
+import HouseDetail from '../pages/HouseDetail';
 import { AuthProvider } from '../context/authContext';
 
 export const router = createBrowserRouter([
@@ -40,6 +41,10 @@ export const router = createBrowserRouter([
             {
               path: 'tasks',
               element: <Tasks />,
+            },
+            {
+              path: 'house/:id',
+              element: <HouseDetail />,
             },
             {
               path: '*',
