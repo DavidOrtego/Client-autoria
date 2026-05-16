@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
-  Users, ClipboardList, PiggyBank, Settings, MapPin, DoorClosed
+  Users, ClipboardList, PiggyBank, Settings, MapPin, DoorClosed, UserPlus, Trash2, Calendar
 } from 'lucide-react';
 import request from '../lib/api';
 import { useAuth } from '../context/authContext';
 import LoadingState from '../components/ui/LoadingState';
+import EmptyState from '../components/ui/EmptyState';
+import AddMemberModal from '../components/modals/AddMemberModal';
 import defaultUserAvatar from '../assets/defaultUser.png';
 import casa1 from '../assets/casa1.png';
 import casa2 from '../assets/casa2.png';
@@ -36,6 +38,7 @@ const HouseDetail = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState('members');
+  const [isAddMemberModalOpen, setIsAddMemberModalOpen] = useState(false);
 
   const fetchHouseData = useCallback(async (showLoading = true) => {
     try {
@@ -63,6 +66,22 @@ const HouseDetail = () => {
   useEffect(() => {
     fetchHouseData();
   }, [fetchHouseData]);
+
+  const handleRemoveMember = async (userId) => {
+    if (!window.confirm('Are you sure you want to remove this member?')) return;
+
+    // Actualización visual inmediata
+    const prevMembers = [...members];
+    setMembers(members.filter(m => m.id_user !== userId));
+
+    try {
+      await request(`/house-members/house/${id}/user/${userId}`, { method: 'DELETE', auth: true });
+      fetchHouseData(false);
+    } catch (err) {
+      setMembers(prevMembers);
+      alert('Error removing member: ' + err.message);
+    }
+  };
 
   const tabs = [
     { id: 'members', label: 'Members', icon: Users },
@@ -180,13 +199,85 @@ const HouseDetail = () => {
             <div className="p-8 border-b border-slate-100 flex items-center justify-between bg-slate-50/30">
               <div>
                 <h2 className="text-2xl font-black text-slate-900 capitalize">{activeTab}</h2>
+                <p className="text-slate-500 font-medium">
+                  {activeTab === 'members' && 'Manage who has access to this house.'}
+                </p>
               </div>
+
+              {activeTab === 'members' && (
+                <button
+                  onClick={() => setIsAddMemberModalOpen(true)}
+                  className="bg-brand-teal text-white p-3 rounded-2xl shadow-lg shadow-brand-teal/20 hover:scale-105 transition-all"
+                >
+                  <UserPlus size={20} />
+                </button>
+              )}
             </div>
             <div className="p-8 flex-1 bg-white">
+              {activeTab === 'members' && (
+                <div className="space-y-6">
+                  {members.length > 0 ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      {members.map((member) => (
+                        <div key={member.id_user} className="flex items-center justify-between p-6 rounded-[2.5rem] bg-slate-50 border border-slate-100 hover:bg-white hover:shadow-xl hover:shadow-slate-200/50 transition-all group border-b-4 border-b-transparent hover:border-b-brand-teal">
+                          <div className="flex items-center gap-5">
+                            <div className="w-16 h-16 rounded-3xl overflow-hidden bg-white border-2 border-white shadow-md group-hover:rotate-3 transition-transform">
+                              <img
+                                src={member.image || member.user_image || defaultUserAvatar}
+                                alt={member.name || member.user_name}
+                                className="w-full h-full object-cover"
+                                onError={(e) => { e.target.src = defaultUserAvatar; }}
+                              />
+                            </div>
+                            <div>
+                              <p className="font-black text-xl text-slate-900 leading-tight">{member.name || member.user_name}</p>
+                              <p className="text-xs font-bold text-brand-teal uppercase tracking-widest mt-1">{member.email}</p>
+                              <div className="mt-2 flex items-center gap-2">
+                                <span className="bg-white px-2 py-0.5 rounded-full text-[10px] font-bold text-slate-400 border border-slate-100 shadow-xs uppercase">
+                                  {member.rol || 'Member'}
+                                </span>
+                                {member.join_date && (
+                                  <span className="text-[10px] font-medium text-slate-400 flex items-center gap-1">
+                                    <Calendar size={10} />
+                                    Joined {new Date(member.join_date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                          {user?.id_user !== member.id_user && (
+                            <button
+                              onClick={() => handleRemoveMember(member.id_user)}
+                              className="p-3 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-2xl transition-all opacity-0 group-hover:opacity-100"
+                            >
+                              <Trash2 size={20} />
+                            </button>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <EmptyState
+                      icon={Users}
+                      title="No members yet"
+                      description="Invite people to join your house to share tasks and expenses."
+                    />
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </div>
       </div>
+
+      {/* Modal para añadir nuevos miembros */}
+      {isAddMemberModalOpen && (
+        <AddMemberModal
+          onClose={() => setIsAddMemberModalOpen(false)}
+          houseId={id}
+          onSuccess={() => fetchHouseData(false)}
+        />
+      )}
     </div>
   );
 };
