@@ -10,6 +10,7 @@ import EmptyState from '../components/ui/EmptyState';
 import AddMemberModal from '../components/modals/AddMemberModal';
 import CreateTaskModal from '../components/modals/CreateTaskModal';
 import CreateExpenseModal from '../components/modals/CreateExpenseModal';
+import EditHouseModal from '../components/modals/EditHouseModal';
 import defaultUserAvatar from '../assets/defaultUser.png';
 import casa1 from '../assets/casa1.png';
 import casa2 from '../assets/casa2.png';
@@ -47,6 +48,7 @@ const HouseDetail = () => {
   const [isExpenseModalOpen, setIsExpenseModalOpen] = useState(false);
   const [editingExpense, setEditingExpense] = useState(null);
   const [showExpenseBreakdown, setShowExpenseBreakdown] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   const fetchHouseData = useCallback(async (showLoading = true) => {
     try {
@@ -74,6 +76,27 @@ const HouseDetail = () => {
   useEffect(() => {
     fetchHouseData();
   }, [fetchHouseData]);
+
+  const handleDeleteHouse = async () => {
+    if (!window.confirm("Are you absolutely sure you want to delete this house? This action cannot be undone.")) return;
+
+    try {
+      await request(`/houses/${id}`, { method: 'DELETE', auth: true });
+      navigate('/');
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
+  const handleLeaveHouse = async () => {
+    if (!window.confirm('Are you sure you want to leave this house?')) return;
+    try {
+      await request(`/house-members/house/${id}/user/${user?.id_user || user?.id}`, { method: 'DELETE', auth: true });
+      navigate('/vives/home');
+    } catch (err) {
+      alert('Error leaving house: ' + err.message);
+    }
+  };
 
   const handleRemoveMember = async (userId) => {
     if (!window.confirm('Are you sure you want to remove this member?')) return;
@@ -280,6 +303,7 @@ const HouseDetail = () => {
                   {activeTab === 'members' && 'Manage who has access to this house.'}
                   {activeTab === 'tasks' && 'Chores and responsibilities for this home.'}
                   {activeTab === 'expenses' && 'Track shared spending and contributions.'}
+                  {activeTab === 'settings' && 'House configuration and dangerous actions.'}
                 </p>
               </div>
 
@@ -579,6 +603,51 @@ const HouseDetail = () => {
                   )}
                 </div>
               )}
+
+              {activeTab === 'settings' && (
+                <div className="space-y-8 max-w-2xl">
+                  <div className="bg-slate-50 p-8 rounded-4xl border border-slate-100 space-y-6">
+                    <h3 className="text-xl font-bold text-slate-900">General Configuration</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <button
+                        onClick={() => setIsEditModalOpen(true)}
+                        className="flex items-center justify-center gap-3 bg-white border border-slate-200 p-4 rounded-2xl font-bold text-slate-700 hover:bg-slate-50 transition-all shadow-sm"
+                      >
+                        <Edit2 size={18} className="text-brand-teal" />
+                        Edit House Info
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="bg-amber-50 p-8 rounded-4xl border border-amber-100 space-y-6">
+                    <div>
+                      <h3 className="text-xl font-bold text-amber-700">Leave House</h3>
+                      <p className="text-amber-600/70 font-medium text-sm">You will lose access to all tasks and expenses of this house.</p>
+                    </div>
+                    <button
+                      onClick={handleLeaveHouse}
+                      className="flex items-center justify-center gap-3 bg-white text-amber-700 border border-amber-200 p-4 rounded-2xl font-bold hover:bg-amber-100 transition-all shadow-sm"
+                    >
+                      <DoorClosed size={18} />
+                      Leave House
+                    </button>
+                  </div>
+
+                  <div className="bg-red-50 p-8 rounded-4xl border border-red-100 space-y-6">
+                    <div>
+                      <h3 className="text-xl font-bold text-red-600">Danger Zone</h3>
+                      <p className="text-red-500/70 font-medium text-sm">Once you delete a house, there is no going back. Please be certain.</p>
+                    </div>
+                    <button
+                      onClick={handleDeleteHouse}
+                      className="flex items-center justify-center gap-3 bg-red-600 text-white p-4 rounded-2xl font-bold hover:bg-red-700 transition-all shadow-lg shadow-red-200"
+                    >
+                      <Trash2 size={18} />
+                      Delete House
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -612,6 +681,15 @@ const HouseDetail = () => {
           onClose={() => setIsAddMemberModalOpen(false)}
           houseId={id}
           onSuccess={() => fetchHouseData(false)}
+        />
+      )}
+
+      {/* Modal para editar la información de la casa */}
+      {isEditModalOpen && (
+        <EditHouseModal
+          onClose={() => setIsEditModalOpen(false)}
+          onSuccess={() => fetchHouseData(false)}
+          house={house}
         />
       )}
     </div>
