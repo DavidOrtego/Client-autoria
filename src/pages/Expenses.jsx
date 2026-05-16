@@ -78,7 +78,7 @@ const Expenses = () => {
         }}
       />
 
-      {/* Summary Cards */}
+      {/* Tarjetas de resumen */}
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         <StatsCard
           title="Total House Spending"
@@ -112,7 +112,7 @@ const Expenses = () => {
         />
       </div>
 
-      {/* Filters and Search */}
+      {/* Filtros y Búsqueda */}
       <div className="space-y-4">
         <div className="flex flex-col md:flex-row gap-4">
           <div className="relative flex-1">
@@ -151,7 +151,7 @@ const Expenses = () => {
         </div>
       </div>
 
-      {/* Expenses Table/List */}
+      {/* Tabla de gastos */}
       <div className="glass-card rounded-3xl overflow-hidden border-slate-200 shadow-xl shadow-slate-200/20 bg-white">
         {loading ? (
           <LoadingState message="Loading transactions..." />

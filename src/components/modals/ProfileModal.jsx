@@ -58,7 +58,7 @@ const ProfileModal = ({ isOpen, onClose }) => {
       }
 
       await updateProfile(dataToSend);
-      onClose(); // Close modal on success
+      onClose();
     } catch (err) {
       setError(err.message || "Failed to update profile");
     } finally {
@@ -68,15 +68,15 @@ const ProfileModal = ({ isOpen, onClose }) => {
 
   return createPortal(
     <div className="fixed inset-0 z-100 flex items-center justify-center p-4 sm:p-6">
-      {/* Backdrop */}
+      {/* Fondo */}
       <div
         className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm animate-fade-in"
         onClick={onClose}
       />
 
-      {/* Modal Container */}
+      {/* Ventana modal */}
       <div className="relative w-full max-w-lg overflow-hidden rounded-3xl bg-white shadow-2xl animate-scale-in">
-        {/* Header */}
+        {/* Cabecera */}
         <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/50 px-6 py-4">
           <h2 className="font-outfit text-xl font-bold text-slate-900">My Profile</h2>
           <button

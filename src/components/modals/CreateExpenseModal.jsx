@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { X, Euro, FileText, Calendar, Home, User, Loader2 } from 'lucide-react';
 import request from '../../lib/api';
 
-const CreateExpenseModal = ({ isOpen, onClose, onSuccess, expense = null }) => {
+const CreateExpenseModal = ({ isOpen, onClose, onSuccess, expense = null, initialHouseId = null }) => {
   const [formData, setFormData] = useState({
     amount: '',
     description: '',
@@ -34,7 +34,7 @@ const CreateExpenseModal = ({ isOpen, onClose, onSuccess, expense = null }) => {
           amount: '',
           description: '',
           date: new Date().toISOString().split('T')[0],
-          id_house: '',
+          id_house: initialHouseId || '',
           id_user: ''
         });
       }

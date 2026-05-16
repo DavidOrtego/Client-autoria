@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import request from "../../lib/api";
 
-const CreateTaskModal = ({ isOpen, onClose, onSuccess, task = null }) => {
+const CreateTaskModal = ({ isOpen, onClose, onSuccess, task = null, initialHouseId = null }) => {
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -74,7 +74,7 @@ const CreateTaskModal = ({ isOpen, onClose, onSuccess, task = null }) => {
           description: "",
           expiration_date: "",
           state: "pending",
-          id_house: "",
+          id_house: initialHouseId || "",
           id_user: "",
         });
       }
@@ -235,7 +235,7 @@ const CreateTaskModal = ({ isOpen, onClose, onSuccess, task = null }) => {
                   className="w-full rounded-2xl border-slate-200 bg-slate-50 py-4 pl-12 pr-4 text-slate-900 transition-all focus:border-brand-teal focus:bg-white focus:ring-4 focus:ring-brand-teal/10 outline-none appearance-none"
                 >
                   <option value="pending">Pending</option>
-                  <option value="completed">Completed</option>
+                  <option value="complete">Completed</option>
                 </select>
               </div>
             </div>

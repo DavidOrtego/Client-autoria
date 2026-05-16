@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Plus, Home as HomeIcon, Search, ClipboardList, PiggyBank } from 'lucide-react';
 import request from '../lib/api';
 import HouseCard from '../components/HouseCard';
@@ -9,6 +10,7 @@ import LoadingState from '../components/ui/LoadingState';
 import EmptyState from '../components/ui/EmptyState';
 
 const Home = () => {
+  const navigate = useNavigate();
   const { user } = useAuth();
   const [houses, setHouses] = useState([]);
   const [pendingTasksCount, setPendingTasksCount] = useState('--');
@@ -31,7 +33,7 @@ const Home = () => {
 
       // Contar tareas pendientes
       const tasks = tasksRes.data || [];
-      const pendingTasks = tasks.filter(task => task.state !== 'completed');
+      const pendingTasks = tasks.filter(task => task.state !== 'complete');
       setPendingTasksCount(pendingTasks.length);
 
       // Calcular gastos totales
@@ -145,7 +147,7 @@ const Home = () => {
             <HouseCard
               key={house.id_house || house.id}
               house={house}
-              onClick={() => console.log('Navigate to house:', house.id_house || house.id)}
+              onClick={() => navigate(`/vives/house/${house.id_house || house.id}`)}
             />
           ))}
         </div>

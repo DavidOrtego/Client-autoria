@@ -13,7 +13,6 @@ const CreateHouseModal = ({ isOpen, onClose, onSuccess }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // Reset form when modal opens
   useEffect(() => {
     if (isOpen) {
       setFormData({
@@ -53,8 +52,8 @@ const CreateHouseModal = ({ isOpen, onClose, onSuccess }) => {
         auth: true,
       });
 
-      onSuccess(); // Refresh the list of houses
-      onClose(); // Close the modal
+      onSuccess();
+      onClose();
     } catch (err) {
       setError(err.message || "Failed to create house");
     } finally {
@@ -64,15 +63,15 @@ const CreateHouseModal = ({ isOpen, onClose, onSuccess }) => {
 
   return createPortal(
     <div className="fixed inset-0 z-9999 flex items-center justify-center p-4 sm:p-6">
-      {/* Backdrop */}
+      {/* Fondo */}
       <div
         className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm animate-fade-in"
         onClick={onClose}
       />
 
-      {/* Modal Container */}
+      {/* Ventana modal */}
       <div className="relative w-full max-w-lg overflow-hidden rounded-3xl bg-white shadow-2xl animate-scale-in">
-        {/* Header */}
+        {/* Cabecera */}
         <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/50 px-6 py-4">
           <h2 className="font-outfit text-xl font-bold text-slate-900">
             Create New House
@@ -85,7 +84,7 @@ const CreateHouseModal = ({ isOpen, onClose, onSuccess }) => {
           </button>
         </div>
 
-        {/* Content */}
+        {/* Contenido */}
         <form onSubmit={handleSubmit} className="p-6 space-y-5">
           {error && (
             <div className="rounded-xl bg-red-50 p-4 text-sm font-medium text-red-600 border border-red-100">

@@ -65,9 +65,9 @@ const Tasks = () => {
     fetchTasks();
   }, []);
 
-  const pendingTasks = tasks.filter((t) => t.state !== "completed");
+  const pendingTasks = tasks.filter((t) => t.state !== "complete");
   const myTasks = tasks.filter((t) => t.id_user === user?.id_user);
-  const myPendingTasks = myTasks.filter((t) => t.state !== "completed");
+  const myPendingTasks = myTasks.filter((t) => t.state !== "complete");
 
   const filteredTasks = tasks.filter((task) => {
     const matchesSearch =
@@ -84,15 +84,15 @@ const Tasks = () => {
 
   const getStatusColor = (state) => {
     switch (state) {
-      case "completed":
+      case "complete":
         return "bg-emerald-100 text-emerald-700 border-emerald-200";
       default:
         return "bg-slate-100 text-slate-600 border-slate-200";
     }
   };
 
-  const activeTasks = filteredTasks.filter((t) => t.state !== "completed");
-  const completedTasks = filteredTasks.filter((t) => t.state === "completed");
+  const activeTasks = filteredTasks.filter((t) => t.state !== "complete");
+  const completedTasks = filteredTasks.filter((t) => t.state === "complete");
 
   return (
     <div className="animate-fade-in space-y-8 pb-10">
@@ -108,7 +108,7 @@ const Tasks = () => {
         }}
       />
 
-      {/* Summary Cards */}
+      {/* tarjetas de resumen */}
       <TaskSummaryCards
         pendingTasks={pendingTasks}
         myPendingTasks={myPendingTasks}
@@ -155,7 +155,7 @@ const Tasks = () => {
         </div>
       </div>
 
-      {/* Tasks Table/List */}
+      {/* Tabla de tareas */}
       <div className="space-y-8">
         {loading ? (
           <div className="glass-card rounded-3xl overflow-hidden border-slate-200 shadow-xl shadow-slate-200/20 bg-white">

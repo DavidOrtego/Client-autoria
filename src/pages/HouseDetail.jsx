@@ -239,7 +239,7 @@ const HouseDetail = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* Información de la casa y estadísticas */}
+        {/* Información de la casa */}
         <div className="lg:col-span-4 space-y-6">
           <div className="glass-card rounded-[2.5rem] overflow-hidden bg-white border border-slate-100 shadow-xl shadow-slate-200/40">
             <div className="relative h-64">
@@ -605,44 +605,45 @@ const HouseDetail = () => {
               )}
 
               {activeTab === 'settings' && (
-                <div className="space-y-8 max-w-2xl">
-                  <div className="bg-slate-50 p-8 rounded-4xl border border-slate-100 space-y-6">
-                    <h3 className="text-xl font-bold text-slate-900">General Configuration</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <button
-                        onClick={() => setIsEditModalOpen(true)}
-                        className="flex items-center justify-center gap-3 bg-white border border-slate-200 p-4 rounded-2xl font-bold text-slate-700 hover:bg-slate-50 transition-all shadow-sm"
-                      >
-                        <Edit2 size={18} className="text-brand-teal" />
-                        Edit House Info
-                      </button>
+                <div className="space-y-4 max-w-2xl">
+                  <div className="bg-slate-50 p-5 rounded-3xl border border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                      <h3 className="text-lg font-bold text-slate-900">General Configuration</h3>
+                      <p className="text-slate-500 font-medium text-sm">Edit your house details and information.</p>
                     </div>
+                    <button
+                      onClick={() => setIsEditModalOpen(true)}
+                      className="flex items-center justify-center gap-2 bg-white border border-slate-200 px-4 py-2.5 rounded-xl font-bold text-slate-700 hover:bg-slate-50 transition-all shadow-sm shrink-0"
+                    >
+                      <Edit2 size={16} className="text-brand-teal" />
+                      Edit Info
+                    </button>
                   </div>
 
-                  <div className="bg-amber-50 p-8 rounded-4xl border border-amber-100 space-y-6">
+                  <div className="bg-amber-50 p-5 rounded-3xl border border-amber-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
-                      <h3 className="text-xl font-bold text-amber-700">Leave House</h3>
+                      <h3 className="text-lg font-bold text-amber-700">Leave House</h3>
                       <p className="text-amber-600/70 font-medium text-sm">You will lose access to all tasks and expenses of this house.</p>
                     </div>
                     <button
                       onClick={handleLeaveHouse}
-                      className="flex items-center justify-center gap-3 bg-white text-amber-700 border border-amber-200 p-4 rounded-2xl font-bold hover:bg-amber-100 transition-all shadow-sm"
+                      className="flex items-center justify-center gap-2 bg-white text-amber-700 border border-amber-200 px-4 py-2.5 rounded-xl font-bold hover:bg-amber-100 transition-all shadow-sm shrink-0"
                     >
-                      <DoorClosed size={18} />
+                      <DoorClosed size={16} />
                       Leave House
                     </button>
                   </div>
 
-                  <div className="bg-red-50 p-8 rounded-4xl border border-red-100 space-y-6">
+                  <div className="bg-red-50 p-5 rounded-3xl border border-red-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
-                      <h3 className="text-xl font-bold text-red-600">Danger Zone</h3>
-                      <p className="text-red-500/70 font-medium text-sm">Once you delete a house, there is no going back. Please be certain.</p>
+                      <h3 className="text-lg font-bold text-red-600">Danger Zone</h3>
+                      <p className="text-red-500/70 font-medium text-sm">Permanent deletion of this house.</p>
                     </div>
                     <button
                       onClick={handleDeleteHouse}
-                      className="flex items-center justify-center gap-3 bg-red-600 text-white p-4 rounded-2xl font-bold hover:bg-red-700 transition-all shadow-lg shadow-red-200"
+                      className="flex items-center justify-center gap-2 bg-red-600 text-white px-4 py-2.5 rounded-xl font-bold hover:bg-red-700 transition-all shadow-md shadow-red-200 shrink-0"
                     >
-                      <Trash2 size={18} />
+                      <Trash2 size={16} />
                       Delete House
                     </button>
                   </div>
