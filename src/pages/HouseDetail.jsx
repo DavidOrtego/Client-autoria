@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import {
   Users, ClipboardList, PiggyBank, Settings, MapPin, DoorClosed, UserPlus, Trash2, Calendar, Plus, Edit2, TrendingUp
 } from 'lucide-react';
-import request, { confirmAction } from '../lib/api';
+import request, { confirmAction, showAlert } from '../lib/api';
 import { useAuth } from '../context/authContext';
 import LoadingState from '../components/ui/LoadingState';
 import EmptyState from '../components/ui/EmptyState';
@@ -87,9 +87,9 @@ const HouseDetail = () => {
 
     try {
       await request(`/houses/${id}`, { method: 'DELETE', auth: true });
-      navigate('/');
+      navigate('/vives/home');
     } catch (err) {
-      alert(err.message);
+      showAlert({ title: "Error", text: err.message, icon: "error" });
     }
   };
 
@@ -104,7 +104,7 @@ const HouseDetail = () => {
       await request(`/house-members/house/${id}/user/${user?.id_user || user?.id}`, { method: 'DELETE', auth: true });
       navigate('/vives/home');
     } catch (err) {
-      alert('Error leaving house: ' + err.message);
+      showAlert({ title: "Error", text: 'Error leaving house: ' + err.message, icon: "error" });
     }
   };
 
@@ -125,7 +125,7 @@ const HouseDetail = () => {
       fetchHouseData(false);
     } catch (err) {
       setMembers(prevMembers);
-      alert('Error removing member: ' + err.message);
+      showAlert({ title: "Error", text: 'Error removing member: ' + err.message, icon: "error" });
     }
   };
 
@@ -143,7 +143,7 @@ const HouseDetail = () => {
       fetchHouseData(false);
     } catch (err) {
       setTasks(prevTasks);
-      alert("Error updating task status: " + err.message);
+      showAlert({ title: "Error", text: "Error updating task status: " + err.message, icon: "error" });
     }
   };
 
@@ -164,7 +164,7 @@ const HouseDetail = () => {
       fetchHouseData(false);
     } catch (err) {
       setTasks(prevTasks);
-      alert("Error deleting task: " + err.message);
+      showAlert({ title: "Error", text: "Error deleting task: " + err.message, icon: "error" });
     }
   };
 
@@ -185,7 +185,7 @@ const HouseDetail = () => {
       fetchHouseData(false);
     } catch (err) {
       setExpenses(prevExpenses);
-      alert("Error deleting expense: " + err.message);
+      showAlert({ title: "Error", text: "Error deleting expense: " + err.message, icon: "error" });
     }
   };
 

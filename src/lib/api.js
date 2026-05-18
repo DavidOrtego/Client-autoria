@@ -81,6 +81,37 @@ export async function confirmAction({
   return result.isConfirmed;
 }
 
+// Función para mostrar alertas de error o informativas estilo SweetAlert2
+export async function showAlert(optionsOrMessage) {
+  let config = {
+    title: "Notification",
+    text: "",
+    icon: "info",
+    confirmButtonText: "OK"
+  };
+
+  if (typeof optionsOrMessage === "string") {
+    config.text = optionsOrMessage;
+  } else if (typeof optionsOrMessage === "object" && optionsOrMessage !== null) {
+    config = { ...config, ...optionsOrMessage };
+  }
+
+  await Swal.fire({
+    title: config.title,
+    text: config.text,
+    icon: config.icon,
+    confirmButtonText: config.confirmButtonText,
+    customClass: {
+      popup: "rounded-3xl shadow-2xl border border-slate-100 bg-white/95 backdrop-blur-md p-6 max-w-sm sm:max-w-md",
+      title: "font-outfit text-xl font-bold text-slate-800",
+      htmlContainer: "font-inter text-sm text-slate-500 my-4",
+      confirmButton: "mx-2 rounded-2xl px-6 py-3 font-bold text-white shadow-lg active:scale-95 transition-all cursor-pointer bg-brand-teal hover:bg-brand-teal/90 outline-none",
+    },
+    buttonsStyling: false
+  });
+}
+
+
 // Crear una función genérica para hacer peticiones HTTP
 async function request(endpoint, { method = "GET", body = null, auth = false } = {}) {
 
