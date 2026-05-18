@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { X, Loader2 } from 'lucide-react';
-import request from '../../lib/api';
+import request, { showAlert } from '../../lib/api';
 
 const EditHouseModal = ({ onClose, onSuccess, house }) => {
   const [formData, setFormData] = useState({
@@ -23,7 +23,7 @@ const EditHouseModal = ({ onClose, onSuccess, house }) => {
       onSuccess();
       onClose();
     } catch (err) {
-      alert(err.message);
+      showAlert({ title: "Error", text: err.message, icon: "error" });
     } finally {
       setIsLoading(false);
     }

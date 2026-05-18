@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import {
   Users, ClipboardList, PiggyBank, Settings, MapPin, DoorClosed, UserPlus, Trash2, Calendar, Plus, Edit2, TrendingUp
 } from 'lucide-react';
-import request from '../lib/api';
+import request, { confirmAction, showAlert } from '../lib/api';
 import { useAuth } from '../context/authContext';
 import LoadingState from '../components/ui/LoadingState';
 import EmptyState from '../components/ui/EmptyState';
@@ -78,28 +78,43 @@ const HouseDetail = () => {
   }, [fetchHouseData]);
 
   const handleDeleteHouse = async () => {
-    if (!window.confirm("Are you absolutely sure you want to delete this house? This action cannot be undone.")) return;
+    const confirmed = await confirmAction({
+      title: "Delete House?",
+      text: "Are you absolutely sure you want to delete this house? This action cannot be undone.",
+      confirmButtonText: "Yes, delete it"
+    });
+    if (!confirmed) return;
 
     try {
       await request(`/houses/${id}`, { method: 'DELETE', auth: true });
-      navigate('/');
+      navigate('/vives/home');
     } catch (err) {
-      alert(err.message);
+      showAlert({ title: "Error", text: err.message, icon: "error" });
     }
   };
 
   const handleLeaveHouse = async () => {
-    if (!window.confirm('Are you sure you want to leave this house?')) return;
+    const confirmed = await confirmAction({
+      title: "Leave House?",
+      text: "Are you sure you want to leave this house? You will lose access to all its tasks and expenses.",
+      confirmButtonText: "Yes, leave"
+    });
+    if (!confirmed) return;
     try {
       await request(`/house-members/house/${id}/user/${user?.id_user || user?.id}`, { method: 'DELETE', auth: true });
       navigate('/vives/home');
     } catch (err) {
-      alert('Error leaving house: ' + err.message);
+      showAlert({ title: "Error", text: 'Error leaving house: ' + err.message, icon: "error" });
     }
   };
 
   const handleRemoveMember = async (userId) => {
-    if (!window.confirm('Are you sure you want to remove this member?')) return;
+    const confirmed = await confirmAction({
+      title: "Remove Member?",
+      text: "Are you sure you want to remove this member from the house?",
+      confirmButtonText: "Yes, remove"
+    });
+    if (!confirmed) return;
 
     // Actualización visual inmediata
     const prevMembers = [...members];
@@ -110,7 +125,7 @@ const HouseDetail = () => {
       fetchHouseData(false);
     } catch (err) {
       setMembers(prevMembers);
-      alert('Error removing member: ' + err.message);
+      showAlert({ title: "Error", text: 'Error removing member: ' + err.message, icon: "error" });
     }
   };
 
@@ -128,12 +143,17 @@ const HouseDetail = () => {
       fetchHouseData(false);
     } catch (err) {
       setTasks(prevTasks);
-      alert("Error updating task status: " + err.message);
+      showAlert({ title: "Error", text: "Error updating task status: " + err.message, icon: "error" });
     }
   };
 
   const handleDeleteTask = async (taskId) => {
-    if (!window.confirm("Are you sure you want to delete this task?")) return;
+    const confirmed = await confirmAction({
+      title: "Delete Task?",
+      text: "Are you sure you want to delete this task?",
+      confirmButtonText: "Yes, delete"
+    });
+    if (!confirmed) return;
 
     // Actualización visual rápida
     const prevTasks = [...tasks];
@@ -144,12 +164,17 @@ const HouseDetail = () => {
       fetchHouseData(false);
     } catch (err) {
       setTasks(prevTasks);
-      alert("Error deleting task: " + err.message);
+      showAlert({ title: "Error", text: "Error deleting task: " + err.message, icon: "error" });
     }
   };
 
   const handleDeleteExpense = async (expenseId) => {
-    if (!window.confirm("Are you sure you want to delete this expense?")) return;
+    const confirmed = await confirmAction({
+      title: "Delete Expense?",
+      text: "Are you sure you want to delete this expense?",
+      confirmButtonText: "Yes, delete"
+    });
+    if (!confirmed) return;
 
     // Actualización rápida
     const prevExpenses = [...expenses];
@@ -160,7 +185,7 @@ const HouseDetail = () => {
       fetchHouseData(false);
     } catch (err) {
       setExpenses(prevExpenses);
-      alert("Error deleting expense: " + err.message);
+      showAlert({ title: "Error", text: "Error deleting expense: " + err.message, icon: "error" });
     }
   };
 

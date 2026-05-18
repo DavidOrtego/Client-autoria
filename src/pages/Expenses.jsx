@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { PiggyBank, Home, ArrowUpRight, BanknoteArrowDown, Search, Calendar, MoreVertical, Trash2, Edit2 } from 'lucide-react';
-import request from '../lib/api';
+import request, { confirmAction, showAlert } from '../lib/api';
 import { useAuth } from '../context/authContext';
 import CreateExpenseModal from '../components/modals/CreateExpenseModal';
 import defaultUserAvatar from '../assets/defaultUser.png';
@@ -34,13 +34,18 @@ const Expenses = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this expense?')) return;
+    const confirmed = await confirmAction({
+      title: "Delete Expense?",
+      text: "Are you sure you want to delete this expense?",
+      confirmButtonText: "Yes, delete"
+    });
+    if (!confirmed) return;
 
     try {
       await request(`/expenses/${id}`, { method: 'DELETE', auth: true });
       fetchExpenses();
     } catch (err) {
-      alert('Error deleting expense: ' + err.message);
+      showAlert({ title: "Error", text: 'Error deleting expense: ' + err.message, icon: "error" });
     }
   };
 

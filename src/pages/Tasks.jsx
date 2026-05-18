@@ -4,7 +4,7 @@ import {
   Plus,
   Search,
 } from "lucide-react";
-import request from "../lib/api";
+import request, { confirmAction, showAlert } from "../lib/api";
 import { useAuth } from "../context/authContext";
 import CreateTaskModal from "../components/modals/CreateTaskModal";
 import TaskSummaryCards from "../components/TaskSummaryCards";
@@ -38,13 +38,18 @@ const Tasks = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this task?")) return;
+    const confirmed = await confirmAction({
+      title: "Delete Task?",
+      text: "Are you sure you want to delete this task?",
+      confirmButtonText: "Yes, delete"
+    });
+    if (!confirmed) return;
 
     try {
       await request(`/tasks/${id}`, { method: "DELETE", auth: true });
       fetchTasks();
     } catch (err) {
-      alert("Error deleting task: " + err.message);
+      showAlert({ title: "Error", text: "Error deleting task: " + err.message, icon: "error" });
     }
   };
 
@@ -57,7 +62,7 @@ const Tasks = () => {
       });
       fetchTasks();
     } catch (err) {
-      alert("Error updating task status: " + err.message);
+      showAlert({ title: "Error", text: "Error updating task status: " + err.message, icon: "error" });
     }
   };
 
