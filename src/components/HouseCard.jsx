@@ -18,7 +18,7 @@ const obtenerImagenNivel = (nivel) => {
 };
 
 const HouseCard = ({ house, onClick }) => {
-  const { name, address, number_of_rooms, image, level } = house;
+  const { name, address, number_of_rooms, image, level, members_count } = house;
 
   // Asigna la imagen según su nivel con tope máximo en el nivel 50 
   const imagenAMostrar = obtenerImagenNivel(level);
@@ -61,16 +61,28 @@ const HouseCard = ({ house, onClick }) => {
           <h3 className="font-outfit text-xl font-bold text-slate-800 transition-colors group-hover:text-brand-teal">
             {name}
           </h3>
-          
-          <div className="flex items-center gap-2 text-sm text-slate-500">
-            <MapPin size={16} className="shrink-0 text-brand-teal/60" />
-            <span className="truncate">{address || 'No address specified'}</span>
-          </div>
+          {address ? (
+            <a
+              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              className="flex items-center gap-2 text-sm text-slate-500 hover:text-brand-teal transition-colors cursor-pointer group/location z-20 w-fit"
+            >
+              <MapPin size={16} className="shrink-0 text-brand-teal/60 group-hover/location:text-brand-teal transition-colors" />
+              <span className="truncate underline decoration-dotted underline-offset-4 decoration-slate-300 hover:decoration-brand-teal">{address}</span>
+            </a>
+          ) : (
+            <div className="flex items-center gap-2 text-sm text-slate-400">
+              <MapPin size={16} className="shrink-0 text-slate-300" />
+              <span className="truncate">No address specified</span>
+            </div>
+          )}
 
           <div className="mt-2 flex items-center justify-between border-t border-slate-100 pt-4">
-            <div className="flex items-center gap-1 text-xs font-medium text-slate-400">
-              <Users size={14} />
-              <span>View members</span>
+            <div className="flex items-center gap-2 text-xs font-semibold text-slate-500">
+              <Users size={14} className="text-brand-teal/80" />
+              <span>{members_count || 0} {members_count === 1 ? 'Member' : 'Members'}</span>
             </div>
             <div className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-50 text-slate-400 transition-all duration-300 group-hover:bg-brand-teal group-hover:text-white">
               <ChevronRight size={18} />

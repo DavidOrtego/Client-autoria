@@ -279,10 +279,22 @@ const HouseDetail = () => {
             <div className="p-8 space-y-6">
               <div>
                 <h1 className="text-3xl font-black text-slate-900 leading-tight mb-2">{house.name}</h1>
-                <div className="flex items-center gap-2 text-slate-500">
-                  <MapPin size={18} />
-                  <span className="font-medium">{house.address || 'No address provided'}</span>
-                </div>
+                {house.address ? (
+                  <a
+                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(house.address)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 text-slate-500 hover:text-brand-teal transition-colors cursor-pointer group/location w-fit"
+                  >
+                    <MapPin size={18} className="text-slate-400 group-hover/location:text-brand-teal transition-colors" />
+                    <span className="font-medium underline decoration-dotted underline-offset-4 decoration-slate-300 hover:decoration-brand-teal">{house.address}</span>
+                  </a>
+                ) : (
+                  <div className="flex items-center gap-2 text-slate-400">
+                    <MapPin size={18} />
+                    <span className="font-medium">No address provided</span>
+                  </div>
+                )}
               </div>
 
               <div className="grid grid-cols-2 gap-4">
