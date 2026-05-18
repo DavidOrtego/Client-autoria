@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const AuthCard = ({ titulo, subtitulo, iconosFlotantes = [], pie, children }) => {
   return (
@@ -17,13 +18,13 @@ const AuthCard = ({ titulo, subtitulo, iconosFlotantes = [], pie, children }) =>
 
           {/* Cabecera: logo, título y subtítulo */}
           <div className="flex flex-col items-center mb-8">
-            <div className="w-20 h-20 mb-5 relative">
+            <Link to="/" className="w-20 h-20 mb-5 relative hover:scale-105 active:scale-95 transition-all duration-300 block cursor-pointer">
               <img
                 src="/Vives.png"
                 alt="Vives Logo"
                 className="w-full h-full object-contain relative z-10 drop-shadow-sm"
               />
-            </div>
+            </Link>
             <h1 className="text-3xl font-bold text-slate-800 tracking-tight mb-1">
               {titulo}
             </h1>
