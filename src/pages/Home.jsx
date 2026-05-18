@@ -29,10 +29,20 @@ const Home = () => {
         request('/expenses', { auth: true }).catch(() => ({ data: [] }))
       ]);
 
-      setHouses(housesRes.data || []);
+      const tasks = tasksRes.data || [];
+      const housesWithDynamicLevels = (housesRes.data || []).map(house => {
+        const houseId = house.id_house || house.id;
+        const completedTasksCount = tasks.filter(
+          t => t.id_house === houseId && t.state === 'complete'
+        ).length;
+        return {
+          ...house,
+          level: Number(house.level || 0) + completedTasksCount
+        };
+      });
+      setHouses(housesWithDynamicLevels);
 
       // Contar tareas pendientes
-      const tasks = tasksRes.data || [];
       const pendingTasks = tasks.filter(task => task.state !== 'complete');
       setPendingTasksCount(pendingTasks.length);
 
