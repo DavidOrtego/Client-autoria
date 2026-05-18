@@ -1,6 +1,85 @@
+import Swal from "sweetalert2";
 
 // URL base de la API
 const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3000/api";
+
+// Configuración de Toast personalizada para SweetAlert2
+const Toast = Swal.mixin({
+  toast: true,
+  position: "top-end",
+  showConfirmButton: false,
+  timer: 3500,
+  timerProgressBar: true,
+  didOpen: (toast) => {
+    toast.addEventListener("mouseenter", Swal.stopTimer);
+    toast.addEventListener("mouseleave", Swal.resumeTimer);
+  },
+  customClass: {
+    popup: "rounded-3xl shadow-2xl border border-slate-100 bg-white/95 backdrop-blur-md p-4",
+    title: "font-outfit text-sm font-bold text-slate-800",
+    htmlContainer: "font-inter text-xs text-slate-500",
+  }
+});
+
+// Función para obtener mensajes descriptivos
+function getSuccessMessage(method, endpoint) {
+  const cleanEndpoint = endpoint.toLowerCase();
+  
+  if (method === "POST") {
+    if (cleanEndpoint.includes("/auth/login")) return "Welcome back! Logged in successfully.";
+    if (cleanEndpoint.includes("/auth/register")) return "Registration completed! Account created.";
+    if (cleanEndpoint.includes("/tasks")) return "Task created successfully.";
+    if (cleanEndpoint.includes("/expenses")) return "Expense recorded successfully.";
+    if (cleanEndpoint.includes("/houses")) return "House created successfully.";
+    if (cleanEndpoint.includes("/house-members") || cleanEndpoint.includes("/members")) return "Member added successfully.";
+    return "Record created successfully.";
+  }
+  
+  if (method === "PUT" || method === "PATCH") {
+    if (cleanEndpoint.includes("/tasks")) return "Task updated successfully.";
+    if (cleanEndpoint.includes("/expenses")) return "Expense updated successfully.";
+    if (cleanEndpoint.includes("/houses")) return "House modified successfully.";
+    return "Changes saved successfully.";
+  }
+  
+  if (method === "DELETE") {
+    if (cleanEndpoint.includes("/tasks")) return "Task deleted successfully.";
+    if (cleanEndpoint.includes("/expenses")) return "Expense deleted successfully.";
+    if (cleanEndpoint.includes("/houses")) return "House deleted successfully.";
+    if (cleanEndpoint.includes("/house-members") || cleanEndpoint.includes("/members")) return "Member removed successfully.";
+    return "Record deleted successfully.";
+  }
+  
+  return "Operation completed successfully.";
+}
+
+// Función para mostrar confirmaciones estilo SweetAlert2
+export async function confirmAction({
+  title = "Are you sure?",
+  text = "You won't be able to revert this!",
+  icon = "warning",
+  confirmButtonText = "Yes, do it",
+  cancelButtonText = "No, cancel"
+} = {}) {
+  const result = await Swal.fire({
+    title,
+    text,
+    icon,
+    showCancelButton: true,
+    confirmButtonText,
+    cancelButtonText,
+    customClass: {
+      popup: "rounded-3xl shadow-2xl border border-slate-100 bg-white/95 backdrop-blur-md p-6 max-w-sm sm:max-w-md",
+      title: "font-outfit text-xl font-bold text-slate-800",
+      htmlContainer: "font-inter text-sm text-slate-500 my-4",
+      confirmButton: "mx-2 rounded-2xl px-6 py-3 font-bold text-white shadow-lg active:scale-95 transition-all cursor-pointer bg-brand-teal hover:bg-brand-teal/90 outline-none",
+      cancelButton: "mx-2 rounded-2xl px-6 py-3 font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 active:scale-95 transition-all cursor-pointer outline-none"
+    },
+    buttonsStyling: false
+  });
+  
+  return result.isConfirmed;
+}
 
 // Crear una función genérica para hacer peticiones HTTP
 async function request(endpoint, { method = "GET", body = null, auth = false } = {}) {
@@ -29,7 +108,19 @@ async function request(endpoint, { method = "GET", body = null, auth = false } =
   }
 
   // Hacer la petición
-  const response = await fetch(`${BASE_URL}${endpoint}`, options);
+  let response;
+  try {
+    response = await fetch(`${BASE_URL}${endpoint}`, options);
+  } catch (error) {
+    // Si la petición falla por completo (red apagada, CORS, host inaccesible)
+    Toast.fire({
+      icon: "error",
+      title: "Connection Error",
+      text: "Unable to connect to the server. Please check your internet connection.",
+      iconColor: "#EF4444",
+    });
+    throw error;
+  }
 
   const data = await response.json();
 
@@ -41,7 +132,18 @@ async function request(endpoint, { method = "GET", body = null, auth = false } =
     throw new Error(data.message || "Error en la petición");
   }
 
+  // Confirmar el éxito de operaciones
+  if (["POST", "PUT", "PATCH", "DELETE"].includes(method.toUpperCase())) {
+    Toast.fire({
+      icon: "success",
+      title: getSuccessMessage(method, endpoint),
+      iconColor: "#0097A7",
+    });
+  }
+
   return data;
 }
 
 export default request;
+
+
