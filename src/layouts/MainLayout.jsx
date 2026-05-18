@@ -3,7 +3,7 @@ import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { Home, ClipboardList, PiggyBank, Menu, X, LogOut, Mail, Heart } from 'lucide-react';
 import { useAuth } from '../context/authContext';
 import defaultUserAvatar from '../assets/defaultUser.png';
-import ProfileModal from '../components/ProfileModal';
+import ProfileModal from '../components/modals/ProfileModal';
 
 const MainLayout = () => {
   const location = useLocation();

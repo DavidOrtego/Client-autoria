@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { X, Euro, FileText, Calendar, Home, User, Loader2 } from 'lucide-react';
-import request from '../lib/api';
+import request from '../../lib/api';
 
-const CreateExpenseModal = ({ isOpen, onClose, onSuccess, expense = null }) => {
+const CreateExpenseModal = ({ isOpen, onClose, onSuccess, expense = null, initialHouseId = null }) => {
   const [formData, setFormData] = useState({
     amount: '',
     description: '',
@@ -34,7 +34,7 @@ const CreateExpenseModal = ({ isOpen, onClose, onSuccess, expense = null }) => {
           amount: '',
           description: '',
           date: new Date().toISOString().split('T')[0],
-          id_house: '',
+          id_house: initialHouseId || '',
           id_user: ''
         });
       }
@@ -81,7 +81,7 @@ const CreateExpenseModal = ({ isOpen, onClose, onSuccess, expense = null }) => {
     try {
       const method = expense ? 'PUT' : 'POST';
       const endpoint = expense ? `/expenses/${expense.id_expense}` : '/expenses';
-      
+
       await request(endpoint, {
         method,
         body: {
@@ -103,19 +103,19 @@ const CreateExpenseModal = ({ isOpen, onClose, onSuccess, expense = null }) => {
   if (!isOpen) return null;
 
   return createPortal(
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6">
-      <div 
-        className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm animate-fade-in" 
+    <div className="fixed inset-0 z-9999 flex items-center justify-center p-4 sm:p-6">
+      <div
+        className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm animate-fade-in"
         onClick={onClose}
       />
-      
+
       <div className="relative w-full max-w-lg overflow-hidden rounded-3xl bg-white shadow-2xl animate-scale-in">
         {/* Header */}
         <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/50 px-6 py-4">
           <h2 className="font-outfit text-xl font-bold text-slate-900">
             {expense ? 'Edit Expense' : 'Add New Expense'}
           </h2>
-          <button 
+          <button
             onClick={onClose}
             className="rounded-full p-2 text-slate-400 transition-colors hover:bg-slate-200 hover:text-slate-600"
           >
@@ -253,7 +253,7 @@ const CreateExpenseModal = ({ isOpen, onClose, onSuccess, expense = null }) => {
             <button
               type="submit"
               disabled={loading}
-              className="flex-[2] flex items-center justify-center gap-2 rounded-2xl bg-brand-teal py-4 font-bold text-white shadow-lg shadow-brand-teal/20 transition-all hover:bg-brand-teal/90 disabled:opacity-50 active:scale-95"
+              className="flex-2 flex items-center justify-center gap-2 rounded-2xl bg-brand-teal py-4 font-bold text-white shadow-lg shadow-brand-teal/20 transition-all hover:bg-brand-teal/90 disabled:opacity-50 active:scale-95"
             >
               {loading ? <Loader2 size={20} className="animate-spin" /> : (expense ? 'Update Expense' : 'Save Expense')}
             </button>

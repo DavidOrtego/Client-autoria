@@ -15,18 +15,18 @@ const LandingPage = () => {
 
   return (
     <div className="min-h-screen bg-white selection:bg-brand-teal selection:text-white overflow-hidden">
-      {/* Background Decorative Icons */}
-      <div className="fixed top-[15%] left-[10%] text-brand-teal/5 rotate-12 animate-bounce transition-all duration-1000 -z-0">
+      {/* Iconos de fondo */}
+      <div className="fixed top-[15%] left-[10%] text-brand-teal/5 rotate-12 animate-bounce transition-all duration-1000 z-0">
         <Home size={120} />
       </div>
       <div
-        className="fixed bottom-[20%] right-[10%] text-brand-green/5 -rotate-12 animate-bounce transition-all duration-1000 -z-0"
+        className="fixed bottom-[20%] right-[10%] text-brand-green/5 -rotate-12 animate-bounce transition-all duration-1000 z-0"
         style={{ animationDelay: "0.5s" }}
       >
         <CheckCircle size={100} />
       </div>
 
-      {/* Navigation */}
+      {/* Navegación */}
       <nav className="relative z-50 flex items-center justify-between px-6 py-6 max-w-7xl mx-auto">
         <div
           className="flex items-center gap-2 group cursor-pointer"
@@ -59,7 +59,7 @@ const LandingPage = () => {
           </Link>
         </div>
       </nav>
-      {/* Main Section */}
+      {/* principal */}
       <header className="relative z-10 pt-16 pb-32 px-6">
         <div className="max-w-7xl mx-auto text-center space-y-10 animate-fade-in">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-brand-teal/5 border border-brand-teal/10 rounded-full text-brand-teal font-bold text-sm">
@@ -101,7 +101,7 @@ const LandingPage = () => {
           </div>
         </div>
       </header>
-      {/* Features Section */}
+      {/* características */}
       <section className="relative z-10 py-32 bg-slate-100 backdrop-blur-3xl">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">

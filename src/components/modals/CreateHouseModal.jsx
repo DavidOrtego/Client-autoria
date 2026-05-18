@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { X, Home, MapPin, DoorClosed, Loader2 } from "lucide-react";
-import request from "../lib/api";
+import request from "../../lib/api";
 
 const CreateHouseModal = ({ isOpen, onClose, onSuccess }) => {
   const [formData, setFormData] = useState({
@@ -13,7 +13,6 @@ const CreateHouseModal = ({ isOpen, onClose, onSuccess }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // Reset form when modal opens
   useEffect(() => {
     if (isOpen) {
       setFormData({
@@ -53,8 +52,8 @@ const CreateHouseModal = ({ isOpen, onClose, onSuccess }) => {
         auth: true,
       });
 
-      onSuccess(); // Refresh the list of houses
-      onClose(); // Close the modal
+      onSuccess();
+      onClose();
     } catch (err) {
       setError(err.message || "Failed to create house");
     } finally {
@@ -63,16 +62,16 @@ const CreateHouseModal = ({ isOpen, onClose, onSuccess }) => {
   };
 
   return createPortal(
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6">
-      {/* Backdrop */}
+    <div className="fixed inset-0 z-9999 flex items-center justify-center p-4 sm:p-6">
+      {/* Fondo */}
       <div
         className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm animate-fade-in"
         onClick={onClose}
       />
 
-      {/* Modal Container */}
+      {/* Ventana modal */}
       <div className="relative w-full max-w-lg overflow-hidden rounded-3xl bg-white shadow-2xl animate-scale-in">
-        {/* Header */}
+        {/* Cabecera */}
         <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/50 px-6 py-4">
           <h2 className="font-outfit text-xl font-bold text-slate-900">
             Create New House
@@ -85,7 +84,7 @@ const CreateHouseModal = ({ isOpen, onClose, onSuccess }) => {
           </button>
         </div>
 
-        {/* Content */}
+        {/* Contenido */}
         <form onSubmit={handleSubmit} className="p-6 space-y-5">
           {error && (
             <div className="rounded-xl bg-red-50 p-4 text-sm font-medium text-red-600 border border-red-100">
@@ -167,7 +166,7 @@ const CreateHouseModal = ({ isOpen, onClose, onSuccess }) => {
             <button
               type="submit"
               disabled={isLoading}
-              className="flex-[2] flex items-center justify-center gap-2 rounded-2xl bg-brand-teal py-4 font-bold text-white shadow-lg shadow-brand-teal/20 transition-all hover:bg-brand-teal/90 disabled:opacity-50 active:scale-95"
+              className="flex-2 flex items-center justify-center gap-2 rounded-2xl bg-brand-teal py-4 font-bold text-white shadow-lg shadow-brand-teal/20 transition-all hover:bg-brand-teal/90 disabled:opacity-50 active:scale-95"
             >
               {isLoading ? (
                 <Loader2 size={20} className="animate-spin" />
