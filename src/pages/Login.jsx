@@ -7,6 +7,7 @@ import FormField     from '../components/auth/FormField';
 import PasswordField from '../components/auth/PasswordField';
 import ErrorBanner   from '../components/auth/ErrorBanner';
 import SubmitButton  from '../components/auth/SubmitButton';
+import LoadingScreen from '../components/ui/LoadingScreen';
 
 const ICONOS_FLOTANTES = [
   {
@@ -38,7 +39,10 @@ const Login = () => {
     setCargando(true);
 
     try {
-      await login(email, contrasena);
+      await Promise.all([
+        login(email, contrasena),
+        new Promise((resolve) => setTimeout(resolve, 1550))
+      ]);
       navigate('/vives/home');
     } catch (err) {
       setError(err.message || 'Failed to log in. Please try again.');
@@ -63,16 +67,18 @@ const Login = () => {
   );
 
   return (
-    <AuthCard
-      titulo="Welcome back!"
-      subtitulo="Manage your apartment expenses and tasks easily."
-      iconosFlotantes={ICONOS_FLOTANTES}
-      pie={pie}
-    >
-      <form
-        className={`space-y-6 ${agitando ? 'animate-shake' : ''}`}
-        onSubmit={manejarEnvio}
+    <>
+      {cargando && <LoadingScreen type="login" />}
+      <AuthCard
+        titulo="Welcome back!"
+        subtitulo="Manage your apartment expenses and tasks easily."
+        iconosFlotantes={ICONOS_FLOTANTES}
+        pie={pie}
       >
+        <form
+          className={`space-y-6 ${agitando ? 'animate-shake' : ''}`}
+          onSubmit={manejarEnvio}
+        >
         {/* Campo de email */}
         <FormField
           id="login-email"
@@ -105,6 +111,7 @@ const Login = () => {
         </SubmitButton>
       </form>
     </AuthCard>
+  </>
   );
 };
 
