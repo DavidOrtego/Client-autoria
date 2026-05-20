@@ -89,10 +89,10 @@ const Home = () => {
       {/* Encabezado de bienvenida */}
       <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
         <div>
-          <h1 className="font-outfit text-4xl font-bold text-slate-900">
+          <h1 className="font-outfit text-4xl font-bold text-slate-900 dark:text-white">
             Hello, {user?.name?.split(' ')[0] || 'User'}! 👋
           </h1>
-          <p className="text-slate-500">
+          <p className="text-slate-500 dark:text-slate-400">
             Welcome back to Vives House.
           </p>
         </div>
@@ -149,7 +149,7 @@ const Home = () => {
           placeholder="Search house by name or address..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full rounded-2xl border-none bg-white py-4 pl-12 pr-4 text-slate-900 shadow-sm ring-1 ring-slate-200 transition-all focus:ring-2 focus:ring-brand-teal/50 outline-none"
+          className="w-full rounded-2xl border-none bg-white dark:bg-slate-800 py-4 pl-12 pr-4 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 shadow-sm ring-1 ring-slate-200 dark:ring-slate-700 transition-all focus:ring-2 focus:ring-brand-teal/50 outline-none"
         />
       </div>
 
@@ -157,11 +157,11 @@ const Home = () => {
       {loading ? (
         <LoadingState message="Loading your houses..." />
       ) : error ? (
-        <div className="glass-card flex flex-col items-center justify-center py-12 rounded-3xl border-red-100 bg-red-50/30 px-6 text-center">
+        <div className="glass-card flex flex-col items-center justify-center py-12 rounded-3xl border border-red-100 dark:border-red-900/30 bg-red-50/30 dark:bg-red-900/10 px-6 text-center">
           <p className="text-red-500 font-semibold mb-4">{error}</p>
           <button
             onClick={obtenerDatosDelDashboard}
-            className="rounded-xl bg-slate-900 px-6 py-2 text-white font-bold transition-all hover:bg-slate-800"
+            className="rounded-xl bg-slate-900 dark:bg-slate-700 px-6 py-2 text-white font-bold transition-all hover:bg-slate-800 dark:hover:bg-slate-600"
           >
             Retry
           </button>

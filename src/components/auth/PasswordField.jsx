@@ -26,7 +26,7 @@ const PasswordField = ({
 
   return (
     <div className="space-y-2">
-      <label htmlFor={id} className="text-sm font-semibold text-slate-700 ml-1">
+      <label htmlFor={id} className="text-sm font-semibold text-slate-700 dark:text-slate-300 ml-1">
         {etiqueta}
       </label>
       <div className="relative group">
@@ -41,13 +41,13 @@ const PasswordField = ({
           placeholder="••••••••"
           value={valor}
           onChange={alCambiar}
-          className={`w-full pl-11 pr-12 py-3.5 border rounded-2xl focus:outline-none focus:ring-2 transition-all text-slate-700 placeholder:text-slate-400 ${obtenerClaseBorde()}`}
+          className={`w-full pl-11 pr-12 py-3.5 border rounded-2xl focus:outline-none focus:ring-2 transition-all text-slate-700 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 dark:bg-slate-700 ${obtenerClaseBorde()}`}
         />
 
         <button
           type="button"
           onClick={alAlternar}
-          className="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-slate-600 transition-colors"
+          className="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
         >
           {mostrar ? <EyeOff size={18} /> : <Eye size={18} />}
         </button>

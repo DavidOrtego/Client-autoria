@@ -133,16 +133,16 @@ const Tasks = () => {
               placeholder="Search by name, house or person..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full rounded-2xl border-none bg-white py-4 pl-12 pr-4 text-slate-900 shadow-sm ring-1 ring-slate-200 transition-all focus:ring-2 focus:ring-brand-teal/50 outline-none"
+              className="w-full rounded-2xl border-none bg-white dark:bg-slate-800 py-4 pl-12 pr-4 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 shadow-sm ring-1 ring-slate-200 dark:ring-slate-700 transition-all focus:ring-2 focus:ring-brand-teal/50 outline-none"
             />
           </div>
 
-          <div className="flex p-1 bg-white rounded-2xl shadow-sm ring-1 ring-slate-200 min-w-fit">
+          <div className="flex p-1 bg-white dark:bg-slate-800 rounded-2xl shadow-sm ring-1 ring-slate-200 dark:ring-slate-700 min-w-fit">
             <button
               onClick={() => setViewMode("all")}
               className={`px-6 py-3 rounded-xl text-sm font-bold transition-all ${viewMode === "all"
                 ? "bg-brand-teal text-white shadow-lg shadow-brand-teal/20"
-                : "text-slate-500 hover:text-slate-700 hover:bg-slate-50"
+                : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700"
                 }`}
             >
               All Tasks
@@ -151,7 +151,7 @@ const Tasks = () => {
               onClick={() => setViewMode("mine")}
               className={`px-6 py-3 rounded-xl text-sm font-bold transition-all ${viewMode === "mine"
                 ? "bg-brand-teal text-white shadow-lg shadow-brand-teal/20"
-                : "text-slate-500 hover:text-slate-700 hover:bg-slate-50"
+                : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700"
                 }`}
             >
               My Tasks
@@ -163,22 +163,22 @@ const Tasks = () => {
       {/* Tabla de tareas */}
       <div className="space-y-8">
         {loading ? (
-          <div className="glass-card rounded-3xl overflow-hidden border-slate-200 shadow-xl shadow-slate-200/20 bg-white">
+          <div className="glass-card dark:bg-slate-800/80 dark:border-slate-700 rounded-3xl overflow-hidden border-slate-200 shadow-xl shadow-slate-200/20 bg-white">
             <LoadingState message="Loading tasks..." />
           </div>
         ) : error ? (
-          <div className="glass-card rounded-3xl overflow-hidden border-slate-200 shadow-xl shadow-slate-200/20 bg-white flex flex-col items-center justify-center py-12 px-6 text-center">
+          <div className="glass-card dark:bg-slate-800/80 dark:border-slate-700 rounded-3xl overflow-hidden border-slate-200 shadow-xl shadow-slate-200/20 bg-white flex flex-col items-center justify-center py-12 px-6 text-center">
             <p className="text-red-500 font-semibold mb-4">{error}</p>
             <button
               onClick={fetchTasks}
-              className="rounded-xl bg-slate-900 px-6 py-2 text-white font-bold transition-all hover:bg-slate-800"
+              className="rounded-xl bg-slate-900 dark:bg-slate-700 px-6 py-2 text-white font-bold transition-all hover:bg-slate-800 dark:hover:bg-slate-600"
             >
               Try Again
             </button>
           </div>
         ) : filteredTasks.length > 0 ? (
           <>
-            <div className="glass-card rounded-3xl overflow-hidden border-slate-200 shadow-xl shadow-slate-200/20 bg-white">
+            <div className="glass-card dark:bg-slate-800/80 dark:border-slate-700 rounded-3xl overflow-hidden border-slate-200 shadow-xl shadow-slate-200/20 bg-white">
               {activeTasks.length > 0 ? (
                 <TasksTable
                   tasksList={activeTasks}
@@ -189,19 +189,19 @@ const Tasks = () => {
                   handleDelete={handleDelete}
                 />
               ) : (
-                <div className="py-12 text-center text-slate-500 font-medium border-b border-slate-100 px-6">
+                <div className="py-12 text-center text-slate-500 dark:text-slate-400 font-medium border-b border-slate-100 dark:border-slate-700 px-6">
                   <p>No active tasks found. You're all caught up!</p>
                 </div>
               )}
             </div>
 
             {completedTasks.length > 0 && (
-              <div className="glass-card rounded-3xl overflow-hidden border-slate-200 shadow-xl shadow-slate-200/20 bg-white">
-                <div className="bg-slate-50/80 px-6 py-4 flex items-center gap-2 border-b border-slate-100">
-                  <h3 className="font-outfit font-bold text-slate-700 text-sm uppercase tracking-wider">
+              <div className="glass-card dark:bg-slate-800/80 dark:border-slate-700 rounded-3xl overflow-hidden border-slate-200 shadow-xl shadow-slate-200/20 bg-white">
+                <div className="bg-slate-50/80 dark:bg-slate-700/50 px-6 py-4 flex items-center gap-2 border-b border-slate-100 dark:border-slate-700">
+                  <h3 className="font-outfit font-bold text-slate-700 dark:text-slate-300 text-sm uppercase tracking-wider">
                     Completed History
                   </h3>
-                  <span className="bg-slate-200 text-slate-600 px-2 py-0.5 rounded-full text-xs font-bold ml-2">
+                  <span className="bg-slate-200 dark:bg-slate-600 text-slate-600 dark:text-slate-300 px-2 py-0.5 rounded-full text-xs font-bold ml-2">
                     {completedTasks.length}
                   </span>
                 </div>

@@ -15,9 +15,9 @@ const Toast = Swal.mixin({
     toast.addEventListener("mouseleave", Swal.resumeTimer);
   },
   customClass: {
-    popup: "rounded-3xl shadow-2xl border border-slate-100 bg-white/95 backdrop-blur-md p-4",
-    title: "font-outfit text-sm font-bold text-slate-800",
-    htmlContainer: "font-inter text-xs text-slate-500",
+    popup: "rounded-3xl shadow-2xl border border-slate-100 dark:border-slate-700 bg-white/95 dark:bg-slate-800/95 backdrop-blur-md p-4",
+    title: "font-outfit text-sm font-bold text-slate-800 dark:text-white",
+    htmlContainer: "font-inter text-xs text-slate-500 dark:text-slate-400",
   }
 });
 
@@ -67,11 +67,11 @@ export async function confirmAction({
     confirmButtonText,
     cancelButtonText,
     customClass: {
-      popup: "rounded-3xl shadow-2xl border border-slate-100 bg-white/95 backdrop-blur-md p-6 max-w-sm sm:max-w-md",
-      title: "font-outfit text-xl font-bold text-slate-800",
-      htmlContainer: "font-inter text-sm text-slate-500 my-4",
+      popup: "rounded-3xl shadow-2xl border border-slate-100 dark:border-slate-700 bg-white/95 dark:bg-slate-800/95 backdrop-blur-md p-6 max-w-sm sm:max-w-md",
+      title: "font-outfit text-xl font-bold text-slate-800 dark:text-white",
+      htmlContainer: "font-inter text-sm text-slate-500 dark:text-slate-400 my-4",
       confirmButton: "mx-2 rounded-2xl px-6 py-3 font-bold text-white shadow-lg active:scale-95 transition-all cursor-pointer bg-brand-teal hover:bg-brand-teal/90 outline-none",
-      cancelButton: "mx-2 rounded-2xl px-6 py-3 font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 active:scale-95 transition-all cursor-pointer outline-none"
+      cancelButton: "mx-2 rounded-2xl px-6 py-3 font-bold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 active:scale-95 transition-all cursor-pointer outline-none"
     },
     buttonsStyling: false
   });
@@ -100,9 +100,9 @@ export async function showAlert(optionsOrMessage) {
     icon: config.icon,
     confirmButtonText: config.confirmButtonText,
     customClass: {
-      popup: "rounded-3xl shadow-2xl border border-slate-100 bg-white/95 backdrop-blur-md p-6 max-w-sm sm:max-w-md",
-      title: "font-outfit text-xl font-bold text-slate-800",
-      htmlContainer: "font-inter text-sm text-slate-500 my-4",
+      popup: "rounded-3xl shadow-2xl border border-slate-100 dark:border-slate-700 bg-white/95 dark:bg-slate-800/95 backdrop-blur-md p-6 max-w-sm sm:max-w-md",
+      title: "font-outfit text-xl font-bold text-slate-800 dark:text-white",
+      htmlContainer: "font-inter text-sm text-slate-500 dark:text-slate-400 my-4",
       confirmButton: "mx-2 rounded-2xl px-6 py-3 font-bold text-white shadow-lg active:scale-95 transition-all cursor-pointer bg-brand-teal hover:bg-brand-teal/90 outline-none",
     },
     buttonsStyling: false

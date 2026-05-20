@@ -12,12 +12,12 @@ const PageHeader = ({
   return (
     <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
       <div>
-        <h1 className="font-outfit text-4xl font-bold text-slate-900 flex items-center gap-3">
+        <h1 className="font-outfit text-4xl font-bold text-slate-900 dark:text-white flex items-center gap-3">
           {Icon && <Icon className={iconColor} size={36} />}
           {title}
         </h1>
         {description && (
-          <p className="text-slate-500 mt-1">
+          <p className="text-slate-500 dark:text-slate-400 mt-1">
             {description}
           </p>
         )}

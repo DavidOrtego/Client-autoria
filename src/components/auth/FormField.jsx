@@ -13,7 +13,7 @@ const FormField = ({
 }) => {
   return (
     <div className="space-y-2">
-      <label htmlFor={id} className="text-sm font-semibold text-slate-700 ml-1">
+      <label htmlFor={id} className="text-sm font-semibold text-slate-700 dark:text-slate-300 ml-1">
         {etiqueta}
       </label>
       <div className="relative group">
@@ -27,10 +27,10 @@ const FormField = ({
           placeholder={placeholder}
           value={valor}
           onChange={alCambiar}
-          className={`w-full pl-11 pr-4 py-3.5 border rounded-2xl focus:outline-none focus:ring-2 transition-all text-slate-700 placeholder:text-slate-400 ${
+          className={`w-full pl-11 pr-4 py-3.5 border rounded-2xl focus:outline-none focus:ring-2 transition-all text-slate-700 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 dark:bg-slate-700 dark:border-slate-600 ${
             hayError
-              ? 'border-red-400 focus:ring-red-200 focus:border-red-400 bg-red-50'
-              : 'border-slate-200 focus:ring-brand-teal/20 focus:border-brand-teal'
+              ? 'border-red-400 focus:ring-red-200 focus:border-red-400 bg-red-50 dark:bg-red-900/20'
+              : 'border-slate-200 dark:border-slate-600 focus:ring-brand-teal/20 focus:border-brand-teal dark:focus:bg-slate-600 bg-white dark:bg-slate-700'
           }`}
         />
       </div>
