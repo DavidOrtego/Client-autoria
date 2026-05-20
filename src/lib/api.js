@@ -3,7 +3,7 @@ import Swal from "sweetalert2";
 // URL base de la API
 const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3000/api";
 
-// Configuración de Toast personalizada para SweetAlert2
+// Configuración personalizada para SweetAlert2
 const Toast = Swal.mixin({
   toast: true,
   position: "top-end",
@@ -26,8 +26,6 @@ function getSuccessMessage(method, endpoint) {
   const cleanEndpoint = endpoint.toLowerCase();
   
   if (method === "POST") {
-    if (cleanEndpoint.includes("/auth/login")) return "Welcome back! Logged in successfully.";
-    if (cleanEndpoint.includes("/auth/register")) return "Registration completed! Account created.";
     if (cleanEndpoint.includes("/tasks")) return "Task created successfully.";
     if (cleanEndpoint.includes("/expenses")) return "Expense recorded successfully.";
     if (cleanEndpoint.includes("/houses")) return "House created successfully.";
@@ -53,7 +51,7 @@ function getSuccessMessage(method, endpoint) {
   return "Operation completed successfully.";
 }
 
-// Función para mostrar confirmaciones estilo SweetAlert2
+// Función para mostrar confirmaciones
 export async function confirmAction({
   title = "Are you sure?",
   text = "You won't be able to revert this!",
@@ -81,7 +79,7 @@ export async function confirmAction({
   return result.isConfirmed;
 }
 
-// Función para mostrar alertas de error o informativas estilo SweetAlert2
+// Función para mostrar alertas de error o informativas
 export async function showAlert(optionsOrMessage) {
   let config = {
     title: "Notification",
@@ -143,7 +141,7 @@ async function request(endpoint, { method = "GET", body = null, auth = false } =
   try {
     response = await fetch(`${BASE_URL}${endpoint}`, options);
   } catch (error) {
-    // Si la petición falla por completo (red apagada, CORS, host inaccesible)
+    // Si la petición falla por completo
     Toast.fire({
       icon: "error",
       title: "Connection Error",
@@ -163,13 +161,18 @@ async function request(endpoint, { method = "GET", body = null, auth = false } =
     throw new Error(data.message || "Error en la petición");
   }
 
-  // Confirmar el éxito de operaciones
+  // Confirmar el éxito de operaciones (excluyendo inicio de sesión y registro)
   if (["POST", "PUT", "PATCH", "DELETE"].includes(method.toUpperCase())) {
-    Toast.fire({
-      icon: "success",
-      title: getSuccessMessage(method, endpoint),
-      iconColor: "#0097A7",
-    });
+    const cleanEndpoint = endpoint.toLowerCase();
+    const shouldSkipAlert = cleanEndpoint.includes("/auth/login") || cleanEndpoint.includes("/auth/register");
+
+    if (!shouldSkipAlert) {
+      Toast.fire({
+        icon: "success",
+        title: getSuccessMessage(method, endpoint),
+        iconColor: "#0097A7",
+      });
+    }
   }
 
   return data;

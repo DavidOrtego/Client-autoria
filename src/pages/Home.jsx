@@ -29,10 +29,35 @@ const Home = () => {
         request('/expenses', { auth: true }).catch(() => ({ data: [] }))
       ]);
 
-      setHouses(housesRes.data || []);
+      const tasks = tasksRes.data || [];
+      const housesData = housesRes.data || [];
+
+      const housesWithMembersAndLevels = await Promise.all(
+        housesData.map(async (house) => {
+          const houseId = house.id_house || house.id;
+          const completedTasksCount = tasks.filter(
+            t => t.id_house === houseId && t.state === 'complete'
+          ).length;
+
+          let membersCount = 0;
+          try {
+            const membersRes = await request(`/house-members/house/${houseId}`, { auth: true });
+            membersCount = (membersRes.data || []).length;
+          } catch (err) {
+            console.error(`Error fetching members for house ${houseId}:`, err);
+          }
+
+          return {
+            ...house,
+            level: Number(house.level || 0) + completedTasksCount,
+            members_count: membersCount
+          };
+        })
+      );
+
+      setHouses(housesWithMembersAndLevels);
 
       // Contar tareas pendientes
-      const tasks = tasksRes.data || [];
       const pendingTasks = tasks.filter(task => task.state !== 'complete');
       setPendingTasksCount(pendingTasks.length);
 
