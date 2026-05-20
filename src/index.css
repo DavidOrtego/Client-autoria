@@ -10,11 +10,23 @@
   --glass-border: rgba(255, 255, 255, 0.3);
 }
 
+/* MODO OSCURO */
+.dark {
+  --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  --glass-bg: rgba(30, 41, 59, 0.85);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  color-scheme: dark;
+}
+
 @theme {
   --color-brand-teal: var(--primary-teal);
   --color-brand-green: var(--primary-green);
   --color-brand-yellow: var(--accent-yellow);
 }
+
+/* modo oscuro basado en clase .dark */
+@variant dark (&:where(.dark, .dark *));
+
 
 body {
   font-family: 'Inter', sans-serif;
@@ -177,3 +189,22 @@ h3,
   from { width: 0%; }
   to { width: 100%; }
 }
+
+/* SWEETALERT2 MODO OSCURO */
+.dark .swal2-popup {
+  background: #1e293b !important;
+  color: #f8fafc !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.dark .swal2-title,
+.dark .swal2-html-container {
+  color: #f8fafc !important;
+}
+
+.dark .swal2-icon.swal2-success .swal2-success-circular-line-left,
+.dark .swal2-icon.swal2-success .swal2-success-circular-line-right,
+.dark .swal2-icon.swal2-success .swal2-success-fix {
+  background-color: transparent !important;
+}
+
