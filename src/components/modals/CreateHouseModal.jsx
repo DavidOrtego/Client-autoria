@@ -70,15 +70,15 @@ const CreateHouseModal = ({ isOpen, onClose, onSuccess }) => {
       />
 
       {/* Ventana modal */}
-      <div className="relative w-full max-w-lg overflow-hidden rounded-3xl bg-white shadow-2xl animate-scale-in">
+      <div className="relative w-full max-w-lg overflow-hidden rounded-3xl bg-white dark:bg-slate-800 shadow-2xl animate-scale-in">
         {/* Cabecera */}
-        <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/50 px-6 py-4">
-          <h2 className="font-outfit text-xl font-bold text-slate-900">
+        <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50 px-6 py-4">
+          <h2 className="font-outfit text-xl font-bold text-slate-900 dark:text-white">
             Create New House
           </h2>
           <button
             onClick={onClose}
-            className="rounded-full p-2 text-slate-400 transition-colors hover:bg-slate-200 hover:text-slate-600"
+            className="rounded-full p-2 text-slate-400 transition-colors hover:bg-slate-200 dark:hover:bg-slate-700 hover:text-slate-600 dark:hover:text-slate-200"
           >
             <X size={20} />
           </button>
@@ -87,14 +87,14 @@ const CreateHouseModal = ({ isOpen, onClose, onSuccess }) => {
         {/* Contenido */}
         <form onSubmit={handleSubmit} className="p-6 space-y-5">
           {error && (
-            <div className="rounded-xl bg-red-50 p-4 text-sm font-medium text-red-600 border border-red-100">
+            <div className="rounded-xl bg-red-50 dark:bg-red-900/20 p-4 text-sm font-medium text-red-600 dark:text-red-400 border border-red-100 dark:border-red-900/30">
               {error}
             </div>
           )}
 
           {/* House Name */}
           <div className="space-y-2">
-            <label className="text-sm font-bold text-slate-700 ml-1">
+            <label className="text-sm font-bold text-slate-700 dark:text-slate-300 ml-1">
               House Name <span className="text-red-500">*</span>
             </label>
             <div className="relative group">
@@ -108,14 +108,14 @@ const CreateHouseModal = ({ isOpen, onClose, onSuccess }) => {
                 placeholder="My Awesome House"
                 value={formData.name}
                 onChange={handleChange}
-                className="w-full rounded-2xl border-slate-200 bg-slate-50 py-4 pl-12 pr-4 text-slate-900 transition-all focus:border-brand-teal focus:bg-white focus:ring-4 focus:ring-brand-teal/10 outline-none"
+                className="w-full rounded-2xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 py-4 pl-12 pr-4 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 transition-all focus:border-brand-teal dark:focus:border-brand-teal focus:bg-white dark:focus:bg-slate-600 focus:ring-4 focus:ring-brand-teal/10 outline-none"
               />
             </div>
           </div>
 
           {/* Address */}
           <div className="space-y-2">
-            <label className="text-sm font-bold text-slate-700 ml-1">
+            <label className="text-sm font-bold text-slate-700 dark:text-slate-300 ml-1">
               Address (Optional)
             </label>
             <div className="relative group">
@@ -128,14 +128,14 @@ const CreateHouseModal = ({ isOpen, onClose, onSuccess }) => {
                 placeholder="123 Main St"
                 value={formData.address}
                 onChange={handleChange}
-                className="w-full rounded-2xl border-slate-200 bg-slate-50 py-4 pl-12 pr-4 text-slate-900 transition-all focus:border-brand-teal focus:bg-white focus:ring-4 focus:ring-brand-teal/10 outline-none"
+                className="w-full rounded-2xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 py-4 pl-12 pr-4 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 transition-all focus:border-brand-teal dark:focus:border-brand-teal focus:bg-white dark:focus:bg-slate-600 focus:ring-4 focus:ring-brand-teal/10 outline-none"
               />
             </div>
           </div>
 
           {/* Number of Rooms */}
           <div className="space-y-2">
-            <label className="text-sm font-bold text-slate-700 ml-1">
+            <label className="text-sm font-bold text-slate-700 dark:text-slate-300 ml-1">
               Number of Rooms (Optional)
             </label>
             <div className="relative group">
@@ -149,7 +149,7 @@ const CreateHouseModal = ({ isOpen, onClose, onSuccess }) => {
                 placeholder="3"
                 value={formData.number_of_rooms}
                 onChange={handleChange}
-                className="w-full rounded-2xl border-slate-200 bg-slate-50 py-4 pl-12 pr-4 text-slate-900 transition-all focus:border-brand-teal focus:bg-white focus:ring-4 focus:ring-brand-teal/10 outline-none"
+                className="w-full rounded-2xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 py-4 pl-12 pr-4 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 transition-all focus:border-brand-teal dark:focus:border-brand-teal focus:bg-white dark:focus:bg-slate-600 focus:ring-4 focus:ring-brand-teal/10 outline-none"
               />
             </div>
           </div>
@@ -159,7 +159,7 @@ const CreateHouseModal = ({ isOpen, onClose, onSuccess }) => {
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 rounded-2xl border border-slate-200 py-4 font-bold text-slate-600 transition-all hover:bg-slate-50 active:scale-95"
+              className="flex-1 rounded-2xl border border-slate-200 dark:border-slate-600 py-4 font-bold text-slate-600 dark:text-slate-300 transition-all hover:bg-slate-50 dark:hover:bg-slate-700 active:scale-95"
             >
               Cancel
             </button>

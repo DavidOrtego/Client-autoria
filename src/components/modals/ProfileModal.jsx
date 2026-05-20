@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { X, User, Mail, Camera, Loader2, Lock } from 'lucide-react';
+import { X, User, Mail, Camera, Loader2, Lock, Moon, Sun } from 'lucide-react';
 import { useAuth } from '../../context/authContext';
+import { useTheme } from '../../context/themeContext';
 import defaultUserAvatar from '../../assets/defaultUser.png';
 import PasswordStrength from '../auth/PasswordStrength';
 
 const ProfileModal = ({ isOpen, onClose }) => {
   const { user, updateProfile } = useAuth();
+  const { isDarkMode, toggleDarkMode } = useTheme();
   const [formData, setFormData] = useState({
     name: user?.name || '',
     email: user?.email || '',
@@ -75,20 +77,20 @@ const ProfileModal = ({ isOpen, onClose }) => {
       />
 
       {/* Ventana modal */}
-      <div className="relative w-full max-w-lg overflow-hidden rounded-3xl bg-white shadow-2xl animate-scale-in">
+      <div className="relative w-full max-w-lg overflow-hidden rounded-3xl bg-white dark:bg-slate-800 shadow-2xl animate-scale-in">
         {/* Cabecera */}
-        <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/50 px-6 py-4">
-          <h2 className="font-outfit text-xl font-bold text-slate-900">My Profile</h2>
+        <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/80 px-6 py-4">
+          <h2 className="font-outfit text-xl font-bold text-slate-900 dark:text-white">My Profile</h2>
           <button
             onClick={onClose}
-            className="rounded-full p-2 text-slate-400 transition-colors hover:bg-slate-200 hover:text-slate-600"
+            className="rounded-full p-2 text-slate-400 dark:text-slate-500 transition-colors hover:bg-slate-200 dark:hover:bg-slate-700 hover:text-slate-600 dark:hover:text-slate-300"
           >
             <X size={20} />
           </button>
         </div>
 
         {/* Content */}
-        <div className="p-6">
+        <div className="p-6 dark:bg-slate-800">
           {/* Avatar Section */}
           <div className="flex flex-col items-center justify-center mb-8">
             <div
@@ -120,17 +122,46 @@ const ProfileModal = ({ isOpen, onClose }) => {
                   name="image"
                   value={formData.image}
                   onChange={handleChange}
-                  className="w-full rounded-2xl border-slate-200 bg-slate-50 py-3 px-4 text-sm text-slate-900 transition-all focus:border-brand-teal focus:bg-white focus:ring-4 focus:ring-brand-teal/10 outline-none"
+                  className="w-full rounded-2xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 py-3 px-4 text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 transition-all focus:border-brand-teal focus:bg-white dark:focus:bg-slate-600 focus:ring-4 focus:ring-brand-teal/10 outline-none"
                   placeholder="https://example.com/myphoto.jpg"
                 />
               </div>
             )}
           </div>
 
+          {/* Toggle modo oscuro */}
+          <div className="flex items-center justify-between px-4 py-3 rounded-2xl bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 mb-5">
+            <div className="flex items-center gap-3">
+              {isDarkMode
+                ? <Moon size={20} className="text-brand-teal" />
+                : <Sun size={20} className="text-brand-teal" />
+              }
+              <div>
+                <p className="text-sm font-bold text-slate-700 dark:text-slate-200">Dark Mode</p>
+                <p className="text-xs text-slate-400 dark:text-slate-500">{isDarkMode ? 'On' : 'Off'}</p>
+              </div>
+            </div>
+            {/* Switch */}
+            <button
+              type="button"
+              onClick={toggleDarkMode}
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${
+                isDarkMode ? 'bg-brand-teal' : 'bg-slate-300'
+              }`}
+              aria-label="Toggle dark mode"
+            >
+              <span
+                className={`inline-block h-4 w-4 transform rounded-full bg-white shadow-md transition-transform ${
+                  isDarkMode ? 'translate-x-6' : 'translate-x-1'
+                }`}
+              />
+            </button>
+          </div>
+
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="space-y-2">
-              <label className="text-sm font-bold text-slate-700 ml-1">Name</label>
+              <label className="text-sm font-bold text-slate-700 dark:text-slate-300 ml-1">Name</label>
               <div className="relative group">
                 <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-brand-teal transition-colors">
                   <User size={20} />
@@ -140,14 +171,14 @@ const ProfileModal = ({ isOpen, onClose }) => {
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
-                  className="w-full rounded-2xl border-slate-200 bg-slate-50 py-4 pl-12 pr-4 text-slate-900 transition-all focus:border-brand-teal focus:bg-white focus:ring-4 focus:ring-brand-teal/10 outline-none"
+                  className="w-full rounded-2xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 py-4 pl-12 pr-4 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 transition-all focus:border-brand-teal focus:bg-white dark:focus:bg-slate-600 focus:ring-4 focus:ring-brand-teal/10 outline-none"
                   placeholder={user?.name || "Your name"}
                 />
               </div>
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-bold text-slate-700 ml-1">Email</label>
+              <label className="text-sm font-bold text-slate-700 dark:text-slate-300 ml-1">Email</label>
               <div className="relative group">
                 <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-brand-teal transition-colors">
                   <Mail size={20} />
@@ -157,20 +188,20 @@ const ProfileModal = ({ isOpen, onClose }) => {
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className="w-full rounded-2xl border-slate-200 bg-slate-50 py-4 pl-12 pr-4 text-slate-900 transition-all focus:border-brand-teal focus:bg-white focus:ring-4 focus:ring-brand-teal/10 outline-none"
+                  className="w-full rounded-2xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 py-4 pl-12 pr-4 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 transition-all focus:border-brand-teal focus:bg-white dark:focus:bg-slate-600 focus:ring-4 focus:ring-brand-teal/10 outline-none"
                   placeholder={user?.email || "your@email.com"}
                 />
               </div>
             </div>
 
-            <div className="border-t border-slate-100 pt-6 mt-6">
-              <h3 className="font-outfit text-md font-bold text-slate-800 mb-4">Change Password</h3>
+            <div className="border-t border-slate-100 dark:border-slate-700 pt-6 mt-6">
+              <h3 className="font-outfit text-md font-bold text-slate-800 dark:text-slate-200 mb-4">Change Password</h3>
 
               <div className="space-y-4">
 
 
                 <div className="space-y-2">
-                  <label className="text-sm font-bold text-slate-700 ml-1">New Password</label>
+                  <label className="text-sm font-bold text-slate-700 dark:text-slate-300 ml-1">New Password</label>
                   <div className="relative group">
                     <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-brand-teal transition-colors">
                       <Lock size={20} />
@@ -180,7 +211,7 @@ const ProfileModal = ({ isOpen, onClose }) => {
                       name="newPassword"
                       value={formData.newPassword}
                       onChange={handleChange}
-                      className="w-full rounded-2xl border-slate-200 bg-slate-50 py-4 pl-12 pr-4 text-slate-900 transition-all focus:border-brand-teal focus:bg-white focus:ring-4 focus:ring-brand-teal/10 outline-none"
+                      className="w-full rounded-2xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 py-4 pl-12 pr-4 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 transition-all focus:border-brand-teal focus:bg-white dark:focus:bg-slate-600 focus:ring-4 focus:ring-brand-teal/10 outline-none"
                       placeholder="••••••••"
                     />
                   </div>
@@ -194,7 +225,7 @@ const ProfileModal = ({ isOpen, onClose }) => {
             </div>
 
             {error && (
-              <div className="rounded-xl bg-red-50 p-4 text-sm font-medium text-red-600 border border-red-100">
+              <div className="rounded-xl bg-red-50 dark:bg-red-900/20 p-4 text-sm font-medium text-red-600 dark:text-red-400 border border-red-100 dark:border-red-900/30">
                 {error}
               </div>
             )}
@@ -203,7 +234,7 @@ const ProfileModal = ({ isOpen, onClose }) => {
               <button
                 type="button"
                 onClick={onClose}
-                className="flex-1 rounded-2xl border border-slate-200 py-4 font-bold text-slate-600 transition-all hover:bg-slate-50 active:scale-95"
+                className="flex-1 rounded-2xl border border-slate-200 dark:border-slate-600 py-4 font-bold text-slate-600 dark:text-slate-300 transition-all hover:bg-slate-50 dark:hover:bg-slate-700 active:scale-95"
               >
                 Cancel
               </button>

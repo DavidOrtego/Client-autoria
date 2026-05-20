@@ -109,15 +109,15 @@ const CreateExpenseModal = ({ isOpen, onClose, onSuccess, expense = null, initia
         onClick={onClose}
       />
 
-      <div className="relative w-full max-w-lg overflow-hidden rounded-3xl bg-white shadow-2xl animate-scale-in">
+      <div className="relative w-full max-w-lg overflow-hidden rounded-3xl bg-white dark:bg-slate-800 shadow-2xl animate-scale-in border border-slate-100 dark:border-slate-700">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/50 px-6 py-4">
-          <h2 className="font-outfit text-xl font-bold text-slate-900">
+        <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50 px-6 py-4">
+          <h2 className="font-outfit text-xl font-bold text-slate-900 dark:text-white">
             {expense ? 'Edit Expense' : 'Add New Expense'}
           </h2>
           <button
             onClick={onClose}
-            className="rounded-full p-2 text-slate-400 transition-colors hover:bg-slate-200 hover:text-slate-600"
+            className="rounded-full p-2 text-slate-400 transition-colors hover:bg-slate-200 dark:hover:bg-slate-700 hover:text-slate-600 dark:hover:text-slate-200"
           >
             <X size={20} />
           </button>
@@ -125,14 +125,14 @@ const CreateExpenseModal = ({ isOpen, onClose, onSuccess, expense = null, initia
 
         <form onSubmit={handleSubmit} className="p-6 space-y-5">
           {error && (
-            <div className="rounded-xl bg-red-50 p-4 text-sm font-medium text-red-600 border border-red-100">
+            <div className="rounded-xl bg-red-50 dark:bg-red-900/20 p-4 text-sm font-medium text-red-600 dark:text-red-400 border border-red-100 dark:border-red-900/30">
               {error}
             </div>
           )}
 
           {/* Amount */}
           <div className="space-y-2">
-            <label className="text-sm font-bold text-slate-700 ml-1">Amount</label>
+            <label className="text-sm font-bold text-slate-700 dark:text-slate-300 ml-1">Amount</label>
             <div className="relative group">
               <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-brand-teal transition-colors">
                 <Euro size={20} />
@@ -144,14 +144,14 @@ const CreateExpenseModal = ({ isOpen, onClose, onSuccess, expense = null, initia
                 placeholder="0.00"
                 value={formData.amount}
                 onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
-                className="w-full rounded-2xl border-slate-200 bg-slate-50 py-4 pl-12 pr-4 text-lg font-bold text-slate-900 transition-all focus:border-brand-teal focus:bg-white focus:ring-4 focus:ring-brand-teal/10 outline-none"
+                className="w-full rounded-2xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 py-4 pl-12 pr-4 text-lg font-bold text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 transition-all focus:border-brand-teal dark:focus:border-brand-teal focus:bg-white dark:focus:bg-slate-600 focus:ring-4 focus:ring-brand-teal/10 outline-none"
               />
             </div>
           </div>
 
           {/* Description */}
           <div className="space-y-2">
-            <label className="text-sm font-bold text-slate-700 ml-1">Description</label>
+            <label className="text-sm font-bold text-slate-700 dark:text-slate-300 ml-1">Description</label>
             <div className="relative group">
               <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-brand-teal transition-colors">
                 <FileText size={20} />
@@ -162,7 +162,7 @@ const CreateExpenseModal = ({ isOpen, onClose, onSuccess, expense = null, initia
                 placeholder="What was this for?"
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                className="w-full rounded-2xl border-slate-200 bg-slate-50 py-4 pl-12 pr-4 text-slate-900 transition-all focus:border-brand-teal focus:bg-white focus:ring-4 focus:ring-brand-teal/10 outline-none"
+                className="w-full rounded-2xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 py-4 pl-12 pr-4 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 transition-all focus:border-brand-teal dark:focus:border-brand-teal focus:bg-white dark:focus:bg-slate-600 focus:ring-4 focus:ring-brand-teal/10 outline-none"
               />
             </div>
           </div>
@@ -170,7 +170,7 @@ const CreateExpenseModal = ({ isOpen, onClose, onSuccess, expense = null, initia
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {/* Date */}
             <div className="space-y-2">
-              <label className="text-sm font-bold text-slate-700 ml-1">Date</label>
+              <label className="text-sm font-bold text-slate-700 dark:text-slate-300 ml-1">Date</label>
               <div className="relative group">
                 <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-brand-teal transition-colors">
                   <Calendar size={20} />
@@ -180,14 +180,14 @@ const CreateExpenseModal = ({ isOpen, onClose, onSuccess, expense = null, initia
                   type="date"
                   value={formData.date}
                   onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                  className="w-full rounded-2xl border-slate-200 bg-slate-50 py-4 pl-12 pr-4 text-slate-900 transition-all focus:border-brand-teal focus:bg-white focus:ring-4 focus:ring-brand-teal/10 outline-none"
+                  className="w-full rounded-2xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 py-4 pl-12 pr-4 text-slate-900 dark:text-white transition-all focus:border-brand-teal dark:focus:border-brand-teal focus:bg-white dark:focus:bg-slate-600 focus:ring-4 focus:ring-brand-teal/10 outline-none"
                 />
               </div>
             </div>
 
             {/* House */}
             <div className="space-y-2">
-              <label className="text-sm font-bold text-slate-700 ml-1">House</label>
+              <label className="text-sm font-bold text-slate-700 dark:text-slate-300 ml-1">House</label>
               <div className="relative group">
                 <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-brand-teal transition-colors">
                   <Home size={20} />
@@ -196,7 +196,7 @@ const CreateExpenseModal = ({ isOpen, onClose, onSuccess, expense = null, initia
                   required
                   value={formData.id_house}
                   onChange={(e) => setFormData({ ...formData, id_house: e.target.value, id_user: '' })}
-                  className="w-full rounded-2xl border-slate-200 bg-slate-50 py-4 pl-12 pr-4 text-slate-900 transition-all focus:border-brand-teal focus:bg-white focus:ring-4 focus:ring-brand-teal/10 outline-none appearance-none"
+                  className="w-full rounded-2xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 py-4 pl-12 pr-4 text-slate-900 dark:text-white transition-all focus:border-brand-teal dark:focus:border-brand-teal focus:bg-white dark:focus:bg-slate-600 focus:ring-4 focus:ring-brand-teal/10 outline-none appearance-none"
                 >
                   <option value="" disabled>Select House</option>
                   {houses.map(house => (
@@ -214,7 +214,7 @@ const CreateExpenseModal = ({ isOpen, onClose, onSuccess, expense = null, initia
 
           {/* User (Member) */}
           <div className="space-y-2">
-            <label className="text-sm font-bold text-slate-700 ml-1">Paid By</label>
+            <label className="text-sm font-bold text-slate-700 dark:text-slate-300 ml-1">Paid By</label>
             <div className="relative group">
               <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-brand-teal transition-colors">
                 <User size={20} />
@@ -224,7 +224,7 @@ const CreateExpenseModal = ({ isOpen, onClose, onSuccess, expense = null, initia
                 disabled={!formData.id_house}
                 value={formData.id_user}
                 onChange={(e) => setFormData({ ...formData, id_user: e.target.value })}
-                className="w-full rounded-2xl border-slate-200 bg-slate-50 py-4 pl-12 pr-4 text-slate-900 transition-all focus:border-brand-teal focus:bg-white focus:ring-4 focus:ring-brand-teal/10 outline-none appearance-none disabled:opacity-50"
+                className="w-full rounded-2xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 py-4 pl-12 pr-4 text-slate-900 dark:text-white transition-all focus:border-brand-teal dark:focus:border-brand-teal focus:bg-white dark:focus:bg-slate-600 focus:ring-4 focus:ring-brand-teal/10 outline-none appearance-none disabled:opacity-50"
               >
                 <option value="" disabled>
                   {!formData.id_house ? 'Select a house first' : 'Select Member'}
@@ -246,7 +246,7 @@ const CreateExpenseModal = ({ isOpen, onClose, onSuccess, expense = null, initia
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 rounded-2xl border border-slate-200 py-4 font-bold text-slate-600 transition-all hover:bg-slate-50 active:scale-95"
+              className="flex-1 rounded-2xl border border-slate-200 dark:border-slate-600 py-4 font-bold text-slate-600 dark:text-slate-300 transition-all hover:bg-slate-50 dark:hover:bg-slate-700 active:scale-95"
             >
               Cancel
             </button>

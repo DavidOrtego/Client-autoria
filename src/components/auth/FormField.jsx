@@ -30,7 +30,7 @@ const FormField = ({
           className={`w-full pl-11 pr-4 py-3.5 border rounded-2xl focus:outline-none focus:ring-2 transition-all text-slate-700 placeholder:text-slate-400 ${
             hayError
               ? 'border-red-400 focus:ring-red-200 focus:border-red-400 bg-red-50'
-              : 'border-slate-200 focus:ring-brand-teal/20 focus:border-brand-teal'
+              : 'border-slate-200 focus:ring-brand-teal/20 focus:border-brand-teal bg-white'
           }`}
         />
       </div>

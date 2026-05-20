@@ -24,9 +24,9 @@ const MainLayout = () => {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50 font-sans">
+    <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-900 font-sans">
       {/* HEADER */}
-      <header className="fixed top-0 w-full bg-white border-b border-slate-200 z-50">
+      <header className="fixed top-0 w-full bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
@@ -38,7 +38,7 @@ const MainLayout = () => {
                   className="w-full h-full object-contain group-hover:scale-110 transition-transform rounded-xl"
                 />
               </div>
-              <span className="text-xl font-bold font-outfit text-slate-900 hidden sm:block">
+              <span className="text-xl font-bold font-outfit text-slate-900 dark:text-white hidden sm:block">
                 Vives House
               </span>
             </Link>
@@ -54,7 +54,7 @@ const MainLayout = () => {
                     className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
                       isActive 
                         ? 'bg-brand-teal/10 text-brand-teal'
-                        : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                        : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white'
                     }`}
                   >
                     {item.icon}
@@ -79,7 +79,7 @@ const MainLayout = () => {
               </button>
 
               <button
-                className="flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-semibold text-slate-600 border border-slate-200 hover:border-red-500 hover:text-red-500 hover:bg-red-50 transition-all"
+                className="flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-semibold text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-600 hover:border-red-500 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all"
                 title="Logout"
                 onClick={handleLogout}
               >
@@ -88,7 +88,7 @@ const MainLayout = () => {
               </button>
               
               <button
-                className="md:hidden p-2 text-slate-600 hover:bg-slate-100 rounded-lg"
+                className="md:hidden p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg"
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
               >
                 {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -99,7 +99,7 @@ const MainLayout = () => {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="md:hidden border-t border-slate-200 bg-white">
+          <div className="md:hidden border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
               {navigation.map((item) => {
                 const isActive = location.pathname.startsWith(item.path);
@@ -111,7 +111,7 @@ const MainLayout = () => {
                     className={`flex items-center gap-3 px-3 py-3 rounded-xl text-base font-semibold ${
                       isActive
                         ? 'bg-brand-teal/10 text-brand-teal'
-                        : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                        : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white'
                     }`}
                   >
                     {item.icon}
@@ -129,7 +129,7 @@ const MainLayout = () => {
       </main>
       
       {/* FOOTER */}
-      <footer className="bg-white border-t border-slate-200 mt-auto">
+      <footer className="bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 mt-auto">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-8">
             
@@ -143,11 +143,11 @@ const MainLayout = () => {
                     className="w-full h-full object-contain rounded-xl shadow-sm"
                   />
                 </div>
-                <span className="text-2xl font-bold font-outfit text-slate-900">
+                <span className="text-2xl font-bold font-outfit text-slate-900 dark:text-white">
                   Vives House
                 </span>
               </div>
-              <p className="text-slate-500 text-sm leading-relaxed max-w-sm text-center md:text-left font-medium">
+              <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed max-w-sm text-center md:text-left font-medium">
                 Manage your shared tasks and expenses transparently and friction-free. 
                 Living together has never been easier.
               </p>
@@ -155,15 +155,15 @@ const MainLayout = () => {
 
             {/* Columna Enlaces */}
             <div className="md:col-span-4 flex flex-col items-center md:items-start gap-4">
-              <h4 className="text-slate-900 font-bold font-outfit">Platform</h4>
+              <h4 className="text-slate-900 dark:text-white font-bold font-outfit">Platform</h4>
               <nav className="flex flex-col gap-3 items-center md:items-start">
-                <Link to="/vives/home" className="text-sm font-semibold text-slate-600 hover:text-brand-teal transition-all hover:-translate-y-0.5 flex items-center gap-2">
+                <Link to="/vives/home" className="text-sm font-semibold text-slate-600 dark:text-slate-400 hover:text-brand-teal dark:hover:text-brand-teal transition-all hover:-translate-y-0.5 flex items-center gap-2">
                   <Home size={16} className="opacity-50" /> My Houses
                 </Link>
-                <Link to="/vives/tasks" className="text-sm font-semibold text-slate-600 hover:text-brand-teal transition-all hover:-translate-y-0.5 flex items-center gap-2">
+                <Link to="/vives/tasks" className="text-sm font-semibold text-slate-600 dark:text-slate-400 hover:text-brand-teal dark:hover:text-brand-teal transition-all hover:-translate-y-0.5 flex items-center gap-2">
                   <ClipboardList size={16} className="opacity-50" /> Tasks
                 </Link>
-                <Link to="/vives/expenses" className="text-sm font-semibold text-slate-600 hover:text-brand-teal transition-all hover:-translate-y-0.5 flex items-center gap-2">
+                <Link to="/vives/expenses" className="text-sm font-semibold text-slate-600 dark:text-slate-400 hover:text-brand-teal dark:hover:text-brand-teal transition-all hover:-translate-y-0.5 flex items-center gap-2">
                   <PiggyBank size={16} className="opacity-50" /> Expenses
                 </Link>
               </nav>
@@ -171,19 +171,19 @@ const MainLayout = () => {
 
             {/* Columna Enlaces - Legal y Soporte */}
             <div className="md:col-span-3 flex flex-col items-center md:items-start gap-4">
-              <h4 className="text-slate-900 font-bold font-outfit">Community & Legal</h4>
+              <h4 className="text-slate-900 dark:text-white font-bold font-outfit">Community & Legal</h4>
               <nav className="flex flex-col gap-3 items-center md:items-start">
-                <a href="" className="text-sm font-semibold text-slate-600 hover:text-brand-teal transition-all">Help Center</a>
-                <a href="" className="text-sm font-semibold text-slate-600 hover:text-brand-teal transition-all">Privacy Policy</a>
-                <a href="" className="text-sm font-semibold text-slate-600 hover:text-brand-teal transition-all">Terms of Service</a>
+                <a href="" className="text-sm font-semibold text-slate-600 dark:text-slate-400 hover:text-brand-teal transition-all">Help Center</a>
+                <a href="" className="text-sm font-semibold text-slate-600 dark:text-slate-400 hover:text-brand-teal transition-all">Privacy Policy</a>
+                <a href="" className="text-sm font-semibold text-slate-600 dark:text-slate-400 hover:text-brand-teal transition-all">Terms of Service</a>
               </nav>
             </div>
 
           </div>
 
           {/* Línea inferior - Copyright */}
-          <div className="border-t border-slate-100 mt-12 pt-8 flex flex-col md:flex-row justify-center items-center gap-4">
-            <div className="text-sm text-slate-500 font-medium">
+          <div className="border-t border-slate-100 dark:border-slate-700 mt-12 pt-8 flex flex-col md:flex-row justify-center items-center gap-4">
+            <div className="text-sm text-slate-500 dark:text-slate-400 font-medium">
               &copy; 2026 Vives House. All rights reserved.
             </div>
           </div>

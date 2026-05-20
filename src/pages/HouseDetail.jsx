@@ -240,9 +240,9 @@ const HouseDetail = () => {
       <div className="flex flex-col items-center gap-4">
         <div className="text-center">
           <span className="text-xs font-black text-brand-teal uppercase tracking-[0.3em] mb-2 block">Roomie Dashboard</span>
-          <h2 className="text-3xl font-black text-slate-900">House management</h2>
+          <h2 className="text-3xl font-black text-slate-900 dark:text-white">House management</h2>
         </div>
-        <div className="flex flex-wrap justify-center gap-3 p-2 bg-white/50 backdrop-blur-md rounded-4xl border border-slate-100 shadow-sm">
+        <div className="flex flex-wrap justify-center gap-3 p-2 bg-white/50 dark:bg-slate-800/50 backdrop-blur-md rounded-4xl border border-slate-100 dark:border-slate-700 shadow-sm">
           {tabs.map((tab) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
@@ -251,11 +251,11 @@ const HouseDetail = () => {
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={`flex items-center gap-3 px-8 py-4 rounded-3xl font-bold transition-all whitespace-nowrap ${isActive
-                  ? 'bg-slate-900 text-white shadow-xl shadow-slate-900/20 scale-105'
-                  : 'bg-transparent text-slate-500 hover:bg-slate-100 hover:text-slate-800'
+                  ? 'bg-slate-900 dark:bg-brand-teal text-white shadow-xl shadow-slate-900/20 dark:shadow-brand-teal/20 scale-105'
+                  : 'bg-transparent text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-800 dark:hover:text-slate-200'
                   }`}
               >
-                <Icon size={20} className={isActive ? 'text-brand-teal' : ''} />
+                <Icon size={20} className={isActive ? 'text-brand-teal dark:text-white' : ''} />
                 {tab.label}
               </button>
             );
@@ -266,7 +266,7 @@ const HouseDetail = () => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Información de la casa */}
         <div className="lg:col-span-4 space-y-6">
-          <div className="glass-card rounded-[2.5rem] overflow-hidden bg-white border border-slate-100 shadow-xl shadow-slate-200/40">
+          <div className="glass-card rounded-[2.5rem] overflow-hidden bg-white dark:bg-slate-800/80 border border-slate-100 dark:border-slate-700 shadow-xl shadow-slate-200/40">
             <div className="relative h-64">
               <img src={imagenAMostrar} alt={house.name} className="w-full h-full object-cover" />
               <div className="absolute top-4 left-4">
@@ -278,19 +278,19 @@ const HouseDetail = () => {
 
             <div className="p-8 space-y-6">
               <div>
-                <h1 className="text-3xl font-black text-slate-900 leading-tight mb-2">{house.name}</h1>
+                <h1 className="text-3xl font-black text-slate-900 dark:text-white leading-tight mb-2">{house.name}</h1>
                 {house.address ? (
                   <a
                     href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(house.address)}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-slate-500 hover:text-brand-teal transition-colors cursor-pointer group/location w-fit"
+                    className="flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-brand-teal dark:hover:text-brand-teal transition-colors cursor-pointer group/location w-fit"
                   >
                     <MapPin size={18} className="text-slate-400 group-hover/location:text-brand-teal transition-colors" />
-                    <span className="font-medium underline decoration-dotted underline-offset-4 decoration-slate-300 hover:decoration-brand-teal">{house.address}</span>
+                    <span className="font-medium underline decoration-dotted underline-offset-4 decoration-slate-300 dark:decoration-slate-600 hover:decoration-brand-teal dark:hover:decoration-brand-teal">{house.address}</span>
                   </a>
                 ) : (
-                  <div className="flex items-center gap-2 text-slate-400">
+                  <div className="flex items-center gap-2 text-slate-400 dark:text-slate-500">
                     <MapPin size={18} />
                     <span className="font-medium">No address provided</span>
                   </div>
@@ -298,18 +298,18 @@ const HouseDetail = () => {
               </div>
 
               <div className="grid grid-cols-2 gap-4">
-                <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                <div className="bg-slate-50 dark:bg-slate-700/50 p-4 rounded-2xl border border-slate-100 dark:border-slate-600">
                   <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Rooms</p>
                   <div className="flex items-center gap-2">
                     <DoorClosed size={18} className="text-brand-teal" />
-                    <span className="text-xl font-bold text-slate-900">{house.number_of_rooms || 0}</span>
+                    <span className="text-xl font-bold text-slate-900 dark:text-white">{house.number_of_rooms || 0}</span>
                   </div>
                 </div>
-                <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                <div className="bg-slate-50 dark:bg-slate-700/50 p-4 rounded-2xl border border-slate-100 dark:border-slate-600">
                   <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Members</p>
                   <div className="flex items-center gap-2">
                     <Users size={18} className="text-indigo-500" />
-                    <span className="text-xl font-bold text-slate-900">{members.length}</span>
+                    <span className="text-xl font-bold text-slate-900 dark:text-white">{members.length}</span>
                   </div>
                 </div>
               </div>
@@ -319,9 +319,9 @@ const HouseDetail = () => {
                   <span>Experience</span>
                   <span>{calculatedLevel * 100} XP</span>
                 </div>
-                <div className="h-3 w-full bg-slate-100 rounded-full overflow-hidden">
+                <div className="h-3 w-full bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-gradient-to-r from-brand-teal to-brand-green"
+                    className="h-full bg-linear-to-r from-brand-teal to-brand-green"
                     style={{ width: `${(calculatedLevel % 10) * 10}%` }}
                   />
                 </div>
@@ -332,11 +332,11 @@ const HouseDetail = () => {
 
         {/* Sección de contenido dinámico*/}
         <div className="lg:col-span-8">
-          <div className="glass-card rounded-[2.5rem] bg-white border border-slate-100 shadow-xl shadow-slate-200/40 min-h-[600px] flex flex-col overflow-hidden">
-            <div className="p-8 border-b border-slate-100 flex items-center justify-between bg-slate-50/30">
+          <div className="glass-card rounded-[2.5rem] bg-white dark:bg-slate-800/80 border border-slate-100 dark:border-slate-700 shadow-xl shadow-slate-200/40 min-h-[600px] flex flex-col overflow-hidden">
+            <div className="p-8 border-b border-slate-100 dark:border-slate-700 flex items-center justify-between bg-slate-50/30 dark:bg-slate-700/30">
               <div>
-                <h2 className="text-2xl font-black text-slate-900 capitalize">{activeTab}</h2>
-                <p className="text-slate-500 font-medium">
+                <h2 className="text-2xl font-black text-slate-900 dark:text-white capitalize">{activeTab}</h2>
+                <p className="text-slate-500 dark:text-slate-400 font-medium">
                   {activeTab === 'members' && 'Manage who has access to this house.'}
                   {activeTab === 'tasks' && 'Chores and responsibilities for this home.'}
                   {activeTab === 'expenses' && 'Track shared spending and contributions.'}
@@ -377,13 +377,13 @@ const HouseDetail = () => {
                 </button>
               )}
             </div>
-            <div className="p-8 flex-1 bg-white">
+            <div className="p-8 flex-1 bg-white dark:bg-transparent">
               {activeTab === 'members' && (
                 <div className="space-y-6">
                   {members.length > 0 ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       {members.map((member) => (
-                        <div key={member.id_user} className="flex items-center justify-between p-6 rounded-[2.5rem] bg-slate-50 border border-slate-100 hover:bg-white hover:shadow-xl hover:shadow-slate-200/50 transition-all group border-b-4 border-b-transparent hover:border-b-brand-teal">
+                        <div key={member.id_user} className="flex items-center justify-between p-6 rounded-[2.5rem] bg-slate-50 dark:bg-slate-700/50 border border-slate-100 dark:border-slate-600 hover:bg-white dark:hover:bg-slate-700 hover:shadow-xl hover:shadow-slate-200/50 dark:hover:shadow-black/20 transition-all group border-b-4 border-b-transparent hover:border-b-brand-teal">
                           <div className="flex items-center gap-5">
                             <div className="w-16 h-16 rounded-3xl overflow-hidden bg-white border-2 border-white shadow-md group-hover:rotate-3 transition-transform">
                               <img
@@ -394,10 +394,10 @@ const HouseDetail = () => {
                               />
                             </div>
                             <div>
-                              <p className="font-black text-xl text-slate-900 leading-tight">{member.name || member.user_name}</p>
+                              <p className="font-black text-xl text-slate-900 dark:text-white leading-tight">{member.name || member.user_name}</p>
                               <p className="text-xs font-bold text-brand-teal uppercase tracking-widest mt-1">{member.email}</p>
                               <div className="mt-2 flex items-center gap-2">
-                                <span className="bg-white px-2 py-0.5 rounded-full text-[10px] font-bold text-slate-400 border border-slate-100 shadow-xs uppercase">
+                                <span className="bg-white dark:bg-slate-800 px-2 py-0.5 rounded-full text-[10px] font-bold text-slate-400 border border-slate-100 dark:border-slate-700 shadow-xs uppercase">
                                   {member.rol || 'Member'}
                                 </span>
                                 {member.join_date && (
@@ -412,7 +412,7 @@ const HouseDetail = () => {
                           {user?.id_user !== member.id_user && (
                             <button
                               onClick={() => handleRemoveMember(member.id_user)}
-                              className="p-3 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-2xl transition-all opacity-0 group-hover:opacity-100"
+                              className="p-3 text-slate-300 dark:text-slate-500 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-2xl transition-all opacity-0 group-hover:opacity-100"
                             >
                               <Trash2 size={20} />
                             </button>
@@ -433,7 +433,7 @@ const HouseDetail = () => {
               {activeTab === 'tasks' && (
                 <div className="space-y-8">
                   {/* Filtros para las tareas */}
-                  <div className="flex items-center gap-2 p-1 bg-slate-50 rounded-2xl w-fit border border-slate-100">
+                  <div className="flex items-center gap-2 p-1 bg-slate-50 dark:bg-slate-700 rounded-2xl w-fit border border-slate-100 dark:border-slate-600">
                     {[
                       { id: 'pending', label: 'Pending' },
                       { id: 'complete', label: 'Complete' }
@@ -442,8 +442,8 @@ const HouseDetail = () => {
                         key={f.id}
                         onClick={() => setTaskFilter(f.id)}
                         className={`px-6 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${taskFilter === f.id
-                          ? 'bg-white text-slate-900 shadow-sm ring-1 ring-slate-200'
-                          : 'text-slate-400 hover:text-slate-600'
+                          ? 'bg-white dark:bg-brand-teal text-slate-900 dark:text-white shadow-sm ring-1 ring-slate-200 dark:ring-0'
+                          : 'text-slate-400 dark:text-slate-400 hover:text-slate-600 dark:hover:text-slate-200'
                           }`}
                       >
                         {f.label}
@@ -454,9 +454,9 @@ const HouseDetail = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {filteredTasks.length > 0 ? (
                       filteredTasks.map((task) => (
-                        <div key={task.id_task} className={`relative flex flex-col p-6 rounded-4xl border transition-all hover:shadow-xl ${task.state === 'complete' ? 'bg-slate-50 border-slate-100 opacity-75' : 'bg-white border-slate-100 hover:border-brand-teal/30'}`}>
+                        <div key={task.id_task} className={`relative flex flex-col p-6 rounded-4xl border transition-all hover:shadow-xl ${task.state === 'complete' ? 'bg-slate-50 dark:bg-slate-800/50 border-slate-100 dark:border-slate-700 opacity-75' : 'bg-white dark:bg-slate-700/50 border-slate-100 dark:border-slate-600 hover:border-brand-teal/30 dark:hover:border-brand-teal/50'}`}>
                           <div className="flex justify-between items-start mb-4">
-                            <div className={`p-3 rounded-2xl ${task.state === 'complete' ? 'bg-slate-200 text-slate-500' : 'bg-brand-teal/10 text-brand-teal'}`}>
+                            <div className={`p-3 rounded-2xl ${task.state === 'complete' ? 'bg-slate-200 dark:bg-slate-700 text-slate-500 dark:text-slate-400' : 'bg-brand-teal/10 text-brand-teal'}`}>
                               <ClipboardList size={24} />
                             </div>
                             <div className="flex items-center gap-2">
@@ -465,21 +465,21 @@ const HouseDetail = () => {
                                   setEditingTask(task);
                                   setIsTaskModalOpen(true);
                                 }}
-                                className="p-2 text-slate-400 hover:text-brand-teal hover:bg-brand-teal/5 rounded-xl transition-all"
+                                className="p-2 text-slate-400 hover:text-brand-teal hover:bg-brand-teal/5 dark:hover:bg-brand-teal/20 rounded-xl transition-all"
                               >
                                 <Edit2 size={18} />
                               </button>
                               <button
                                 onClick={() => handleDeleteTask(task.id_task)}
-                                className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all"
+                                className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-all"
                               >
                                 <Trash2 size={18} />
                               </button>
                             </div>
                           </div>
 
-                          <h3 className={`text-xl font-bold mb-2 ${task.state === 'complete' ? 'text-slate-500 line-through' : 'text-slate-900'}`}>{task.name}</h3>
-                          <p className="text-slate-500 text-sm mb-4 line-clamp-2 flex-1">{task.description || 'No description provided.'}</p>
+                          <h3 className={`text-xl font-bold mb-2 ${task.state === 'complete' ? 'text-slate-500 dark:text-slate-400 line-through' : 'text-slate-900 dark:text-white'}`}>{task.name}</h3>
+                          <p className="text-slate-500 dark:text-slate-400 text-sm mb-4 line-clamp-2 flex-1">{task.description || 'No description provided.'}</p>
 
                           {task.expiration_date && (
                             <div className="flex items-center gap-2 mb-6 text-slate-400 group">
@@ -490,9 +490,9 @@ const HouseDetail = () => {
                             </div>
                           )}
 
-                          <div className="flex items-center justify-between pt-4 border-t border-slate-50 mt-auto">
-                            <div className="flex items-center gap-2 bg-slate-50 px-3 py-1.5 rounded-full border border-slate-100">
-                              <div className="w-6 h-6 rounded-lg overflow-hidden bg-white shadow-sm">
+                          <div className="flex items-center justify-between pt-4 border-t border-slate-50 dark:border-slate-600 mt-auto">
+                            <div className="flex items-center gap-2 bg-slate-50 dark:bg-slate-800 px-3 py-1.5 rounded-full border border-slate-100 dark:border-slate-700">
+                              <div className="w-6 h-6 rounded-lg overflow-hidden bg-white dark:bg-slate-700 shadow-sm">
                                 <img
                                   src={task.user_image || defaultUserAvatar}
                                   alt={task.user_name}
@@ -500,16 +500,16 @@ const HouseDetail = () => {
                                   onError={(e) => { e.target.src = defaultUserAvatar; }}
                                 />
                               </div>
-                              <span className="text-[10px] font-black uppercase tracking-tight text-slate-500">{task.user_name || 'Unassigned'}</span>
+                              <span className="text-[10px] font-black uppercase tracking-tight text-slate-500 dark:text-slate-400">{task.user_name || 'Unassigned'}</span>
                             </div>
 
                             <select
                               value={task.state || 'pending'}
                               onChange={(e) => handleStatusChange(task, e.target.value)}
-                              className={`text-[10px] font-black uppercase tracking-wider px-3 py-1.5 rounded-full border-none focus:ring-2 focus:ring-brand-teal/20 cursor-pointer ${task.state === 'complete' ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/20' : 'bg-amber-400 text-white shadow-lg shadow-amber-400/20'}`}
+                              className={`text-[10px] font-black uppercase tracking-wider px-3 py-1.5 rounded-full border-none focus:ring-2 focus:ring-brand-teal/20 cursor-pointer ${task.state === 'complete' ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/20' : 'bg-amber-400 text-white shadow-lg shadow-amber-400/20'} dark:bg-opacity-90`}
                             >
-                              <option value="pending" className="text-slate-900">Pending</option>
-                              <option value="complete" className="text-slate-900">Done</option>
+                              <option value="pending" className="text-slate-900 dark:text-white">Pending</option>
+                              <option value="complete" className="text-slate-900 dark:text-white">Done</option>
                             </select>
                           </div>
                         </div>
@@ -537,7 +537,7 @@ const HouseDetail = () => {
                         className="cursor-pointer transition-all duration-500 transform hover:scale-[1.01] active:scale-[0.99] mb-8"
                       >
                         {!showExpenseBreakdown ? (
-                          <div className="bg-gradient-to-br from-slate-900 to-slate-800 p-10 rounded-[3rem] text-white flex items-center justify-between shadow-2xl shadow-slate-900/20 relative overflow-hidden group">
+                          <div className="bg-linear-to-br from-slate-900 to-slate-800 p-10 rounded-[3rem] text-white flex items-center justify-between shadow-2xl shadow-slate-900/20 relative overflow-hidden group">
                             <div className="absolute top-0 right-0 w-64 h-64 bg-brand-teal/10 rounded-full blur-3xl -mr-20 -mt-20 group-hover:bg-brand-teal/20 transition-all duration-700" />
                             <div className="relative z-10">
                               <p className="text-slate-400 font-bold uppercase tracking-[0.2em] text-[10px] mb-2 flex items-center gap-3">
@@ -553,17 +553,17 @@ const HouseDetail = () => {
                             </div>
                           </div>
                         ) : (
-                          <div className="bg-white p-10 rounded-[3rem] border border-slate-100 shadow-2xl shadow-slate-200/40 flex flex-col justify-center relative overflow-hidden group">
+                          <div className="bg-white dark:bg-slate-800 p-10 rounded-[3rem] border border-slate-100 dark:border-slate-700 shadow-2xl shadow-slate-200/40 flex flex-col justify-center relative overflow-hidden group">
                             <div className="flex items-center justify-between mb-8">
                               <h4 className="text-xs font-black text-slate-400 uppercase tracking-widest flex items-center gap-3">
                                 Spending Breakdown
-                                <span className="bg-slate-100 text-slate-500 px-2.5 py-1 rounded-full text-[9px] font-black tracking-widest group-hover:bg-slate-200 transition-colors">CLICK FOR TOTAL</span>
+                                <span className="bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-300 px-2.5 py-1 rounded-full text-[9px] font-black tracking-widest group-hover:bg-slate-200 dark:group-hover:bg-slate-600 transition-colors">CLICK FOR TOTAL</span>
                               </h4>
                             </div>
                             <div className="flex overflow-x-auto gap-6 pb-2 no-scrollbar">
                               {expensesBreakdown.map((member, idx) => (
-                                <div key={idx} className="min-w-[140px] p-5 rounded-4xl bg-slate-50 border border-slate-100 flex flex-col items-center text-center hover:bg-white hover:shadow-xl transition-all group/member">
-                                  <div className="w-14 h-14 rounded-[1.2rem] overflow-hidden bg-white mb-4 shadow-sm border border-slate-100 group-hover/member:scale-110 transition-transform">
+                                <div key={idx} className="min-w-[140px] p-5 rounded-4xl bg-slate-50 dark:bg-slate-700/50 border border-slate-100 dark:border-slate-600 flex flex-col items-center text-center hover:bg-white dark:hover:bg-slate-700 hover:shadow-xl dark:hover:shadow-black/20 transition-all group/member">
+                                  <div className="w-14 h-14 rounded-[1.2rem] overflow-hidden bg-white border-slate-100 dark:border-slate-600 mb-4 shadow-sm border group-hover/member:scale-110 transition-transform">
                                     <img
                                       src={member.image || defaultUserAvatar}
                                       alt={member.name}
@@ -571,7 +571,7 @@ const HouseDetail = () => {
                                       onError={(e) => { e.target.src = defaultUserAvatar; }}
                                     />
                                   </div>
-                                  <p className="font-bold text-slate-900 text-sm truncate w-full mb-1">{member.name}</p>
+                                  <p className="font-bold text-slate-900 dark:text-white text-sm truncate w-full mb-1">{member.name}</p>
                                   <p className="font-black text-brand-teal text-lg">{member.total.toLocaleString('es-ES', { style: 'currency', currency: 'EUR' })}</p>
                                 </div>
                               ))}
@@ -583,30 +583,30 @@ const HouseDetail = () => {
                       {/* Historial de transacciones */}
                       <div className="space-y-4">
                         {expenses.sort((a, b) => new Date(b.date) - new Date(a.date)).map((expense) => (
-                          <div key={expense.id_expense} className="group flex items-center justify-between p-6 rounded-[2.5rem] bg-white border border-slate-100 hover:border-brand-teal/30 hover:shadow-2xl hover:shadow-slate-200/50 transition-all">
+                          <div key={expense.id_expense} className="group flex items-center justify-between p-6 rounded-[2.5rem] bg-white dark:bg-slate-700/50 border border-slate-100 dark:border-slate-600 hover:border-brand-teal/30 dark:hover:border-brand-teal/50 hover:shadow-2xl hover:shadow-slate-200/50 dark:hover:shadow-black/20 transition-all">
                             <div className="flex items-center gap-5">
-                              <div className="w-16 h-16 rounded-3xl bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-brand-teal group-hover:text-white transition-all duration-500 rotate-3 group-hover:rotate-0">
+                              <div className="w-16 h-16 rounded-3xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-400 group-hover:bg-brand-teal group-hover:text-white transition-all duration-500 rotate-3 group-hover:rotate-0">
                                 <PiggyBank size={28} />
                               </div>
                               <div>
-                                <h5 className="font-black text-slate-900 text-xl leading-tight mb-1">{expense.description}</h5>
+                                <h5 className="font-black text-slate-900 dark:text-white text-xl leading-tight mb-1">{expense.description}</h5>
                                 <div className="flex items-center gap-3">
                                   <div className="flex items-center gap-1.5 text-slate-400 text-[11px] font-bold">
                                     <Calendar size={14} className="text-brand-teal" />
                                     <span>{new Date(expense.date).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
                                   </div>
-                                  <div className="w-1.5 h-1.5 rounded-full bg-slate-200" />
+                                  <div className="w-1.5 h-1.5 rounded-full bg-slate-200 dark:bg-slate-600" />
                                   <div className="flex items-center gap-2">
-                                    <div className="w-5 h-5 rounded-md overflow-hidden border border-slate-100">
+                                    <div className="w-5 h-5 rounded-md overflow-hidden border border-slate-100 dark:border-slate-600">
                                       <img src={expense.user_image || defaultUserAvatar} alt={expense.user_name} className="w-full h-full object-cover" />
                                     </div>
-                                    <span className="font-bold text-slate-500 text-[11px] uppercase tracking-tight">Paid by {expense.user_name}</span>
+                                    <span className="font-bold text-slate-500 dark:text-slate-400 text-[11px] uppercase tracking-tight">Paid by {expense.user_name}</span>
                                   </div>
                                 </div>
                               </div>
                             </div>
                             <div className="flex items-center gap-4">
-                              <span className="text-3xl font-black text-slate-900 tabular-nums mr-4">
+                              <span className="text-3xl font-black text-slate-900 dark:text-white tabular-nums mr-4">
                                 {Number(expense.amount).toLocaleString('es-ES', { style: 'currency', currency: 'EUR' })}
                               </span>
                               <div className="flex items-center opacity-0 group-hover:opacity-100 transition-opacity gap-1">
@@ -615,13 +615,13 @@ const HouseDetail = () => {
                                     setEditingExpense(expense);
                                     setIsExpenseModalOpen(true);
                                   }}
-                                  className="p-3 text-slate-400 hover:text-brand-teal hover:bg-brand-teal/5 rounded-2xl transition-all"
+                                  className="p-3 text-slate-400 hover:text-brand-teal hover:bg-brand-teal/5 dark:hover:bg-brand-teal/20 rounded-2xl transition-all"
                                 >
                                   <Edit2 size={20} />
                                 </button>
                                 <button
                                   onClick={() => handleDeleteExpense(expense.id_expense)}
-                                  className="p-3 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-2xl transition-all"
+                                  className="p-3 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-2xl transition-all"
                                 >
                                   <Trash2 size={20} />
                                 </button>
@@ -643,42 +643,42 @@ const HouseDetail = () => {
 
               {activeTab === 'settings' && (
                 <div className="space-y-4 max-w-2xl">
-                  <div className="bg-slate-50 p-5 rounded-3xl border border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div className="bg-slate-50 dark:bg-slate-700/50 p-5 rounded-3xl border border-slate-100 dark:border-slate-600 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
-                      <h3 className="text-lg font-bold text-slate-900">General Configuration</h3>
-                      <p className="text-slate-500 font-medium text-sm">Edit your house details and information.</p>
+                      <h3 className="text-lg font-bold text-slate-900 dark:text-white">General Configuration</h3>
+                      <p className="text-slate-500 dark:text-slate-400 font-medium text-sm">Edit your house details and information.</p>
                     </div>
                     <button
                       onClick={() => setIsEditModalOpen(true)}
-                      className="flex items-center justify-center gap-2 bg-white border border-slate-200 px-4 py-2.5 rounded-xl font-bold text-slate-700 hover:bg-slate-50 transition-all shadow-sm shrink-0"
+                      className="flex items-center justify-center gap-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 px-4 py-2.5 rounded-xl font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 transition-all shadow-sm shrink-0"
                     >
                       <Edit2 size={16} className="text-brand-teal" />
                       Edit Info
                     </button>
                   </div>
 
-                  <div className="bg-amber-50 p-5 rounded-3xl border border-amber-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div className="bg-amber-50 dark:bg-amber-900/10 p-5 rounded-3xl border border-amber-100 dark:border-amber-900/30 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
-                      <h3 className="text-lg font-bold text-amber-700">Leave House</h3>
-                      <p className="text-amber-600/70 font-medium text-sm">You will lose access to all tasks and expenses of this house.</p>
+                      <h3 className="text-lg font-bold text-amber-700 dark:text-amber-500">Leave House</h3>
+                      <p className="text-amber-600/70 dark:text-amber-500/70 font-medium text-sm">You will lose access to all tasks and expenses of this house.</p>
                     </div>
                     <button
                       onClick={handleLeaveHouse}
-                      className="flex items-center justify-center gap-2 bg-white text-amber-700 border border-amber-200 px-4 py-2.5 rounded-xl font-bold hover:bg-amber-100 transition-all shadow-sm shrink-0"
+                      className="flex items-center justify-center gap-2 bg-white dark:bg-amber-900/20 text-amber-700 dark:text-amber-500 border border-amber-200 dark:border-amber-900/50 px-4 py-2.5 rounded-xl font-bold hover:bg-amber-100 dark:hover:bg-amber-900/40 transition-all shadow-sm shrink-0"
                     >
                       <DoorClosed size={16} />
                       Leave House
                     </button>
                   </div>
 
-                  <div className="bg-red-50 p-5 rounded-3xl border border-red-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div className="bg-red-50 dark:bg-red-900/10 p-5 rounded-3xl border border-red-100 dark:border-red-900/30 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
-                      <h3 className="text-lg font-bold text-red-600">Danger Zone</h3>
-                      <p className="text-red-500/70 font-medium text-sm">Permanent deletion of this house.</p>
+                      <h3 className="text-lg font-bold text-red-600 dark:text-red-500">Danger Zone</h3>
+                      <p className="text-red-500/70 dark:text-red-400/70 font-medium text-sm">Permanent deletion of this house.</p>
                     </div>
                     <button
                       onClick={handleDeleteHouse}
-                      className="flex items-center justify-center gap-2 bg-red-600 text-white px-4 py-2.5 rounded-xl font-bold hover:bg-red-700 transition-all shadow-md shadow-red-200 shrink-0"
+                      className="flex items-center justify-center gap-2 bg-red-600 text-white px-4 py-2.5 rounded-xl font-bold hover:bg-red-700 transition-all shadow-md shadow-red-200 dark:shadow-red-900/20 shrink-0"
                     >
                       <Trash2 size={16} />
                       Delete House

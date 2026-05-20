@@ -10,12 +10,12 @@ const EmptyState = ({
   isSearch = false
 }) => {
   return (
-    <div className="glass-card flex flex-col items-center justify-center py-20 px-6 text-center rounded-3xl border-2 border-dashed border-slate-200 bg-transparent">
-      <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center text-slate-200 mb-6 border-2 border-dashed border-slate-200">
+    <div className="glass-card dark:bg-slate-800/50 flex flex-col items-center justify-center py-20 px-6 text-center rounded-3xl border-2 border-dashed border-slate-200 dark:border-slate-700 bg-transparent">
+      <div className="w-20 h-20 bg-slate-50 dark:bg-slate-700 rounded-full flex items-center justify-center text-slate-300 dark:text-slate-500 mb-6 border-2 border-dashed border-slate-200 dark:border-slate-600">
         {Icon && <Icon size={40} />}
       </div>
-      <h3 className="font-outfit text-2xl font-bold text-slate-800 mb-2">{title}</h3>
-      <p className="text-slate-500 max-w-sm mb-8">
+      <h3 className="font-outfit text-2xl font-bold text-slate-800 dark:text-slate-100 mb-2">{title}</h3>
+      <p className="text-slate-500 dark:text-slate-400 max-w-sm mb-8">
         {description}
       </p>
       {!isSearch && buttonText && onButtonClick && (

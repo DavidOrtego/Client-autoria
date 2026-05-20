@@ -11,12 +11,12 @@ const StatsCard = ({
   hiddenOnMobile = false
 }) => {
   return (
-    <div className={`glass-card ${hiddenOnMobile ? 'hidden lg:flex' : 'flex'} relative overflow-hidden flex-col gap-1 rounded-3xl p-6 bg-linear-to-br ${gradient} border-slate-200/10`}>
+    <div className={`glass-card dark:bg-slate-800/80 dark:border-slate-700 ${hiddenOnMobile ? 'hidden lg:flex' : 'flex'} relative overflow-hidden flex-col gap-1 rounded-3xl p-6 bg-linear-to-br ${gradient} border-slate-200/10`}>
       <div className={`absolute top-0 right-0 p-4 opacity-10 ${iconColor}`}>
         {Icon && <Icon size={80} />}
       </div>
-      <span className="text-sm font-semibold text-slate-500 uppercase tracking-wider">{title}</span>
-      <span className="font-outfit text-4xl font-black text-slate-900 mt-2">
+      <span className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">{title}</span>
+      <span className="font-outfit text-4xl font-black text-slate-900 dark:text-white mt-2">
         {value}
       </span>
       {subtitle && (

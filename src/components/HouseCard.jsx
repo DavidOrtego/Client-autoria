@@ -26,14 +26,14 @@ const HouseCard = ({ house, onClick }) => {
   return (
     <div 
       onClick={onClick}
-      className="glass-card group relative overflow-hidden rounded-3xl p-4 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl cursor-pointer border border-white/20"
+      className="glass-card dark:bg-slate-800/80 dark:border-slate-700 group relative overflow-hidden rounded-3xl p-4 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl cursor-pointer border border-white/20"
     >
       {/* Efecto de degradado de fondo */}
       <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-brand-teal/10 blur-3xl transition-all duration-500 group-hover:bg-brand-teal/20" />
       
       <div className="relative flex flex-col gap-4">
         {/* Contenedor de imagen */}
-        <div className="relative h-48 w-full overflow-hidden rounded-2xl bg-slate-100">
+        <div className="relative h-48 w-full overflow-hidden rounded-2xl bg-slate-100 dark:bg-slate-700">
           {imagenAMostrar ? (
             <img 
               src={imagenAMostrar} 
@@ -58,7 +58,7 @@ const HouseCard = ({ house, onClick }) => {
 
         {/* Contenido principal */}
         <div className="flex flex-col gap-2">
-          <h3 className="font-outfit text-xl font-bold text-slate-800 transition-colors group-hover:text-brand-teal">
+          <h3 className="font-outfit text-xl font-bold text-slate-800 dark:text-slate-100 transition-colors group-hover:text-brand-teal">
             {name}
           </h3>
           {address ? (
@@ -79,12 +79,12 @@ const HouseCard = ({ house, onClick }) => {
             </div>
           )}
 
-          <div className="mt-2 flex items-center justify-between border-t border-slate-100 pt-4">
-            <div className="flex items-center gap-2 text-xs font-semibold text-slate-500">
+          <div className="mt-2 flex items-center justify-between border-t border-slate-100 dark:border-slate-700 pt-4">
+            <div className="flex items-center gap-2 text-xs font-semibold text-slate-500 dark:text-slate-400">
               <Users size={14} className="text-brand-teal/80" />
               <span>{members_count || 0} {members_count === 1 ? 'Member' : 'Members'}</span>
             </div>
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-50 text-slate-400 transition-all duration-300 group-hover:bg-brand-teal group-hover:text-white">
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-50 dark:bg-slate-700 text-slate-400 dark:text-slate-500 transition-all duration-300 group-hover:bg-brand-teal group-hover:text-white">
               <ChevronRight size={18} />
             </div>
           </div>
