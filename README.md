@@ -22,6 +22,7 @@
 - 🏠 **Gestión del Hogar:** Crea o únete a una casa y visualiza todos los detalles y miembros de forma instantánea (`HouseDetail`).
 - 💸 **Control de Gastos:** Registra las compras compartidas, visualiza históricos y mantén las cuentas claras de quién debe a quién (`Expenses`).
 - 🧹 **Reparto de Tareas:** Asigna, organiza y haz seguimiento de las labores de limpieza y mantenimiento (`Tasks`).
+- 📈 **Sistema de Niveles:** Lógica de progresión (Gamificación) donde los usuarios pueden adquirir experiencia y subir de nivel al colaborar en casa.
 - 🎨 **Interfaz Moderna:** Diseño responsivo, elegante y amigable gracias a Tailwind CSS y componentes visuales impactantes.
 
 ## 🛠️ Tecnologías Utilizadas
@@ -48,7 +49,13 @@ Asegúrate de tener [Node.js](https://nodejs.org/) instalado y ejecuta:
 npm install
 ```
 
-### 3. Iniciar el servidor de desarrollo
+### 3. Configurar Variables de Entorno
+Para apuntar a un backend diferente, hemos incluido un archivo de configuración. Simplemente haz un `.env` y añade la URL:
+```env
+VITE_API_URL=http://otra-direccion-api.com/api
+```
+
+### 4. Iniciar el servidor de desarrollo
 ```bash
 npm run dev
 ```
