@@ -14,7 +14,7 @@ const AuthCard = ({ titulo, subtitulo, iconosFlotantes = [], pie, children }) =>
 
       {/* Tarjeta principal */}
       <div className="w-full max-w-md z-10 animate-fade-in">
-        <div className="glass-card rounded-3xl p-8 md:p-10 dark:bg-slate-800/90 dark:border-slate-700">
+        <div className="glass-card rounded-3xl p-8 md:p-10">
 
           {/* Cabecera: logo, título y subtítulo */}
           <div className="flex flex-col items-center mb-8">
@@ -25,10 +25,10 @@ const AuthCard = ({ titulo, subtitulo, iconosFlotantes = [], pie, children }) =>
                 className="w-full h-full object-contain relative z-10 drop-shadow-sm"
               />
             </Link>
-            <h1 className="text-3xl font-bold text-slate-800 dark:text-white tracking-tight mb-1">
+            <h1 className="text-3xl font-bold text-slate-800 tracking-tight mb-1">
               {titulo}
             </h1>
-            <p className="text-slate-500 dark:text-slate-400 text-center text-sm md:text-base">
+            <p className="text-slate-500 text-center text-sm md:text-base">
               {subtitulo}
             </p>
           </div>
@@ -46,9 +46,9 @@ const AuthCard = ({ titulo, subtitulo, iconosFlotantes = [], pie, children }) =>
         </div>
 
         {/* Eslogan de la app */}
-        <p className="mt-8 text-center text-slate-400 dark:text-slate-500 text-xs tracking-widest uppercase flex items-center justify-center space-x-2">
+        <p className="mt-8 text-center text-slate-400 text-xs tracking-widest uppercase flex items-center justify-center space-x-2">
           <span>Living together, no chaos</span>
-          <span className="w-1 h-1 bg-slate-300 dark:bg-slate-600 rounded-full" />
+          <span className="w-1 h-1 bg-slate-300 rounded-full" />
           <span>Vives House</span>
         </p>
       </div>

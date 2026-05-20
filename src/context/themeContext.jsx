@@ -3,21 +3,15 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 const ThemeContext = createContext();
 
 export const ThemeProvider = ({ children }) => {
-  // Leer preferencia guardada o usar la del sistema operativo
+  // Leer preferencia guardada o usar modo claro por defecto
   const [isDarkMode, setIsDarkMode] = useState(() => {
     const saved = localStorage.getItem('darkMode');
     if (saved !== null) return JSON.parse(saved);
-    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+    return false;
   });
 
-  // Aplicar/quitar la clase 'dark' en el elemento raíz al cambiar el modo
+  // Guardar preferencia al cambiar el modo
   useEffect(() => {
-    const root = document.documentElement;
-    if (isDarkMode) {
-      root.classList.add('dark');
-    } else {
-      root.classList.remove('dark');
-    }
     localStorage.setItem('darkMode', JSON.stringify(isDarkMode));
   }, [isDarkMode]);
 

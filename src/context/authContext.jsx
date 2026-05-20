@@ -1,13 +1,28 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import request from '../lib/api';
 import { login as loginService, register as registerService } from '../lib/auth';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
+import { useTheme } from './themeContext';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { isDarkMode } = useTheme();
+  const location = useLocation();
+
+  // Controlador de tema reactivo de rutas
+  useEffect(() => {
+    const root = document.documentElement;
+    const isAuthPage = ['/login', '/signup'].includes(location.pathname);
+
+    if (isDarkMode && !isAuthPage) {
+      root.classList.add('dark');
+    } else {
+      root.classList.remove('dark');
+    }
+  }, [isDarkMode, location.pathname]);
 
   const fetchUser = async () => {
     try {
