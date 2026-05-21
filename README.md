@@ -61,6 +61,14 @@ npm run dev
 ```
 La aplicación estará disponible por defecto en `http://localhost:5173`.
 
+### 🐳 Despliegue con Docker
+El proyecto incluye un `Dockerfile` multi-etapa optimizado para entornos de producción. La imagen final sirve los estáticos a través de un servidor ligero Nginx. Para construir y levantar el contenedor:
+```bash
+docker build -t vives-client .
+docker run -p 8080:80 vives-client
+```
+La aplicación web de React estará entonces disponible en `http://localhost:8080`.
+
 ## 📁 Estructura del Proyecto
 
 ```text
