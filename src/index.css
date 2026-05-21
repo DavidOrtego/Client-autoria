@@ -1,0 +1,210 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+:root {
+  --primary-teal: #0097A7;
+  --primary-green: #4CAF50;
+  --accent-yellow: #FFEB3B;
+  --bg-gradient: linear-gradient(135deg, #f0f9ff 0%, #e1f5fe 100%);
+  --glass-bg: rgba(255, 255, 255, 0.8);
+  --glass-border: rgba(255, 255, 255, 0.3);
+}
+
+/* MODO OSCURO */
+.dark {
+  --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  --glass-bg: rgba(30, 41, 59, 0.85);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  color-scheme: dark;
+}
+
+@theme {
+  --color-brand-teal: var(--primary-teal);
+  --color-brand-green: var(--primary-green);
+  --color-brand-yellow: var(--accent-yellow);
+}
+
+/* modo oscuro basado en clase .dark */
+@variant dark (&:where(.dark, .dark *));
+
+
+body {
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 0;
+  background: var(--bg-gradient);
+  min-height: 100vh;
+}
+
+h1,
+h2,
+h3,
+.font-outfit {
+  font-family: 'Outfit', sans-serif;
+}
+
+.glass-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 8px 32px 0 rgba(0, 151, 167, 0.1);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  15% { transform: translateX(-8px); }
+  30% { transform: translateX(8px); }
+  45% { transform: translateX(-6px); }
+  60% { transform: translateX(6px); }
+  75% { transform: translateX(-3px); }
+  90% { transform: translateX(3px); }
+}
+
+.animate-shake {
+  animation: shake 0.5s ease-in-out;
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Pantalla de carga */
+@keyframes pulseGlow {
+  0%, 100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 15px rgba(0, 151, 167, 0.4)) drop-shadow(0 0 30px rgba(0, 151, 167, 0.2));
+  }
+  50% {
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 30px rgba(0, 151, 167, 0.7)) drop-shadow(0 0 50px rgba(76, 175, 80, 0.4));
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 3s ease-in-out infinite;
+}
+
+@keyframes spinSlow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spinSlow 12s linear infinite;
+}
+
+@keyframes reverseSpinSlow {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+.animate-reverse-spin-slow {
+  animation: reverseSpinSlow 15s linear infinite;
+}
+
+@keyframes progressGlow {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+.animate-progress-glow {
+  position: relative;
+  overflow: hidden;
+}
+
+.animate-progress-glow::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.3) 30%,
+    rgba(255, 255, 255, 0.6) 50%,
+    rgba(255, 255, 255, 0.3) 70%,
+    transparent 100%
+  );
+  animation: progressGlow 1.8s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-15px) scale(1.05);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes gradientBg {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-gradient {
+  background-size: 200% auto;
+  animation: gradientBg 4s ease infinite;
+}
+
+@keyframes progressFill {
+  from { width: 0%; }
+  to { width: 100%; }
+}
+
+/* SWEETALERT2 MODO OSCURO */
+.dark .swal2-popup {
+  background: #1e293b !important;
+  color: #f8fafc !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.dark .swal2-title,
+.dark .swal2-html-container {
+  color: #f8fafc !important;
+}
+
+.dark .swal2-icon.swal2-success .swal2-success-circular-line-left,
+.dark .swal2-icon.swal2-success .swal2-success-circular-line-right,
+.dark .swal2-icon.swal2-success .swal2-success-fix {
+  background-color: transparent !important;
+}
+
