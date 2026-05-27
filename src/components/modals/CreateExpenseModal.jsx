@@ -258,6 +258,16 @@ const CreateExpenseModal = ({ isOpen, onClose, onSuccess, expense = null, initia
               {loading ? <Loader2 size={20} className="animate-spin" /> : (expense ? 'Update Expense' : 'Save Expense')}
             </button>
           </div>
+          {/* informe de error */}
+          <div className="text-red-500 text-sm mt-2">
+            
+            
+            {error && (
+              <div>
+                Error Code: {error.code}, Message: {error.message}
+              </div>
+            )}
+          </div>
         </form>
       </div>
     </div>,
